@@ -23,13 +23,11 @@
          <section class="content">
             <h1>Venues</h1>
             <div class="card-group">
-               <div class="card-group">
-                  <div class="card" style="margin: 10px;"  th:each="venue: ${venues}">
+                  <div class="card" style="flex: 0 0 31%; margin: 10px;"  th:each="venue: ${venues}">
                      <h5 class="card-title"><span th:text="${venue.name}">Name</span>, <span class="card-title" th:text="${venue.city}">Name</span></h5>
                      <a href="#" target="_blank" th:href="@{'/venue/' + ${venue.name}}" class="btn btn-primary">View venue details</a>
                   </div>
                </div>
-            </div>
          </section>
       </div>
    </body>

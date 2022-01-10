@@ -55,7 +55,7 @@ public class JobCompletionNotificationListener
 		if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
 			System.out.println("JOB FINISHED");
 			jdbcTemplate
-					.query("SELECT * FROM match", (rs, rn) -> new MatchBuilder()
+					.query("SELECT * FROM matches", (rs, rn) -> new MatchBuilder()
 							.setId(rs.getLong("id"))
 							.setCity(rs.getString("city"))
 							.setUmpire1(rs.getString("umpire1"))

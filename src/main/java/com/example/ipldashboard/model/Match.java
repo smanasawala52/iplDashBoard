@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "match")
+@Table(name = "matches")
 public class Match {
 	@Id
 	private long id;
