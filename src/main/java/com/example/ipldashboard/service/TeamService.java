@@ -302,12 +302,18 @@ public class TeamService {
 						.filter(x -> x.getSeason().equalsIgnoreCase(season));
 			}
 			if (eventStage != null && !eventStage.isEmpty()) {
-				stream = stream.filter(
-						x -> x.getEventStage().equalsIgnoreCase(eventStage));
+				stream = stream
+						.filter(x -> x.getEventStage() != null
+								&& !x.getEventStage().isEmpty())
+						.filter(x -> x.getEventStage()
+								.equalsIgnoreCase(eventStage));
 			}
 			if (eventGroup != null && !eventGroup.isEmpty()) {
-				stream = stream.filter(
-						x -> x.getEventGroup().equalsIgnoreCase(eventGroup));
+				stream = stream
+						.filter(x -> x.getEventGroup() != null
+								&& !x.getEventGroup().isEmpty())
+						.filter(x -> x.getEventGroup()
+								.equalsIgnoreCase(eventGroup));
 			}
 			if (playerOfMatch != null && !playerOfMatch.isEmpty()) {
 				stream = stream.filter(x -> x.getPlayerOfMatch()
