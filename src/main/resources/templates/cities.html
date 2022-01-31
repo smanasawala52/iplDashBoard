@@ -30,7 +30,7 @@
                         <div th:each="venue: ${city.value}">
                         	<p class="card-title" th:text="${venue}"></p>
                         </div>
-                        <a href="#" target="_blank" th:href="@{'/city/' + ${city.key}}" class="btn btn-primary">View venues</a>
+                        <a href="#" target="_blank" th:href="@{'/city/' + ${city.key}}" >View venues</a>
                      </div>
                   </div>
                </div>

@@ -23,8 +23,8 @@ public class MatchController {
 	public ModelAndView getMatches(
 			@RequestParam(defaultValue = "0", name = "cp", required = false) int cp) {
 		ModelAndView modelAndView = new ModelAndView("matches");
-		if(cp<=0) {
-			cp=0;
+		if (cp <= 0) {
+			cp = 0;
 		}
 		modelAndView.addObject("pageSize", PAGE_SIZE);
 		Page<Match> page = matchService.getMatches(cp, PAGE_SIZE);
@@ -36,7 +36,7 @@ public class MatchController {
 
 	@GetMapping("/matches/{id}")
 	public ModelAndView getMatchDetails(@PathVariable("id") String id) {
-		ModelAndView modelAndView = new ModelAndView("matchDetails");
+		ModelAndView modelAndView = new ModelAndView("matchDetailsJson");
 		modelAndView.addObject("match", matchService.getMatchDetails(id));
 		return modelAndView;
 	}

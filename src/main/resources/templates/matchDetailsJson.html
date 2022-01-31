@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <title>IPL Dashboard</title>
+      <meta name="description" content="" />
+      <meta name="viewport" content="width=device-width" />
+      <base href="/" />
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+         crossorigin="anonymous"></script>
+   </head>
+   <body>
+      <div class="container">
+         <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding-bottom: 20px">
+            <div class="container-fluid">
+               <a class="navbar-brand" href="/">IPL Dashboard</a>
+            </div>
+         </nav>
+         <section class="content">
+            <h1>Match Details</h1>
+            <div class="card" style="flex: 0 0 100%; margin: 10px;">
+               <div class="card-body">
+                  <h5 class="card-title">
+                     <span th:each="team,iterStat: ${match.info.teams}">
+                     <span th:text="!${iterStat.last} ? ${team} + ' vs ': ${team}" />
+                     </span>
+                  </h5>
+                  <div class="card-text">Balls per over: <span class="text-muted" th:text="${match.info.ballsPerOver}"></span></div>
+                  <div th:if="${match.info.bowlOut}" >
+                     Bowl Out
+                     <div class="card-text">
+                        <div th:each="bowlOut: ${match.info.bowlOut}">
+                           Bowler: <span class="text-muted" th:text="${bowlOut.bowler}"></span>
+                           Outcome: <span class="text-muted" th:text="${bowlOut.outcome}"></span>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="card-text" th:if="${match.info.venue}">
+                     Venue: <span class="text-muted" th:text="${match.info.venue}"></span>, <span class="text-muted" th:if="${match.info.city}" th:text="${match.info.city}"></span>
+                  </div>
+                  <div class="card-text" th:if="${match.info.dates}">Date: 
+                     <span th:each="date,iterStat: ${match.info.dates}">
+                     <span class="text-muted"  th:text="!${iterStat.last} ? ${#dates.format(date, 'dd-MMM-yyyy')} + ', ': ${#dates.format(date, 'dd-MMM-yyyy')}" />
+                     </span>
+                  </div>
+				  <div class="card-text" th:if="${match.info.season}">
+                     Season: <span class="text-muted" th:text="${match.info.season}"></span>
+                  </div>
+                  <div class="card-text" th:if="${match.info.event}">
+                     Event: <span class="text-muted" th:text="${match.info.event.name}"></span>&nbsp;
+                     <span th:if="${match.info.event.matchNumber}">Match Number: <span class="text-muted" th:text="${match.info.event.matchNumber}"></span></span>&nbsp;
+                     <span th:if="${match.info.event.group}">Match Number: <span class="text-muted" th:text="${match.info.event.group}"></span></span>&nbsp;
+                     <span th:if="${match.info.event.stage}">Match Number: <span class="text-muted" th:text="${match.info.event.stage}"></span></span>&nbsp;
+                  </div>
+                  <div class="card-text" th:if="${match.info.playerOfMatch}">
+                     Player Of Match: <span class="text-muted" th:each="team,iterStat: ${match.info.playerOfMatch}" th:text="!${iterStat.last} ? ${team} + ', ': ${team}">
+                  </div>
+                  <div class="card-text" th:if="${match.info.matchType}">
+                     Match Type: <span class="text-muted" th:text="${match.info.matchType}"></span>
+                  </div>
+                  <div class="card-text" th:if="${match.info.matchTypeNumber}">
+                     Match Type Number: <span class="text-muted" th:text="${match.info.matchTypeNumber}"></span>
+                  </div>
+				  <div class="card-text" th:if="${match.info.toss}">Toss: <br>
+                     <span th:if="${match.info.toss.winner}"> <span class="text-muted" th:text="${match.info.toss.winner}">
+                     </span> Won the toss and elected to <span class="text-muted" th:text="${match.info.toss.decision}">
+                     </span></span><br>                     
+                  </div>
+                  <div class="card-text" th:if="${match.info.officials}">Officials: <br>
+                     <span th:if="${match.info.officials.umpires}">Umpires: <span class="text-muted" th:each="team,iterStat: ${match.info.officials.umpires}" th:text="!${iterStat.last} ? ${team} + ', ': ${team}">
+                     </span></span><br>
+                     <span th:if="${match.info.officials.matchReferees}">Match Referees: <span class="text-muted" th:each="team,iterStat: ${match.info.officials.matchReferees}" th:text="!${iterStat.last} ? ${team} + ', ': ${team}">
+                     </span></span><br>
+                     <span th:if="${match.info.officials.reserveUmpires}">Reserve Umpires: <span class="text-muted" th:each="team,iterStat: ${match.info.officials.reserveUmpires}" th:text="!${iterStat.last} ? ${team} + ', ': ${team}">
+                     </span></span><br>
+                     <span th:if="${match.info.officials.tvUmpires}">TV Umpires: <span class="text-muted" th:each="team,iterStat: ${match.info.officials.tvUmpires}" th:text="!${iterStat.last} ? ${team} + ', ': ${team}">
+                     </span></span>
+                  </div>
+                  <div class="card-text" th:if="${match.info.overs}">
+                     Number of overs: <span class="text-muted" th:text="${match.info.overs}"></span>
+                  </div>
+				  <div class="card-text" th:if="${match.info.teamType}">
+                     Team Type: <span class="text-muted" th:text="${match.info.teamType}"></span>
+                  </div>
+               </div>
+            </div>
+            <div class="card" style="flex: 0 0 100%; margin: 10px;">
+			<h5 class="card-title">Players</h5>
+               <div class="card-body" th:each="player,iterStatPlayer: ${match.info.players}">
+					<span th:text="${player.key}"></span>
+                  <div class="card-text" th:if="${player.value}" th:each="team,iterStat: ${player.value}" >
+                     <span class="text-muted" th:text="${team}"></span>
+                  </div>
+               </div>
+            </div>
+         </section>
+      </div>
+   </body>
+</html>

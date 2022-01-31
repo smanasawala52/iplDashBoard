@@ -1,6 +1,10 @@
 package com.example.ipldashboard.controller;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +21,60 @@ public class TeamController {
 
 	@Autowired
 	private TeamService teamService;
+	private List<String> ignoreList = Arrays.asList("cp", "pageSize");
 
 	@GetMapping("/teams")
-	public ModelAndView getTeams() {
-		ModelAndView modelAndView = new ModelAndView("teams");
-		modelAndView.addObject("teams", teamService.getTeams());
+	public ModelAndView getTeams(
+			@RequestParam final Map<String, String> queryParams) {
+		String team1 = queryParams.get("team1");
+		if (team1 != null && !team1.isEmpty()) {
+			new ModelAndView("teamDetails");
+		}
+		ModelAndView modelAndView = new ModelAndView("teamDetails");
+		Map<String, Object> queryMap = new HashMap<>();
+		queryMap.put("team1", "");
+		queryMap.put("team1", "");
+		queryMap.put("venue", "");
+		queryMap.put("city", "");
+		queryMap.put("season", "");
+		queryMap.put("stage", "");
+		queryMap.put("group", "");
+		queryMap.put("playerOfMatch", "");
+		queryMap.put("winner", "");
+		queryMap.put("result", "");
+		queryMap.put("result", "");
+		queryMap.put("tossWinner", "");
+		queryMap.put("tossDecision", "");
+		modelAndView.addObject("pageSize", 10);
+
+		if (queryParams != null && !queryParams.isEmpty()) {
+			for (Entry<String, String> queryParam : queryParams.entrySet()) {
+				if (queryParam.getValue() != null
+						&& !queryParam.getValue().isEmpty()
+						&& !queryParam.getValue().equalsIgnoreCase("null")
+						&& !ignoreList.contains(queryParam.getKey())) {
+					// modelAndView.addObject(queryParam.getKey(),
+					// queryParam.getValue());
+					queryMap.put(queryParam.getKey(), queryParam.getValue());
+				}
+			}
+
+		}
+		String pre = "&";
+		StringBuilder sb = new StringBuilder();
+		StringBuilder sbVenue = new StringBuilder();
+		for (Entry<String, Object> queryParam : queryMap.entrySet()) {
+			if (queryParam.getValue() != null
+					&& !ignoreList.contains((queryParam.getKey()))) {
+				modelAndView.addObject(queryParam.getKey(),
+						queryParam.getValue());
+				sb.append(pre).append(queryParam.getKey()).append("=")
+						.append(String.valueOf(queryParam.getValue()));
+				pre = "&";
+			}
+		}
+		modelAndView.addObject("pageBaseUrl", "teams?1=1" + sb.toString());
+		modelAndView.addObject("teams", teamService.getTeams(queryParams));
 		return modelAndView;
 	}
 	@GetMapping("/teams/{teamName1}/{teamName2}")

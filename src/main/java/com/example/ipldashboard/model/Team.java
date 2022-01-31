@@ -9,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-import org.springframework.data.domain.Page;
-
 @Entity
 public class Team implements Comparable<Team> {
 	@Id
@@ -24,16 +22,32 @@ public class Team implements Comparable<Team> {
 	private long totalTies;
 	private long totalNoResult;
 	private long totalTossWins;
+	@Transient
+	private double totalTossWinsPercent;
 	private long totalTossWinBatFirst;
+	@Transient
+	private double totalTossWinBatFirstPercent;
 	private long totalTossWinFieldFirst;
+	@Transient
+	private double totalTossWinFieldFirstPercent;
 	private long totalBatFirst;
+	@Transient
+	private double totalBatFirstPercent;
 	private long totalFieldFirst;
+	@Transient
+	private double totalFieldFirstPercent;
 	private long totalWinsBatFirst;
+	@Transient
+	private double totalWinsBatFirstPercent;
 	private long totalWinsFieldFirst;
+	@Transient
+	private double totalWinsFieldFirstPercent;
 	private long totalWinsByWikets;
-
+	@Transient
+	private double totalWinsByWiketsPercent;
 	private long totalWinsByRuns;
-
+	@Transient
+	private double totalWinsByRunsPercent;
 	@Transient
 	private Page<Match> matches;
 
@@ -42,6 +56,16 @@ public class Team implements Comparable<Team> {
 
 	@Transient
 	private SortedSet<String> venues = new TreeSet<>();
+
+	@Transient
+	private SortedSet<String> seasons = new TreeSet<>();
+	@Transient
+	private SortedSet<String> eventGroups = new TreeSet<>();
+	@Transient
+	private SortedSet<String> eventStage = new TreeSet<>();
+
+	@Transient
+	private SortedSet<String> teamNames = new TreeSet<>();
 
 	public Team() {
 		// TODO Auto-generated constructor stub
@@ -90,6 +114,14 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalMatches(long totalMatches) {
 		this.totalMatches = totalMatches;
+		this.totalWinsPercent = populateWinsPercent(this.totalMatches,
+				this.totalWins);
+		this.totalBatFirstPercent = populateWinsPercent(this.totalMatches,
+				this.totalBatFirst);
+		this.totalFieldFirstPercent = populateWinsPercent(this.totalMatches,
+				this.totalFieldFirst);
+		this.totalTossWinsPercent = populateWinsPercent(this.totalMatches,
+				this.totalTossWins);
 	}
 
 	/**
@@ -105,6 +137,16 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalWins(long totalWins) {
 		this.totalWins = totalWins;
+		this.totalWinsPercent = populateWinsPercent(this.totalMatches,
+				this.totalWins);
+		this.totalWinsBatFirstPercent = populateWinsPercent(this.totalWins,
+				this.totalWinsBatFirst);
+		this.totalWinsByRunsPercent = populateWinsPercent(this.totalWins,
+				this.totalWinsByRuns);
+		this.totalWinsByWiketsPercent = populateWinsPercent(this.totalWins,
+				this.totalWinsByWikets);
+		this.totalWinsFieldFirstPercent = populateWinsPercent(this.totalWins,
+				this.totalWinsFieldFirst);
 	}
 
 	/**
@@ -150,6 +192,12 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalTossWins(long totalTossWins) {
 		this.totalTossWins = totalTossWins;
+		this.totalTossWinsPercent = populateWinsPercent(this.totalMatches,
+				this.totalTossWins);
+		this.totalTossWinBatFirstPercent = populateWinsPercent(
+				this.totalTossWins, this.totalTossWinBatFirst);
+		this.totalTossWinFieldFirstPercent = populateWinsPercent(
+				this.totalTossWins, this.totalTossWinFieldFirst);
 	}
 
 	/**
@@ -165,6 +213,8 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalTossWinBatFirst(long totalTossWinBatFirst) {
 		this.totalTossWinBatFirst = totalTossWinBatFirst;
+		this.totalTossWinBatFirstPercent = populateWinsPercent(
+				this.totalTossWins, this.totalTossWinBatFirst);
 	}
 
 	/**
@@ -180,6 +230,8 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalTossWinFieldFirst(long totalTossWinFieldFirst) {
 		this.totalTossWinFieldFirst = totalTossWinFieldFirst;
+		this.totalTossWinFieldFirstPercent = populateWinsPercent(
+				this.totalTossWins, this.totalTossWinFieldFirst);
 	}
 
 	/**
@@ -195,6 +247,8 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalBatFirst(long totalBatFirst) {
 		this.totalBatFirst = totalBatFirst;
+		this.totalBatFirstPercent = populateWinsPercent(this.totalMatches,
+				this.totalBatFirst);
 	}
 
 	/**
@@ -210,6 +264,8 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalFieldFirst(long totalFieldFirst) {
 		this.totalFieldFirst = totalFieldFirst;
+		this.totalFieldFirstPercent = populateWinsPercent(this.totalMatches,
+				this.totalFieldFirst);
 	}
 
 	/**
@@ -225,6 +281,8 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalWinsBatFirst(long totalWinsBatFirst) {
 		this.totalWinsBatFirst = totalWinsBatFirst;
+		this.totalWinsBatFirstPercent = populateWinsPercent(this.totalWins,
+				this.totalWinsBatFirst);
 	}
 
 	/**
@@ -240,6 +298,8 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalWinsFieldFirst(long totalWinsFieldFirst) {
 		this.totalWinsFieldFirst = totalWinsFieldFirst;
+		this.totalWinsFieldFirstPercent = populateWinsPercent(this.totalWins,
+				this.totalWinsFieldFirst);
 	}
 
 	/**
@@ -255,6 +315,8 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalWinsByWikets(long totalWinsByWikets) {
 		this.totalWinsByWikets = totalWinsByWikets;
+		this.totalWinsByWiketsPercent = populateWinsPercent(this.totalWins,
+				this.totalWinsByWikets);
 	}
 
 	/**
@@ -270,6 +332,8 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setTotalWinsByRuns(long totalWinsByRuns) {
 		this.totalWinsByRuns = totalWinsByRuns;
+		this.totalWinsByRunsPercent = populateWinsPercent(this.totalWins,
+				this.totalWinsByRuns);
 	}
 
 	/**
@@ -285,22 +349,6 @@ public class Team implements Comparable<Team> {
 	 */
 	public void setMatches(Page<Match> matches) {
 		this.matches = matches;
-	}
-
-	@Override
-	public String toString() {
-		return "Team [id=" + id + ", name=" + name + ", totalMatches="
-				+ totalMatches + ", totalWins=" + totalWins + ", totalTies="
-				+ totalTies + ", totalNoResult=" + totalNoResult
-				+ ", totalTossWins=" + totalTossWins + ", totalTossWinBatFirst="
-				+ totalTossWinBatFirst + ", totalTossWinFieldFirst="
-				+ totalTossWinFieldFirst + ", totalBatFirst=" + totalBatFirst
-				+ ", totalFieldFirst=" + totalFieldFirst
-				+ ", totalWinsBatFirst=" + totalWinsBatFirst
-				+ ", totalWinsFieldFirst=" + totalWinsFieldFirst
-				+ ", totalWinsByWikets=" + totalWinsByWikets
-				+ ", totalWinsByRuns=" + totalWinsByRuns + ", matches="
-				+ matches + ", teams=" + teams + ", venues=" + venues + "]";
 	}
 
 	/**
@@ -355,4 +403,240 @@ public class Team implements Comparable<Team> {
 	public void setTotalWinsPercent(double totalWinsPercent) {
 		this.totalWinsPercent = totalWinsPercent;
 	}
+
+	/**
+	 * @return the seasons
+	 */
+	public SortedSet<String> getSeasons() {
+		return seasons;
+	}
+
+	/**
+	 * @param seasons
+	 *            the seasons to set
+	 */
+	public void setSeasons(SortedSet<String> seasons) {
+		this.seasons = seasons;
+	}
+
+	/**
+	 * @return the eventGroups
+	 */
+	public SortedSet<String> getEventGroups() {
+		return eventGroups;
+	}
+
+	/**
+	 * @param eventGroups
+	 *            the eventGroups to set
+	 */
+	public void setEventGroups(SortedSet<String> eventGroups) {
+		this.eventGroups = eventGroups;
+	}
+
+	/**
+	 * @return the eventStage
+	 */
+	public SortedSet<String> getEventStage() {
+		return eventStage;
+	}
+
+	/**
+	 * @param eventStage
+	 *            the eventStage to set
+	 */
+	public void setEventStage(SortedSet<String> eventStage) {
+		this.eventStage = eventStage;
+	}
+
+	/**
+	 * @return the totalTossWinsPercent
+	 */
+	public double getTotalTossWinsPercent() {
+		return totalTossWinsPercent;
+	}
+
+	/**
+	 * @param totalTossWinsPercent
+	 *            the totalTossWinsPercent to set
+	 */
+	public void setTotalTossWinsPercent(double totalTossWinsPercent) {
+		this.totalTossWinsPercent = totalTossWinsPercent;
+	}
+
+	/**
+	 * @return the totalTossWinBatFirstPercent
+	 */
+	public double getTotalTossWinBatFirstPercent() {
+		return totalTossWinBatFirstPercent;
+	}
+
+	/**
+	 * @param totalTossWinBatFirstPercent
+	 *            the totalTossWinBatFirstPercent to set
+	 */
+	public void setTotalTossWinBatFirstPercent(
+			double totalTossWinBatFirstPercent) {
+		this.totalTossWinBatFirstPercent = totalTossWinBatFirstPercent;
+	}
+
+	/**
+	 * @return the totalTossWinFieldFirstPercent
+	 */
+	public double getTotalTossWinFieldFirstPercent() {
+		return totalTossWinFieldFirstPercent;
+	}
+
+	/**
+	 * @param totalTossWinFieldFirstPercent
+	 *            the totalTossWinFieldFirstPercent to set
+	 */
+	public void setTotalTossWinFieldFirstPercent(
+			double totalTossWinFieldFirstPercent) {
+		this.totalTossWinFieldFirstPercent = totalTossWinFieldFirstPercent;
+	}
+
+	/**
+	 * @return the totalBatFirstPercent
+	 */
+	public double getTotalBatFirstPercent() {
+		return totalBatFirstPercent;
+	}
+
+	/**
+	 * @param totalBatFirstPercent
+	 *            the totalBatFirstPercent to set
+	 */
+	public void setTotalBatFirstPercent(double totalBatFirstPercent) {
+		this.totalBatFirstPercent = totalBatFirstPercent;
+	}
+
+	/**
+	 * @return the totalFieldFirstPercent
+	 */
+	public double getTotalFieldFirstPercent() {
+		return totalFieldFirstPercent;
+	}
+
+	/**
+	 * @param totalFieldFirstPercent
+	 *            the totalFieldFirstPercent to set
+	 */
+	public void setTotalFieldFirstPercent(double totalFieldFirstPercent) {
+		this.totalFieldFirstPercent = totalFieldFirstPercent;
+	}
+
+	/**
+	 * @return the totalWinsBatFirstPercent
+	 */
+	public double getTotalWinsBatFirstPercent() {
+		return totalWinsBatFirstPercent;
+	}
+
+	/**
+	 * @param totalWinsBatFirstPercent
+	 *            the totalWinsBatFirstPercent to set
+	 */
+	public void setTotalWinsBatFirstPercent(double totalWinsBatFirstPercent) {
+		this.totalWinsBatFirstPercent = totalWinsBatFirstPercent;
+	}
+
+	/**
+	 * @return the totalWinsFieldFirstPercent
+	 */
+	public double getTotalWinsFieldFirstPercent() {
+		return totalWinsFieldFirstPercent;
+	}
+
+	/**
+	 * @param totalWinsFieldFirstPercent
+	 *            the totalWinsFieldFirstPercent to set
+	 */
+	public void setTotalWinsFieldFirstPercent(
+			double totalWinsFieldFirstPercent) {
+		this.totalWinsFieldFirstPercent = totalWinsFieldFirstPercent;
+	}
+
+	/**
+	 * @return the totalWinsByWiketsPercent
+	 */
+	public double getTotalWinsByWiketsPercent() {
+		return totalWinsByWiketsPercent;
+	}
+
+	/**
+	 * @param totalWinsByWiketsPercent
+	 *            the totalWinsByWiketsPercent to set
+	 */
+	public void setTotalWinsByWiketsPercent(double totalWinsByWiketsPercent) {
+		this.totalWinsByWiketsPercent = totalWinsByWiketsPercent;
+	}
+
+	/**
+	 * @return the totalWinsByRunsPercent
+	 */
+	public double getTotalWinsByRunsPercent() {
+		return totalWinsByRunsPercent;
+	}
+
+	/**
+	 * @param totalWinsByRunsPercent
+	 *            the totalWinsByRunsPercent to set
+	 */
+	public void setTotalWinsByRunsPercent(double totalWinsByRunsPercent) {
+		this.totalWinsByRunsPercent = totalWinsByRunsPercent;
+	}
+
+	/**
+	 * @return the teamNames
+	 */
+	public SortedSet<String> getTeamNames() {
+		return teamNames;
+	}
+
+	/**
+	 * @param teamNames
+	 *            the teamNames to set
+	 */
+	public void setTeamNames(SortedSet<String> teamNames) {
+		this.teamNames = teamNames;
+	}
+
+	private double populateWinsPercent(long totalMatches, long totalWins) {
+		double totalWinsPercent = 0;
+		if (totalWins > 0 && totalMatches > 0) {
+			totalWinsPercent = (totalWins * 10000) / totalMatches;
+		}
+		return (((double) ((int) totalWinsPercent)) / 100);
+	}
+
+	@Override
+	public String toString() {
+		return "Team [id=" + id + ", name=" + name + ", totalMatches="
+				+ totalMatches + ", totalWins=" + totalWins
+				+ ", totalWinsPercent=" + totalWinsPercent + ", totalTies="
+				+ totalTies + ", totalNoResult=" + totalNoResult
+				+ ", totalTossWins=" + totalTossWins + ", totalTossWinsPercent="
+				+ totalTossWinsPercent + ", totalTossWinBatFirst="
+				+ totalTossWinBatFirst + ", totalTossWinBatFirstPercent="
+				+ totalTossWinBatFirstPercent + ", totalTossWinFieldFirst="
+				+ totalTossWinFieldFirst + ", totalTossWinFieldFirstPercent="
+				+ totalTossWinFieldFirstPercent + ", totalBatFirst="
+				+ totalBatFirst + ", totalBatFirstPercent="
+				+ totalBatFirstPercent + ", totalFieldFirst=" + totalFieldFirst
+				+ ", totalFieldFirstPercent=" + totalFieldFirstPercent
+				+ ", totalWinsBatFirst=" + totalWinsBatFirst
+				+ ", totalWinsBatFirstPercent=" + totalWinsBatFirstPercent
+				+ ", totalWinsFieldFirst=" + totalWinsFieldFirst
+				+ ", totalWinsFieldFirstPercent=" + totalWinsFieldFirstPercent
+				+ ", totalWinsByWikets=" + totalWinsByWikets
+				+ ", totalWinsByWiketsPercent=" + totalWinsByWiketsPercent
+				+ ", totalWinsByRuns=" + totalWinsByRuns
+				+ ", totalWinsByRunsPercent=" + totalWinsByRunsPercent
+				+ ", matches=" + matches + ", teams=" + teams + ", venues="
+				+ venues + ", seasons=" + seasons + ", eventGroups="
+				+ eventGroups + ", eventStage=" + eventStage + ", teamNames="
+				+ teamNames + "]";
+	}
+
 }

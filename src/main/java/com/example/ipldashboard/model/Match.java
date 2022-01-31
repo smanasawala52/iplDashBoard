@@ -8,22 +8,35 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "matches")
-public class Match {
+public class Match implements Comparable<Match> {
 	@Id
 	private long id;
 	private String city;
 	private LocalDate date;
-	private String playerOfMatch;
+	private String playerOfMatch = "";
 	private String venue;
 	private String team1;
 	private String team2;
-	private String winner;
-	private String result;
-	private String resultMargin;
+	private String winner = "";
+	private String result = "";
+	private int resultMargin;
 	private String umpire1;
 	private String umpire2;
-	private String tossWinner;
-	private String tossDecision;
+	private String tossWinner = "";
+	private String tossDecision = "";
+
+	private String eventStage;
+	private String eventMatchNumber;
+	private String eventGroup;
+	private String season;
+
+	@Override
+	public int compareTo(Match o) {
+		if (this != null && o != null && this.date != null && o.date != null) {
+			return o.date.compareTo(this.date);
+		}
+		return 0;
+	}
 
 	public Match() {
 		// TODO Auto-generated constructor stub
@@ -148,14 +161,14 @@ public class Match {
 	/**
 	 * @return the resultMargin
 	 */
-	public String getResultMargin() {
+	public int getResultMargin() {
 		return resultMargin;
 	}
 	/**
 	 * @param resultMargin
 	 *            the resultMargin to set
 	 */
-	public void setResultMargin(String resultMargin) {
+	public void setResultMargin(int resultMargin) {
 		this.resultMargin = resultMargin;
 	}
 	/**
@@ -210,6 +223,60 @@ public class Match {
 	public void setTossDecision(String tossDecision) {
 		this.tossDecision = tossDecision;
 	}
+	/**
+	 * @return the eventStage
+	 */
+	public String getEventStage() {
+		return eventStage;
+	}
+	/**
+	 * @param eventStage
+	 *            the eventStage to set
+	 */
+	public void setEventStage(String eventStage) {
+		this.eventStage = eventStage;
+	}
+	/**
+	 * @return the eventMatchNumber
+	 */
+	public String getEventMatchNumber() {
+		return eventMatchNumber;
+	}
+	/**
+	 * @param eventMatchNumber
+	 *            the eventMatchNumber to set
+	 */
+	public void setEventMatchNumber(String eventMatchNumber) {
+		this.eventMatchNumber = eventMatchNumber;
+	}
+	/**
+	 * @return the eventGroup
+	 */
+	public String getEventGroup() {
+		return eventGroup;
+	}
+	/**
+	 * @param eventGroup
+	 *            the eventGroup to set
+	 */
+	public void setEventGroup(String eventGroup) {
+		this.eventGroup = eventGroup;
+	}
+	/**
+	 * @return the season
+	 */
+	public String getSeason() {
+		return season;
+	}
+
+	/**
+	 * @param season
+	 *            the season to set
+	 */
+	public void setSeason(String season) {
+		this.season = season;
+	}
+
 	@Override
 	public String toString() {
 		return "Match [id=" + id + ", city=" + city + ", date=" + date
@@ -218,7 +285,9 @@ public class Match {
 				+ ", result=" + result + ", resultMargin=" + resultMargin
 				+ ", umpire1=" + umpire1 + ", umpire2=" + umpire2
 				+ ", tossWinner=" + tossWinner + ", tossDecision="
-				+ tossDecision + "]";
+				+ tossDecision + ", eventStage=" + eventStage
+				+ ", eventMatchNumber=" + eventMatchNumber + ", eventGroup="
+				+ eventGroup + ", season=" + season + "]";
 	}
 
 }

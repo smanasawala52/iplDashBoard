@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 import org.springframework.data.domain.Page;
 
 @Entity
-public class Venue {
+public class Venue implements Comparable<Venue> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
@@ -271,5 +271,13 @@ public class Venue {
 	 */
 	public void setTeams(SortedSet<String> teams) {
 		this.teams = teams;
+	}
+
+	@Override
+	public int compareTo(Venue o) {
+		if (this != null && o != null && this.name != null && o.name != null) {
+			return this.name.compareToIgnoreCase(o.name);
+		}
+		return 0;
 	}
 }

@@ -21,18 +21,19 @@
             </div>
          </nav>
          <section class="content">
-            <h1>MatchDetails</h1>
+            <h1>Match Details</h1>
             <div class="card-group">
                <div class="card-group">
                   <div class="card" style="flex: 0 0 100%; margin: 30px;">
                      <div class="card-body">
                         <h5 class="card-title" th:text="${match.team1}">Name</h5> VS <h5 class="card-title" th:text="${match.team2}">Name</h5>
-	                    <p class="card-text">Date: <small class="text-muted" th:text="${match.date}"></small></p>
-	               		<p class="card-text">Venue: <small class="text-muted" th:text="${match.venue}"></small>, <small class="text-muted" th:text="${match.city}"></small></p>
-	               		<p class="card-text" th:if="${match.result != 'NA'}"><small class="text-muted" th:text="${match.winner}"></small> won match by  <small class="text-muted" th:text="${match.resultMargin}"></small> <small class="text-muted" th:text="${match.result}"></small>.</p>
-	               		<p class="card-text" th:if="${match.result != 'NA'}">Player of the Match: <small class="text-muted" th:text="${match.playerOfMatch}"></small></p>
-	               		<p class="card-text"><small class="text-muted" th:text="${match.tossWinner}"></small> won the toss and elected to <small class="text-muted" th:text="${match.tossDecision}"></small>. </p>
-	               		<p class="card-text">Umpires of the Match: <small class="text-muted" th:text="${match.umpire1}"></small> & <small class="text-muted" th:text="${match.umpire2}"></small></p>
+	                    <p class="card-text">Date: <span class="text-muted" th:text="${match.date}"></span></p>
+	               		<p class="card-text">Venue: <span class="text-muted" th:text="${match.venue}"></span>, <span class="text-muted" th:text="${match.city}"></span></p>
+	               		<p class="card-text">Season: <span class="text-muted" th:text="${match.season}"></span> <span th:if="${match.eventMatchNumber}"> Match Number: <span class="text-muted" th:text="${match.eventMatchNumber}"></span></span> <span th:if="${match.eventStage}"> Stage: <span class="text-muted" th:text="${match.eventStage}"></span></span> <span th:if="${match.eventGroup}"> Group: <span class="text-muted" th:text="${match.eventGroup}"></span></span></p>
+	               		<p class="card-text" th:if="${match.result != 'NA'}"><span class="text-muted" th:text="${match.winner}"></span> won match by  <span class="text-muted" th:text="${match.resultMargin}"></span> <span class="text-muted" th:text="${match.result}"></span>.</p>
+	               		<p class="card-text" th:if="${match.result != 'NA'}">Player of the Match: <span class="text-muted" th:text="${match.playerOfMatch}"></span></p>
+	               		<p class="card-text"><span class="text-muted" th:text="${match.tossWinner}"></span> won the toss and elected to <span class="text-muted" th:text="${match.tossDecision}"></span>. </p>
+	               		<p class="card-text"><span class="text-muted" th:text="${match.umpire1}"></span> & <span class="text-muted" th:text="${match.umpire2}"></span></p>
                      </div>
                   </div>
                </div>

@@ -1,7 +1,10 @@
 package com.example.ipldashboard.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,7 +27,8 @@ public class HomePageController {
 	private int PAGE_SIZE = 5;
 
 	@GetMapping("/")
-	public ModelAndView getHome() {
+	public ModelAndView getHome(
+			@RequestParam final Map<String, String> queryParams) {
 		ModelAndView modelAndView = new ModelAndView("home");
 		modelAndView.addObject("teams", teamService.getTeams());
 		modelAndView.addObject("venues", venueService.getVenues());
