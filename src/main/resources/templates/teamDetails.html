@@ -57,11 +57,11 @@
                   </div>
                </div>
 			   <div  th:each="team: ${teams}">
-                  <h1  th:if="${team.teamNames}" id="otherTeams">Other Teams</h1>
-                  <div class="card-group" th:if="${team.teamNames}">
+                  <div  th:if="${!#lists.isEmpty(team.teamNames)}" id="otherTeams"><h1>Other Teams</h1></div>
+                  <div class="card-group" th:if="${!#lists.isEmpty(team.teamNames)}">
                     <div class="card" style="flex: 0 0 45%; margin: 10px;" th:each="teamName: ${team.teamNames}">
                            <div class="card-body">
-                              <h6 class="card-title"> <span th:text="${teamName}"</span></h6>
+                              <h6 class="card-title"> <span th:text="${teamName}"></span></h6>
 							  <a href="#" th:href="@{'/teams?team1='+${teamName}}"> View Details </a>&nbsp;&nbsp;
 							 </div>
 					</div>
@@ -108,8 +108,9 @@
                         <div class="card" style="flex: 0 0 27%; margin: 10px;" th:each="venue: ${team.venues}">
                            <div class="card-body">
                               <h6 class="card-title"> <span th:text="${venue}">Name</span></h6>
-                              <a th:if="${teamName1}" href="#" th:href="@{'/teams/' + ${teamName1} + '?venue=' + ${venue}}" >View All <span th:text="${teamName1}"></span> at <span th:text="${venue}"></span> matches details</a><br>
-                              <a th:if="${teamName2}" href="#" th:href="@{'/teams/' + ${teamName1} + '/' + ${teamName2} + '?venue=' + ${venue}}" >View All <span th:text="${teamName1}"></span> vs <span th:text="${teamName2}"></span> at <span th:text="${venue}"></span> matches details</a>
+                              <a th:if="${#strings.isEmpty(team1) && #strings.isEmpty(team1)}" href="#" th:href="@{'/teams?venue=' + ${venue}}" >View All teams at <span th:text="${venue}"></span> matches details</a><br>
+                              <a th:if="${!#strings.isEmpty(team1)}" href="#" th:href="@{'/teams?team1=' + ${team1} + '&venue=' + ${venue}}" >View All <span th:text="${team1}"></span> at <span th:text="${venue}"></span> matches details</a><br>
+                              <a th:if="${!#strings.isEmpty(team2)}" href="#" th:href="@{'/teams?team1=' + ${team1} + '&team2=' + ${team2} + '&venue=' + ${venue}}" >View All <span th:text="${team1}"></span> vs <span th:text="${team2}"></span> at <span th:text="${venue}"></span> matches details</a>
                            </div>
                         </div>
                      </div>
@@ -133,6 +134,16 @@
                                  <br> <a href="#" target="_blank" th:href="@{'/matches/' + ${matchTemp.id}}" >View match details</a>
                               </div>
                               </p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <h1 th:if="${team.seasons.size>0}">Seasons</h1>
+                  <div class="card-group"  th:if="${team.seasons.size>0}">
+                     <div class="card-group">
+                        <div class="card" style="flex: 0 0 27%; margin: 10px;" th:each="venue: ${team.seasons}">
+                           <div class="card-body">
+                              <h6 class="card-title"> <span th:text="${venue}">Name</span></h6>
                            </div>
                         </div>
                      </div>

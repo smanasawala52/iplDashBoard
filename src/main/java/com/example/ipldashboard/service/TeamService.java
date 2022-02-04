@@ -669,9 +669,18 @@ public class TeamService {
 					t1.setMatches(page);
 				}
 			}
+			if (venue != null && !venue.isEmpty()) {
+				venues.remove(venue);
+			}
 			t1.setVenues(new TreeSet<>(venues.keySet()));
+			if (season != null && !season.isEmpty()) {
+				seasons.remove(season);
+			}
 			t1.setSeasons(seasons);
 			t1.setEventStage(eventStages);
+			if (team2 != null && !team2.isEmpty()) {
+				otherTeams.remove(team2);
+			}
 			if (!otherTeams.isEmpty() && !teams2Matches.isEmpty()) {
 				for (Entry<String, Team> otherTeam : otherTeams.entrySet()) {
 					List<Match> otherTeamMatches = teams2Matches
