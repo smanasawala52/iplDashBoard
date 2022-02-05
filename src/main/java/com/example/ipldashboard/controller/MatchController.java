@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.ipldashboard.model.Match;
+import com.example.ipldashboard.model.MatchInputJson;
+import com.example.ipldashboard.model.MatchInputJsonOutcome;
+import com.example.ipldashboard.service.DataService;
 import com.example.ipldashboard.service.MatchService;
 
 @RestController
@@ -19,10 +22,13 @@ public class MatchController {
 
 	private int PAGE_SIZE = 10;
 
+	@Autowired
+	private DataService dataService;
+
 	@GetMapping("/matches")
-	public ModelAndView getMatches(
-			@RequestParam(defaultValue = "0", name = "cp", required = false) int cp) {
+	public ModelAndView getMatches(@RequestParam(defaultValue = "0", name = "cp", required = false) int cp) {
 		ModelAndView modelAndView = new ModelAndView("matches");
+		modelAndView.addObject("slug", dataService.getSlug());
 		if (cp <= 0) {
 			cp = 0;
 		}
@@ -37,7 +43,30 @@ public class MatchController {
 	@GetMapping("/matches/{id}")
 	public ModelAndView getMatchDetails(@PathVariable("id") String id) {
 		ModelAndView modelAndView = new ModelAndView("matchDetailsJson");
-		modelAndView.addObject("match", matchService.getMatchDetails(id));
+		modelAndView.addObject("slug", dataService.getSlug());
+		MatchInputJson matchDetails = matchService.getMatchDetails(id);
+		modelAndView.addObject("match", matchDetails);
+		modelAndView.addObject("result", getOutcome(matchDetails));
 		return modelAndView;
+	}
+
+	public String getOutcome(MatchInputJson matchInputJson) {
+		MatchInputJsonOutcome outcome = matchInputJson.getInfo().getOutcome();
+		StringBuilder sb = new StringBuilder();
+		if (outcome.getWinner() != null) {
+			sb.append(outcome.getWinner()).append(" won by ");
+			if (outcome.getBy() != null) {
+				if (outcome.getBy().getWickets() > 0) {
+					sb.append(outcome.getBy().getWickets()).append(" wickets.");
+				} else if (outcome.getBy().getRuns() > 0) {
+					sb.append(outcome.getBy().getRuns()).append(" runs.");
+				} else if (outcome.getBy().getInnings() > 0) {
+					sb.append(outcome.getBy().getInnings()).append(" innings.");
+				}
+			}
+		} else {
+			sb.append("Match returned no Result.");
+		}
+		return sb.toString();
 	}
 }

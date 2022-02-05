@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.ipldashboard.service.DataService;
 import com.example.ipldashboard.service.TeamService;
 
 @RestController
@@ -21,15 +22,17 @@ public class TeamController {
 	@Autowired
 	private TeamService teamService;
 	private List<String> ignoreList = Arrays.asList("cp", "pageSize");
+	@Autowired
+	private DataService dataService;
 
 	@GetMapping("/teams")
-	public ModelAndView getTeams(
-			@RequestParam final Map<String, String> queryParams) {
+	public ModelAndView getTeams(@RequestParam final Map<String, String> queryParams) {
 		String team1 = queryParams.get("team1");
 		if (team1 != null && !team1.isEmpty()) {
 			new ModelAndView("teamDetails");
 		}
 		ModelAndView modelAndView = new ModelAndView("teamDetails");
+		modelAndView.addObject("slug", dataService.getSlug());
 		Map<String, Object> queryMap = new HashMap<>();
 		queryMap.put("team1", "");
 		queryMap.put("team2", "");
@@ -48,8 +51,7 @@ public class TeamController {
 
 		if (queryParams != null && !queryParams.isEmpty()) {
 			for (Entry<String, String> queryParam : queryParams.entrySet()) {
-				if (queryParam.getValue() != null
-						&& !queryParam.getValue().isEmpty()
+				if (queryParam.getValue() != null && !queryParam.getValue().isEmpty()
 						&& !queryParam.getValue().equalsIgnoreCase("null")
 						&& !ignoreList.contains(queryParam.getKey())) {
 					// modelAndView.addObject(queryParam.getKey(),
@@ -63,12 +65,9 @@ public class TeamController {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sbVenue = new StringBuilder();
 		for (Entry<String, Object> queryParam : queryMap.entrySet()) {
-			if (queryParam.getValue() != null
-					&& !ignoreList.contains((queryParam.getKey()))) {
-				modelAndView.addObject(queryParam.getKey(),
-						queryParam.getValue());
-				sb.append(pre).append(queryParam.getKey()).append("=")
-						.append(String.valueOf(queryParam.getValue()));
+			if (queryParam.getValue() != null && !ignoreList.contains((queryParam.getKey()))) {
+				modelAndView.addObject(queryParam.getKey(), queryParam.getValue());
+				sb.append(pre).append(queryParam.getKey()).append("=").append(String.valueOf(queryParam.getValue()));
 				pre = "&";
 			}
 		}
@@ -76,9 +75,9 @@ public class TeamController {
 		modelAndView.addObject("teams", teamService.getTeams(queryParams));
 		return modelAndView;
 	}
+
 	@GetMapping("/teams/{teamName1}/{teamName2}")
-	public ModelAndView getTeamByName1AndName2(
-			@PathVariable("teamName1") String teamName1,
+	public ModelAndView getTeamByName1AndName2(@PathVariable("teamName1") String teamName1,
 			@PathVariable("teamName2") String teamName2,
 			@RequestParam(defaultValue = "0", name = "cp", required = false) int cp,
 			@RequestParam(defaultValue = "", name = "venue", required = false) String venue) {
@@ -113,9 +112,9 @@ public class TeamController {
 		//
 		// return modelAndView;
 	}
+
 	@GetMapping("/teams/{teamName1}")
-	public ModelAndView getTeamByName1(
-			@PathVariable("teamName1") String teamName1,
+	public ModelAndView getTeamByName1(@PathVariable("teamName1") String teamName1,
 			@RequestParam(defaultValue = "0", name = "cp", required = false) int cp,
 			@RequestParam(defaultValue = "", name = "venue", required = false) String venue) {
 		Map<String, String> queryParams = new HashMap<>();

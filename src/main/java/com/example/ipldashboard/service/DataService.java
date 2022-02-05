@@ -34,6 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class DataService {
 	private String dirLocation = "ipl_json";
+	private String slug = "IPL";
 
 	@Autowired
 	private ObjectMapper objectMapper;
@@ -56,38 +57,47 @@ public class DataService {
 	@PostConstruct
 	public void loadMatchData() throws Exception {
 		System.out.println("Dataloading started");
+		matchRepository.deleteAll();
+		matchRepository.flush();
+		teamRepository.deleteAll();
+		teamRepository.flush();
+		venueRepository.deleteAll();
+		venueRepository.flush();
 
 		List<Match> matches = new ArrayList<>();
 		try {
-			List<File> files = Files.list(Paths.get(dirLocation))
-					.map(Path::toFile).collect(Collectors.toList());
+			List<File> files = Files.list(Paths.get(dirLocation)).map(Path::toFile).collect(Collectors.toList());
 			for (File file : files) {
 				try {
-					MatchInputJson value = objectMapper.readValue(
-							new File(file.getPath()), MatchInputJson.class);
+					MatchInputJson value = objectMapper.readValue(new File(file.getPath()), MatchInputJson.class);
 					// System.out.println(value);
-					Match match = new MatchBuilder()
-							.setId(Long.valueOf(
-									file.getName().replace(".json", "")))
+					if (dirLocation.equalsIgnoreCase("t20s_male_json")) {
+						if (value != null && value.getInfo() != null && value.getInfo().getEvent() != null
+								&& value.getInfo().getEvent().getName() != null
+								&& value.getInfo().getSeason() != null) {
+							if (!value.getInfo().getEvent().getName().equalsIgnoreCase("ICC Men's T20 World Cup")
+									|| !value.getInfo().getSeason().equalsIgnoreCase("2021/22")) {
+								continue;
+							}
+						} else {
+							continue;
+						}
+					}
+					if (dirLocation.equalsIgnoreCase("odis_male_json") && value != null && value.getInfo() != null
+							&& value.getInfo().getEvent() != null && value.getInfo().getEvent().getName() != null
+							&& !value.getInfo().getEvent().getName().equalsIgnoreCase("World Cup")) {
+						continue;
+					}
+					Match match = new MatchBuilder().setId(Long.valueOf(file.getName().replace(".json", "")))
 							.setCity(value.getInfo().getCity())
-							.setDate(Instant
-									.ofEpochMilli(value.getInfo().getDates()
-											.get(0).getTime())
-									.atZone(ZoneId.systemDefault())
-									.toLocalDate())
-							.setPlayerOfMatch(
-									value.getInfo().getPlayerOfMatch())
-							.setEvent(value.getInfo().getEvent())
-							.setOutcome(value.getInfo().getOutcome())
-							.setTeam1(value.getInfo().getTeams().get(0))
-							.setTeam2(value.getInfo().getTeams().get(1))
-							.setVenue(value.getInfo().getVenue())
-							.setTossDecision(
-									value.getInfo().getToss().getDecision())
-							.setTossWinner(
-									value.getInfo().getToss().getWinner())
-							.setOfficials(value.getInfo().getOfficials())
-							.setSeson(value.getInfo().getSeason()).build();
+							.setDate(Instant.ofEpochMilli(value.getInfo().getDates().get(0).getTime())
+									.atZone(ZoneId.systemDefault()).toLocalDate())
+							.setPlayerOfMatch(value.getInfo().getPlayerOfMatch()).setEvent(value.getInfo().getEvent())
+							.setOutcome(value.getInfo().getOutcome()).setTeam1(value.getInfo().getTeams().get(0))
+							.setTeam2(value.getInfo().getTeams().get(1)).setVenue(value.getInfo().getVenue())
+							.setTossDecision(value.getInfo().getToss().getDecision())
+							.setTossWinner(value.getInfo().getToss().getWinner())
+							.setOfficials(value.getInfo().getOfficials()).setSeson(value.getInfo().getSeason()).build();
 
 					matches.add(match);
 				} catch (Exception e) {
@@ -102,23 +112,15 @@ public class DataService {
 		matchRepository.saveAllAndFlush(matches);
 
 		System.out.println("JOB FINISHED");
-		jdbcTemplate
-				.query("SELECT * FROM matches", (rs, rn) -> new MatchBuilder()
-						.setId(rs.getLong("id")).setCity(rs.getString("city"))
-						.setUmpire1(rs.getString("umpire1"))
-						.setUmpire2(rs.getString("umpire2"))
-						.setDate(Instant
-								.ofEpochMilli(rs.getDate("date").getTime())
-								.atZone(ZoneId.systemDefault()).toLocalDate())
-						// LocalDate.ofInstant(input.toInstant(),
-						// ZoneId.systemDefault())
-						.setTeam1(rs.getString("team1"))
-						.setTeam2(rs.getString("team2"))
-						.setWinner(rs.getString("winner"))
-						.setResult(rs.getString("result"))
-						.setResultMargin(rs.getString("result_margin"))
-						.setPlayerOfMatch(rs.getString("player_of_match"))
-						.setVenue(rs.getString("venue")).build())
+		jdbcTemplate.query("SELECT * FROM matches", (rs, rn) -> new MatchBuilder().setId(rs.getLong("id"))
+				.setCity(rs.getString("city")).setUmpire1(rs.getString("umpire1")).setUmpire2(rs.getString("umpire2"))
+				.setDate(
+						Instant.ofEpochMilli(rs.getDate("date").getTime()).atZone(ZoneId.systemDefault()).toLocalDate())
+				// LocalDate.ofInstant(input.toInstant(),
+				// ZoneId.systemDefault())
+				.setTeam1(rs.getString("team1")).setTeam2(rs.getString("team2")).setWinner(rs.getString("winner"))
+				.setResult(rs.getString("result")).setResultMargin(rs.getString("result_margin"))
+				.setPlayerOfMatch(rs.getString("player_of_match")).setVenue(rs.getString("venue")).build())
 				.forEach(match -> System.out.println("" + match));
 
 		List<ITeamCount> objs = matchRepository.countTotalMatchesByTeam1();
@@ -130,31 +132,44 @@ public class DataService {
 
 		System.out.println("------------------------");
 
-		List<IVenueCount> objsVenues = matchRepository
-				.countTotalMatchesByVenue();
-		List<Venue> venues = objsVenues.stream().map(x -> new VenueBuilder()
-				.setName(x.getVenueName()).setCity(x.getCity())
-				.setTotalMatches(x.getTotalMatches())
-				.setTotalWins(x.getTotalWins()).setTotalTies(x.getTotalTies())
-				.setTotalNoResult(x.getTotalNoResult())
-				.setTotalTossWinBatFirst(x.getTotalTossWinBatFirst())
-				.setTotalTossWinFieldFirst(x.getTotalTossWinFieldFirst())
-				.setTotalWins(x.getTotalWins())
-				.setTotalWinsBatFirst(x.getTotalWinsBatFirst())
-				.setTotalWinsFieldFirst(x.getTotalWinsFieldFirst())
-				.setTotalWinsByRuns(x.getTotalWinsByRuns())
-				.setTotalWinsByWikets(x.getTotalWinsByWikets())
-				.setTeams(x.getTeams()).build()).collect(Collectors.toList());
+		List<IVenueCount> objsVenues = matchRepository.countTotalMatchesByVenue();
+		List<Venue> venues = objsVenues.stream()
+				.map(x -> new VenueBuilder().setName(x.getVenueName()).setCity(x.getCity())
+						.setTotalMatches(x.getTotalMatches()).setTotalWins(x.getTotalWins())
+						.setTotalTies(x.getTotalTies()).setTotalNoResult(x.getTotalNoResult())
+						.setTotalTossWinBatFirst(x.getTotalTossWinBatFirst())
+						.setTotalTossWinFieldFirst(x.getTotalTossWinFieldFirst()).setTotalWins(x.getTotalWins())
+						.setTotalWinsBatFirst(x.getTotalWinsBatFirst())
+						.setTotalWinsFieldFirst(x.getTotalWinsFieldFirst()).setTotalWinsByRuns(x.getTotalWinsByRuns())
+						.setTotalWinsByWikets(x.getTotalWinsByWikets()).setTeams(x.getTeams()).build())
+				.collect(Collectors.toList());
 		System.out.println(venues);
 
 		venueRepository.saveAll(venues);
 
 	}
 
+	public void setDirLocation(String dirLocation) {
+		if (dirLocation != null && !dirLocation.isEmpty()) {
+			this.dirLocation = dirLocation;
+			switch (dirLocation) {
+			case "ipl_json":
+				slug = "IPL Dashboard";
+				break;
+			case "t20s_male_json":
+				slug = "ICC Men's T20 World Cup Dashboard";
+				break;
+			case "odis_male_json":
+				slug = "ODIs Male";
+				break;
+			}
+		}
+
+	}
+
 	public MatchInputJson getMatch(Long key) {
 		try {
-			MatchInputJson value = objectMapper.readValue(
-					new File(dirLocation + "/" + key + ".json"),
+			MatchInputJson value = objectMapper.readValue(new File(dirLocation + "/" + key + ".json"),
 					MatchInputJson.class);
 			return value;
 		} catch (Exception e) {
@@ -162,4 +177,9 @@ public class DataService {
 		}
 		return null;
 	}
+
+	public String getSlug() {
+		return slug;
+	}
+
 }

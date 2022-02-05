@@ -3,7 +3,7 @@
    <head>
       <meta charset="utf-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <title>IPL Dashboard</title>
+      <title>Dashboard</title>
       <meta name="description" content="" />
       <meta name="viewport" content="width=device-width" />
       <base href="/" />
@@ -17,7 +17,7 @@
       <div class="container">
          <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding-bottom: 20px">
             <div class="container-fluid">
-               <a class="navbar-brand" href="/">IPL Dashboard</a>
+               <a class="navbar-brand" href="/"><span th:text="${slug}"><span> Dashboard</a>
             </div>
          </nav>
          <section class="content">
@@ -39,7 +39,7 @@
                         <h6 class="card-title" th:text="${match.team1}">Name</h6> VS <h6 class="card-title" th:text="${match.team2}">Name</h6>
                         <p class="card-text">Season: <span class="text-muted" th:text="${match.season}"></span> <span th:if="${match.eventMatchNumber}"> Match Number: <span class="text-muted" th:text="${match.eventMatchNumber}"></span></span> <span th:if="${match.eventStage}"> Stage: <span class="text-muted" th:text="${match.eventStage}"></span></span> <span th:if="${match.eventGroup}"> Group: <span class="text-muted" th:text="${match.eventGroup}"></span></span></p>
                         <p class="card-text">Date: <span class="text-muted" th:text="${match.date}"></span>, Venue: <span class="text-muted" th:text="${match.venue}"></span>, <span class="text-muted" th:text="${match.city}"></span></p>
-                        <p class="card-text"  th:if="${match.result != 'NA'}"><span class="text-muted" th:text="${match.winner}"></span> won match by  <span class="text-muted" th:text="${match.resultMargin}"></span> <span class="text-muted" th:text="${match.result}"></span>.</p>
+                        <p class="card-text"  th:if="${!#strings.isEmpty(match.result) && match.result != 'NA'}"><span class="text-muted" th:text="${match.winner}"></span> won match by  <span class="text-muted" th:text="${match.resultMargin}"></span> <span class="text-muted" th:text="${match.result}"></span>.</p>
                         <a href="#" target="_blank" th:href="@{'/matches/' + ${match.id}}" >View match details</a>
                      </div>
                   </div>
