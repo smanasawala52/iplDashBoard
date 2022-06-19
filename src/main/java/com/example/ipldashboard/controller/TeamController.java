@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.ipldashboard.model.Team;
 import com.example.ipldashboard.service.DataService;
 import com.example.ipldashboard.service.TeamService;
 
@@ -144,6 +145,53 @@ public class TeamController {
 		// "/teams/" + teamName1 + "?venue=" + venue);
 		//
 		// return modelAndView;
+	}
+
+	@GetMapping("/")
+	public ModelAndView getHome(@RequestParam final Map<String, String> queryParams) {
+		ModelAndView modelAndView = new ModelAndView("home");
+		modelAndView.addObject("slug", dataService.getSlug());
+		Map<String, Object> queryMap = new HashMap<>();
+		queryMap.put("team1", "");
+		queryMap.put("team2", "");
+		queryMap.put("venue", "");
+		queryMap.put("city", "");
+		queryMap.put("season", "");
+		queryMap.put("stage", "");
+		queryMap.put("group", "");
+		queryMap.put("playerOfMatch", "");
+		queryMap.put("winner", "");
+		queryMap.put("result", "");
+		queryMap.put("result", "");
+		queryMap.put("tossWinner", "");
+		queryMap.put("tossDecision", "");
+		modelAndView.addObject("pageSize", 10);
+
+		if (queryParams != null && !queryParams.isEmpty()) {
+			for (Entry<String, String> queryParam : queryParams.entrySet()) {
+				if (queryParam.getValue() != null && !queryParam.getValue().isEmpty()
+						&& !queryParam.getValue().equalsIgnoreCase("null")
+						&& !ignoreList.contains(queryParam.getKey())) {
+					// modelAndView.addObject(queryParam.getKey(),
+					// queryParam.getValue());
+					queryMap.put(queryParam.getKey(), queryParam.getValue());
+				}
+			}
+
+		}
+		String pre = "&";
+		StringBuilder sb = new StringBuilder();
+		for (Entry<String, Object> queryParam : queryMap.entrySet()) {
+			if (queryParam.getValue() != null && !ignoreList.contains((queryParam.getKey()))) {
+				modelAndView.addObject(queryParam.getKey(), queryParam.getValue());
+				sb.append(pre).append(queryParam.getKey()).append("=").append(String.valueOf(queryParam.getValue()));
+				pre = "&";
+			}
+		}
+		List<Team> temp = teamService.getTeams(queryParams);
+		modelAndView.addObject("pageBaseUrl", "?1=1" + sb.toString());
+		modelAndView.addObject("teams", temp);
+		return modelAndView;
 	}
 
 }

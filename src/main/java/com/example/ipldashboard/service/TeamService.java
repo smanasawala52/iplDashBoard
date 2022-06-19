@@ -35,73 +35,47 @@ public class TeamService {
 	private TeamRepository teamRepository;
 
 	public List<Team> getTeams(List<ITeamCount> objs1, List<ITeamCount> objs2) {
-		List<Team> t1 = objs1.stream().map(x -> new TeamBuilder()
-				.setName(x.getTeamName()).setTotalMatches(x.getTotalMatches())
-				.setTotalWins(x.getTotalWins())
-				.setTotalBatFirst(x.getTotalBatFirst())
-				.setTotalFieldFirst(x.getTotalFieldFirst())
-				.setTotalNoResult(x.getTotalNoResult())
-				.setTotalTies(x.getTotalTies())
-				.setTotalTossWinBatFirst(x.getTotalTossWinBatFirst())
-				.setTotalTossWinFieldFirst(x.getTotalTossWinFieldFirst())
-				.setTotalTossWins(x.getTotalTossWins())
-				.setTotalWins(x.getTotalWins())
-				.setTotalWinsBatFirst(x.getTotalWinsBatFirst())
-				.setTotalWinsFieldFirst(x.getTotalWinsFieldFirst())
-				.setTotalWinsByRuns(x.getTotalWinsByRuns())
-				.setTotalWinsByWikets(x.getTotalWinsByWikets()).build())
+		List<Team> t1 = objs1.stream()
+				.map(x -> new TeamBuilder().setName(x.getTeamName()).setTotalMatches(x.getTotalMatches())
+						.setTotalWins(x.getTotalWins()).setTotalBatFirst(x.getTotalBatFirst())
+						.setTotalFieldFirst(x.getTotalFieldFirst()).setTotalNoResult(x.getTotalNoResult())
+						.setTotalTies(x.getTotalTies()).setTotalTossWinBatFirst(x.getTotalTossWinBatFirst())
+						.setTotalTossWinFieldFirst(x.getTotalTossWinFieldFirst()).setTotalTossWins(x.getTotalTossWins())
+						.setTotalWins(x.getTotalWins()).setTotalWinsBatFirst(x.getTotalWinsBatFirst())
+						.setTotalWinsFieldFirst(x.getTotalWinsFieldFirst()).setTotalWinsByRuns(x.getTotalWinsByRuns())
+						.setTotalWinsByWikets(x.getTotalWinsByWikets()).build())
 				.collect(Collectors.toList());
-		List<Team> t2 = objs2.stream().map(x -> new TeamBuilder()
-				.setName(x.getTeamName()).setTotalMatches(x.getTotalMatches())
-				.setTotalWins(x.getTotalWins())
-				.setTotalBatFirst(x.getTotalBatFirst())
-				.setTotalFieldFirst(x.getTotalFieldFirst())
-				.setTotalNoResult(x.getTotalNoResult())
-				.setTotalTies(x.getTotalTies())
-				.setTotalTossWinBatFirst(x.getTotalTossWinBatFirst())
-				.setTotalTossWinFieldFirst(x.getTotalTossWinFieldFirst())
-				.setTotalTossWins(x.getTotalTossWins())
-				.setTotalWins(x.getTotalWins())
-				.setTotalWinsBatFirst(x.getTotalWinsBatFirst())
-				.setTotalWinsFieldFirst(x.getTotalWinsFieldFirst())
-				.setTotalWinsByRuns(x.getTotalWinsByRuns())
-				.setTotalWinsByWikets(x.getTotalWinsByWikets()).build())
+		List<Team> t2 = objs2.stream()
+				.map(x -> new TeamBuilder().setName(x.getTeamName()).setTotalMatches(x.getTotalMatches())
+						.setTotalWins(x.getTotalWins()).setTotalBatFirst(x.getTotalBatFirst())
+						.setTotalFieldFirst(x.getTotalFieldFirst()).setTotalNoResult(x.getTotalNoResult())
+						.setTotalTies(x.getTotalTies()).setTotalTossWinBatFirst(x.getTotalTossWinBatFirst())
+						.setTotalTossWinFieldFirst(x.getTotalTossWinFieldFirst()).setTotalTossWins(x.getTotalTossWins())
+						.setTotalWins(x.getTotalWins()).setTotalWinsBatFirst(x.getTotalWinsBatFirst())
+						.setTotalWinsFieldFirst(x.getTotalWinsFieldFirst()).setTotalWinsByRuns(x.getTotalWinsByRuns())
+						.setTotalWinsByWikets(x.getTotalWinsByWikets()).build())
 				.collect(Collectors.toList());
 		// System.out.println(t1 + "" + t2);
-		List<Team> teams = new ArrayList<>(
-				Stream.of(t1, t2).flatMap(List::stream).collect(Collectors
-						.toMap(Team::getName, d -> d, (Team x, Team y) -> {
-							x.setTotalBatFirst(x.getTotalBatFirst()
-									+ y.getTotalBatFirst());
-							x.setTotalFieldFirst(x.getTotalFieldFirst()
-									+ y.getTotalFieldFirst());
-							x.setTotalMatches(
-									x.getTotalMatches() + y.getTotalMatches());
-							x.setTotalNoResult(x.getTotalNoResult()
-									+ y.getTotalNoResult());
-							x.setTotalTies(x.getTotalTies() + y.getTotalTies());
-							x.setTotalTossWinBatFirst(
-									x.getTotalTossWinBatFirst()
-											+ y.getTotalTossWinBatFirst());
-							x.setTotalTossWinFieldFirst(
-									x.getTotalTossWinFieldFirst()
-											+ y.getTotalTossWinFieldFirst());
-							x.setTotalTossWins(x.getTotalTossWins()
-									+ y.getTotalTossWins());
-							x.setTotalWins(x.getTotalWins() + y.getTotalWins());
-							x.setTotalWinsBatFirst(x.getTotalWinsBatFirst()
-									+ y.getTotalWinsBatFirst());
-							x.setTotalWinsFieldFirst(x.getTotalWinsFieldFirst()
-									+ y.getTotalWinsFieldFirst());
-							x.setTotalWinsByRuns(x.getTotalWinsByRuns()
-									+ y.getTotalWinsByRuns());
-							x.setTotalWinsByWikets(x.getTotalWinsByWikets()
-									+ y.getTotalWinsByWikets());
-							x.getTeams().addAll(y.getTeams());
-							x.setTotalWinsPercent(populateWinsPercent(
-									x.getTotalWins(), x.getTotalMatches()));
-							return x;
-						})).values());;
+		List<Team> teams = new ArrayList<>(Stream.of(t1, t2).flatMap(List::stream)
+				.collect(Collectors.toMap(Team::getName, d -> d, (Team x, Team y) -> {
+					x.setTotalBatFirst(x.getTotalBatFirst() + y.getTotalBatFirst());
+					x.setTotalFieldFirst(x.getTotalFieldFirst() + y.getTotalFieldFirst());
+					x.setTotalMatches(x.getTotalMatches() + y.getTotalMatches());
+					x.setTotalNoResult(x.getTotalNoResult() + y.getTotalNoResult());
+					x.setTotalTies(x.getTotalTies() + y.getTotalTies());
+					x.setTotalTossWinBatFirst(x.getTotalTossWinBatFirst() + y.getTotalTossWinBatFirst());
+					x.setTotalTossWinFieldFirst(x.getTotalTossWinFieldFirst() + y.getTotalTossWinFieldFirst());
+					x.setTotalTossWins(x.getTotalTossWins() + y.getTotalTossWins());
+					x.setTotalWins(x.getTotalWins() + y.getTotalWins());
+					x.setTotalWinsBatFirst(x.getTotalWinsBatFirst() + y.getTotalWinsBatFirst());
+					x.setTotalWinsFieldFirst(x.getTotalWinsFieldFirst() + y.getTotalWinsFieldFirst());
+					x.setTotalWinsByRuns(x.getTotalWinsByRuns() + y.getTotalWinsByRuns());
+					x.setTotalWinsByWikets(x.getTotalWinsByWikets() + y.getTotalWinsByWikets());
+					x.getTeams().addAll(y.getTeams());
+					x.setTotalWinsPercent(populateWinsPercent(x.getTotalWins(), x.getTotalMatches()));
+					return x;
+				})).values());
+		;
 		return teams;
 	}
 
@@ -109,17 +83,13 @@ public class TeamService {
 		return teamRepository.findAllByOrderByNameAsc();
 	}
 
-	public List<Team> getTeamByName1AndName2(String teamName1, String teamName2,
-			int cp, String venue, int pageSize) {
-		System.out.println("Venue: " + venue + " teamName1: " + teamName1
-				+ " teamName2: " + teamName2);
+	public List<Team> getTeamByName1AndName2(String teamName1, String teamName2, int cp, String venue, int pageSize) {
+		System.out.println("Venue: " + venue + " teamName1: " + teamName1 + " teamName2: " + teamName2);
 		if (!venue.isEmpty()) {
-			List<ITeamCount> objs1 = matchRepository
-					.countTotalMatchesByTeam1AndTeam2AndVenue(teamName1,
-							teamName2, venue);
-			List<ITeamCount> objs2 = matchRepository
-					.countTotalMatchesByTeam2AndTeam1AndVenue(teamName2,
-							teamName1, venue);
+			List<ITeamCount> objs1 = matchRepository.countTotalMatchesByTeam1AndTeam2AndVenue(teamName1, teamName2,
+					venue);
+			List<ITeamCount> objs2 = matchRepository.countTotalMatchesByTeam2AndTeam1AndVenue(teamName2, teamName1,
+					venue);
 			List<Team> teams = getTeams(objs1, objs2);
 			teams = teams.stream().map(team -> {
 				// team.setMatches(matchRepository
@@ -130,12 +100,10 @@ public class TeamService {
 			}).collect(Collectors.toList());
 
 			// Get team 2 data as well
-			List<ITeamCount> objs1Team2 = matchRepository
-					.countTotalMatchesByTeam1AndTeam2AndVenue(teamName2,
-							teamName1, venue);
-			List<ITeamCount> objs2Team2 = matchRepository
-					.countTotalMatchesByTeam2AndTeam1AndVenue(teamName1,
-							teamName2, venue);
+			List<ITeamCount> objs1Team2 = matchRepository.countTotalMatchesByTeam1AndTeam2AndVenue(teamName2, teamName1,
+					venue);
+			List<ITeamCount> objs2Team2 = matchRepository.countTotalMatchesByTeam2AndTeam1AndVenue(teamName1, teamName2,
+					venue);
 			List<Team> teams2 = getTeams(objs1Team2, objs2Team2);
 			if (teams != null && teams2 != null) {
 				teams.addAll(teams2);
@@ -143,15 +111,12 @@ public class TeamService {
 			System.out.println(teams2);
 			return teams;
 		} else {
-			List<ITeamCount> objs1 = matchRepository
-					.countTotalMatchesByTeam1AndTeam2(teamName1, teamName2);
-			List<ITeamCount> objs2 = matchRepository
-					.countTotalMatchesByTeam2AndTeam1(teamName2, teamName1);
+			List<ITeamCount> objs1 = matchRepository.countTotalMatchesByTeam1AndTeam2(teamName1, teamName2);
+			List<ITeamCount> objs2 = matchRepository.countTotalMatchesByTeam2AndTeam1(teamName2, teamName1);
 
 			List<Team> teams = getTeams(objs1, objs2);
 			teams = teams.stream().map(team -> {
-				List<String> lstVenues = matchRepository.findCity(teamName1,
-						teamName2, teamName2, teamName1);
+				List<String> lstVenues = matchRepository.findCity(teamName1, teamName2, teamName2, teamName1);
 				// Collections.sort(lstVenues);
 				System.out.println("Shabbir: " + lstVenues);
 				team.getVenues().addAll(lstVenues);
@@ -163,10 +128,8 @@ public class TeamService {
 			}).collect(Collectors.toList());
 
 			// Get team 2 data as well
-			List<ITeamCount> objs1Team2 = matchRepository
-					.countTotalMatchesByTeam1AndTeam2(teamName2, teamName1);
-			List<ITeamCount> objs2Team2 = matchRepository
-					.countTotalMatchesByTeam2AndTeam1(teamName1, teamName2);
+			List<ITeamCount> objs1Team2 = matchRepository.countTotalMatchesByTeam1AndTeam2(teamName2, teamName1);
+			List<ITeamCount> objs2Team2 = matchRepository.countTotalMatchesByTeam2AndTeam1(teamName1, teamName2);
 			List<Team> teams2 = getTeams(objs1Team2, objs2Team2);
 			if (teams != null && teams2 != null) {
 				teams.addAll(teams2);
@@ -176,61 +139,50 @@ public class TeamService {
 			return teams;
 		}
 	}
-	public List<Team> getTeamByName1(String teamName1, int cp, String venue,
-			int pageSize) {
+
+	public List<Team> getTeamByName1(String teamName1, int cp, String venue, int pageSize) {
 		System.out.println("Venue: " + venue);
 		final List<Team> teamsAll = getTeams();
 		if (!venue.isEmpty()) {
-			List<ITeamCount> objs1 = matchRepository
-					.countTotalMatchesByTeam1AndVenue(teamName1, venue);
-			List<ITeamCount> objs2 = matchRepository
-					.countTotalMatchesByTeam2AndVenue(teamName1, venue);
+			List<ITeamCount> objs1 = matchRepository.countTotalMatchesByTeam1AndVenue(teamName1, venue);
+			List<ITeamCount> objs2 = matchRepository.countTotalMatchesByTeam2AndVenue(teamName1, venue);
 			List<Team> teams = getTeams(objs1, objs2);
 			teams = teams.stream().map(team -> {
 				// team.setMatches(matchRepository
 				// .getByVenueAndTeam1OrVenueAndTeam2OrderByDateDesc(venue,
 				// teamName1, venue, teamName1,
 				// PageRequest.of(cp, pageSize)));
-				teamsAll.stream()
-						.filter(x -> !x.getName().equalsIgnoreCase(teamName1))
-						.forEach(x -> {
-							List<Team> temp = getTeamByName1AndName2(teamName1,
-									x.getName(), 0, venue, 3);
-							if (temp != null && !temp.isEmpty()) {
-								temp.get(0).setName(x.getName());
-								team.getTeams().addAll(temp);
-							}
-						});
+				teamsAll.stream().filter(x -> !x.getName().equalsIgnoreCase(teamName1)).forEach(x -> {
+					List<Team> temp = getTeamByName1AndName2(teamName1, x.getName(), 0, venue, 3);
+					if (temp != null && !temp.isEmpty()) {
+						temp.get(0).setName(x.getName());
+						team.getTeams().addAll(temp);
+					}
+				});
 				return team;
 			}).collect(Collectors.toList());
 
 			System.out.println(teams);
 			return teams;
 		} else {
-			List<ITeamCount> objs1 = matchRepository
-					.countTotalMatchesByTeam1(teamName1);
-			List<ITeamCount> objs2 = matchRepository
-					.countTotalMatchesByTeam2(teamName1);
+			List<ITeamCount> objs1 = matchRepository.countTotalMatchesByTeam1(teamName1);
+			List<ITeamCount> objs2 = matchRepository.countTotalMatchesByTeam2(teamName1);
 			List<Team> teams = getTeams(objs1, objs2);
 			teams = teams.stream().map(team -> {
 				// team.setMatches(matchRepository
 				// .getByTeam1OrTeam2OrderByDateDesc(teamName1, teamName1,
 				// PageRequest.of(cp, pageSize)));
-				List<String> lstV = matchRepository.findCity(teamName1,
-						teamName1);
+				List<String> lstV = matchRepository.findCity(teamName1, teamName1);
 				// Collections.sort(lstV);
 				System.out.println("Shabbir: " + lstV);
 				team.getVenues().addAll(lstV);
-				teamsAll.stream()
-						.filter(x -> !x.getName().equalsIgnoreCase(teamName1))
-						.forEach(x -> {
-							List<Team> temp = getTeamByName1AndName2(teamName1,
-									x.getName(), 0, venue, 3);
-							if (temp != null && !temp.isEmpty()) {
-								temp.get(0).setName(x.getName());
-								team.getTeams().addAll(temp);
-							}
-						});
+				teamsAll.stream().filter(x -> !x.getName().equalsIgnoreCase(teamName1)).forEach(x -> {
+					List<Team> temp = getTeamByName1AndName2(teamName1, x.getName(), 0, venue, 3);
+					if (temp != null && !temp.isEmpty()) {
+						temp.get(0).setName(x.getName());
+						team.getTeams().addAll(temp);
+					}
+				});
 				return team;
 			}).collect(Collectors.toList());
 			return teams;
@@ -238,8 +190,7 @@ public class TeamService {
 	}
 
 	private double populateWinsPercent(long totalWins, long totalMatches) {
-		System.out.println(
-				"total Wins: " + totalWins + " totalMatches: " + totalMatches);
+		System.out.println("total Wins: " + totalWins + " totalMatches: " + totalMatches);
 		double totalWinsPercent = 0;
 		if (totalWins > 0 && totalMatches > 0) {
 			totalWinsPercent = (totalWins * 100) / totalMatches;
@@ -278,62 +229,45 @@ public class TeamService {
 				pageSize = 10;
 			}
 
-			if (team1 != null && !team1.isEmpty() && team2 != null
-					&& !team2.isEmpty()) {
+			if (team1 != null && !team1.isEmpty() && team2 != null && !team2.isEmpty()) {
 				stream = stream
-						.filter(x -> (x.getTeam1().equalsIgnoreCase(team1)
-								&& x.getTeam2().equalsIgnoreCase(team2))
-								|| x.getTeam1().equalsIgnoreCase(team2) && x
-										.getTeam2().equalsIgnoreCase(team1));
-			} else if (team1 != null && !team1.isEmpty()
-					&& (team2 == null || (team2 != null && team2.isEmpty()))) {
-				stream = stream.filter(x -> x.getTeam1().equalsIgnoreCase(team1)
-						|| x.getTeam2().equalsIgnoreCase(team1));
+						.filter(x -> (x.getTeam1().equalsIgnoreCase(team1) && x.getTeam2().equalsIgnoreCase(team2))
+								|| x.getTeam1().equalsIgnoreCase(team2) && x.getTeam2().equalsIgnoreCase(team1));
+			} else if (team1 != null && !team1.isEmpty() && (team2 == null || (team2 != null && team2.isEmpty()))) {
+				stream = stream
+						.filter(x -> x.getTeam1().equalsIgnoreCase(team1) || x.getTeam2().equalsIgnoreCase(team1));
 			}
 			if (city != null && !city.isEmpty()) {
 				stream = stream.filter(x -> x.getCity().equalsIgnoreCase(city));
 			}
 			if (venue != null && !venue.isEmpty()) {
-				stream = stream
-						.filter(x -> x.getVenue().equalsIgnoreCase(venue));
+				stream = stream.filter(x -> x.getVenue().equalsIgnoreCase(venue));
 			}
 			if (season != null && !season.isEmpty()) {
-				stream = stream
-						.filter(x -> x.getSeason().equalsIgnoreCase(season));
+				stream = stream.filter(x -> x.getSeason().equalsIgnoreCase(season));
 			}
 			if (eventStage != null && !eventStage.isEmpty()) {
-				stream = stream
-						.filter(x -> x.getEventStage() != null
-								&& !x.getEventStage().isEmpty())
-						.filter(x -> x.getEventStage()
-								.equalsIgnoreCase(eventStage));
+				stream = stream.filter(x -> x.getEventStage() != null && !x.getEventStage().isEmpty())
+						.filter(x -> x.getEventStage().equalsIgnoreCase(eventStage));
 			}
 			if (eventGroup != null && !eventGroup.isEmpty()) {
-				stream = stream
-						.filter(x -> x.getEventGroup() != null
-								&& !x.getEventGroup().isEmpty())
-						.filter(x -> x.getEventGroup()
-								.equalsIgnoreCase(eventGroup));
+				stream = stream.filter(x -> x.getEventGroup() != null && !x.getEventGroup().isEmpty())
+						.filter(x -> x.getEventGroup().equalsIgnoreCase(eventGroup));
 			}
 			if (playerOfMatch != null && !playerOfMatch.isEmpty()) {
-				stream = stream.filter(x -> x.getPlayerOfMatch()
-						.equalsIgnoreCase(playerOfMatch));
+				stream = stream.filter(x -> x.getPlayerOfMatch().equalsIgnoreCase(playerOfMatch));
 			}
 			if (winner != null && !winner.isEmpty()) {
-				stream = stream
-						.filter(x -> x.getWinner().equalsIgnoreCase(winner));
+				stream = stream.filter(x -> x.getWinner().equalsIgnoreCase(winner));
 			}
 			if (result != null && !result.isEmpty()) {
-				stream = stream
-						.filter(x -> x.getResult().equalsIgnoreCase(result));
+				stream = stream.filter(x -> x.getResult().equalsIgnoreCase(result));
 			}
 			if (tossWinner != null && !tossWinner.isEmpty()) {
-				stream = stream.filter(
-						x -> x.getTossWinner().equalsIgnoreCase(tossWinner));
+				stream = stream.filter(x -> x.getTossWinner().equalsIgnoreCase(tossWinner));
 			}
 			if (tossDecision != null && !tossDecision.isEmpty()) {
-				stream = stream.filter(x -> x.getTossDecision()
-						.equalsIgnoreCase(tossDecision));
+				stream = stream.filter(x -> x.getTossDecision().equalsIgnoreCase(tossDecision));
 			}
 			final List<Match> tempMatches = new ArrayList<>();
 			final Map<String, Venue> venues = new HashMap<>();
@@ -391,131 +325,97 @@ public class TeamService {
 							}
 						}
 						t1.setTotalMatches(t1.getTotalMatches() + 1);
-						if ((x.getResult() != null && x.getResult().isEmpty())
-								|| x.getResult() == null
-								|| (x.getResult() != null && x.getResult()
-										.equalsIgnoreCase("NA"))) {
+						if ((x.getResult() != null && x.getResult().isEmpty()) || x.getResult() == null
+								|| (x.getResult() != null && x.getResult().equalsIgnoreCase("NA"))) {
 							t1.setTotalNoResult(t1.getTotalNoResult() + 1);
 						}
-						if (x.getWinner() != null
-								&& x.getWinner().equals(team1)) {
+						if (x.getWinner() != null && x.getWinner().equals(team1)) {
 							t1.setTotalWins(t1.getTotalWins() + 1);
 						}
 						if (x.getTossWinner().equals(team1)) {
 							t1.setTotalTossWins(t1.getTotalTossWins() + 1);
 							if (x.getTossDecision().equals("bat")) {
-								t1.setTotalTossWinBatFirst(
-										t1.getTotalTossWinBatFirst() + 1);
+								t1.setTotalTossWinBatFirst(t1.getTotalTossWinBatFirst() + 1);
 								t1.setTotalBatFirst(t1.getTotalBatFirst() + 1);
-								if (x.getWinner() != null
-										&& x.getWinner().equals(team1)) {
-									t1.setTotalWinsBatFirst(
-											t1.getTotalWinsBatFirst() + 1);
+								if (x.getWinner() != null && x.getWinner().equals(team1)) {
+									t1.setTotalWinsBatFirst(t1.getTotalWinsBatFirst() + 1);
 								}
 							}
 							if (x.getTossDecision().equals("field")) {
-								t1.setTotalTossWinFieldFirst(
-										t1.getTotalTossWinFieldFirst() + 1);
-								t1.setTotalFieldFirst(
-										t1.getTotalFieldFirst() + 1);
-								if (x.getWinner() != null
-										&& x.getWinner().equals(team1)) {
-									t1.setTotalWinsFieldFirst(
-											t1.getTotalWinsFieldFirst() + 1);
+								t1.setTotalTossWinFieldFirst(t1.getTotalTossWinFieldFirst() + 1);
+								t1.setTotalFieldFirst(t1.getTotalFieldFirst() + 1);
+								if (x.getWinner() != null && x.getWinner().equals(team1)) {
+									t1.setTotalWinsFieldFirst(t1.getTotalWinsFieldFirst() + 1);
 								}
 							}
 						} else {
 							if (x.getTossDecision().equals("field")) {
 								t1.setTotalBatFirst(t1.getTotalBatFirst() + 1);
-								if (x.getWinner() != null
-										&& x.getWinner().equals(team1)) {
-									t1.setTotalWinsBatFirst(
-											t1.getTotalWinsBatFirst() + 1);
+								if (x.getWinner() != null && x.getWinner().equals(team1)) {
+									t1.setTotalWinsBatFirst(t1.getTotalWinsBatFirst() + 1);
 								}
 							}
 							if (x.getTossDecision().equals("bat")) {
-								t1.setTotalFieldFirst(
-										t1.getTotalFieldFirst() + 1);
-								if (x.getWinner() != null
-										&& x.getWinner().equals(team1)) {
-									t1.setTotalWinsFieldFirst(
-											t1.getTotalWinsFieldFirst() + 1);
+								t1.setTotalFieldFirst(t1.getTotalFieldFirst() + 1);
+								if (x.getWinner() != null && x.getWinner().equals(team1)) {
+									t1.setTotalWinsFieldFirst(t1.getTotalWinsFieldFirst() + 1);
 								}
 							}
 						}
-						if (x.getWinner() != null
-								&& x.getWinner().equals(team1)) {
+						if (x.getWinner() != null && x.getWinner().equals(team1)) {
 							if (x.getResult().equalsIgnoreCase("runs")) {
-								t1.setTotalWinsByRuns(
-										t1.getTotalWinsByRuns() + 1);
+								t1.setTotalWinsByRuns(t1.getTotalWinsByRuns() + 1);
 							}
 							if (x.getResult().equalsIgnoreCase("wickets")) {
-								t1.setTotalWinsByWikets(
-										t1.getTotalWinsByWikets() + 1);
+								t1.setTotalWinsByWikets(t1.getTotalWinsByWikets() + 1);
 							}
 						}
 
 					}
 					otherTeam.setTotalMatches(otherTeam.getTotalMatches() + 1);
-					if ((x.getResult() != null && x.getResult().isEmpty())
-							|| x.getResult() == null || (x.getResult() != null
-									&& x.getResult().equalsIgnoreCase("NA"))) {
-						otherTeam.setTotalNoResult(
-								otherTeam.getTotalNoResult() + 1);
+					if ((x.getResult() != null && x.getResult().isEmpty()) || x.getResult() == null
+							|| (x.getResult() != null && x.getResult().equalsIgnoreCase("NA"))) {
+						otherTeam.setTotalNoResult(otherTeam.getTotalNoResult() + 1);
 					}
-					if (x.getWinner() != null
-							&& x.getWinner().equals(otherTeam.getName())) {
+					if (x.getWinner() != null && x.getWinner().equals(otherTeam.getName())) {
 						otherTeam.setTotalWins(otherTeam.getTotalWins() + 1);
 					}
 					if (x.getTossWinner().equals(otherTeam.getName())) {
-						otherTeam.setTotalTossWins(
-								otherTeam.getTotalTossWins() + 1);
+						otherTeam.setTotalTossWins(otherTeam.getTotalTossWins() + 1);
 						if (x.getTossDecision().equals("bat")) {
-							otherTeam.setTotalTossWinBatFirst(
-									otherTeam.getTotalTossWinBatFirst() + 1);
-							otherTeam.setTotalBatFirst(
-									otherTeam.getTotalBatFirst() + 1);
+							otherTeam.setTotalTossWinBatFirst(otherTeam.getTotalTossWinBatFirst() + 1);
+							otherTeam.setTotalBatFirst(otherTeam.getTotalBatFirst() + 1);
 							if (x.getWinner().equals(otherTeam.getName())) {
-								otherTeam.setTotalWinsBatFirst(
-										otherTeam.getTotalWinsBatFirst() + 1);
+								otherTeam.setTotalWinsBatFirst(otherTeam.getTotalWinsBatFirst() + 1);
 							}
 						}
 						if (x.getTossDecision().equals("field")) {
-							otherTeam.setTotalTossWinFieldFirst(
-									otherTeam.getTotalTossWinFieldFirst() + 1);
-							otherTeam.setTotalFieldFirst(
-									otherTeam.getTotalFieldFirst() + 1);
+							otherTeam.setTotalTossWinFieldFirst(otherTeam.getTotalTossWinFieldFirst() + 1);
+							otherTeam.setTotalFieldFirst(otherTeam.getTotalFieldFirst() + 1);
 							if (x.getWinner().equals(otherTeam.getName())) {
-								otherTeam.setTotalWinsFieldFirst(
-										otherTeam.getTotalWinsFieldFirst() + 1);
+								otherTeam.setTotalWinsFieldFirst(otherTeam.getTotalWinsFieldFirst() + 1);
 							}
 						}
 					} else {
 						if (x.getTossDecision().equals("field")) {
-							otherTeam.setTotalBatFirst(
-									otherTeam.getTotalBatFirst() + 1);
+							otherTeam.setTotalBatFirst(otherTeam.getTotalBatFirst() + 1);
 							if (x.getWinner().equals(otherTeam.getName())) {
-								otherTeam.setTotalWinsBatFirst(
-										otherTeam.getTotalWinsBatFirst() + 1);
+								otherTeam.setTotalWinsBatFirst(otherTeam.getTotalWinsBatFirst() + 1);
 							}
 						}
 						if (x.getTossDecision().equals("bat")) {
-							otherTeam.setTotalFieldFirst(
-									otherTeam.getTotalFieldFirst() + 1);
+							otherTeam.setTotalFieldFirst(otherTeam.getTotalFieldFirst() + 1);
 							if (x.getWinner().equals(otherTeam.getName())) {
-								otherTeam.setTotalWinsFieldFirst(
-										otherTeam.getTotalWinsFieldFirst() + 1);
+								otherTeam.setTotalWinsFieldFirst(otherTeam.getTotalWinsFieldFirst() + 1);
 							}
 						}
 					}
 					if (x.getWinner().equals(otherTeam.getName())) {
 						if (x.getResult().equalsIgnoreCase("runs")) {
-							otherTeam.setTotalWinsByRuns(
-									otherTeam.getTotalWinsByRuns() + 1);
+							otherTeam.setTotalWinsByRuns(otherTeam.getTotalWinsByRuns() + 1);
 						}
 						if (x.getResult().equalsIgnoreCase("wickets")) {
-							otherTeam.setTotalWinsByWikets(
-									otherTeam.getTotalWinsByWikets() + 1);
+							otherTeam.setTotalWinsByWikets(otherTeam.getTotalWinsByWikets() + 1);
 						}
 					}
 
@@ -524,62 +424,49 @@ public class TeamService {
 						t2.setName(team2);
 
 						t2.setTotalMatches(t2.getTotalMatches() + 1);
-						if ((x.getResult() != null && x.getResult().isEmpty())
-								|| x.getResult() == null
-								|| (x.getResult() != null && x.getResult()
-										.equalsIgnoreCase("NA"))) {
+						if ((x.getResult() != null && x.getResult().isEmpty()) || x.getResult() == null
+								|| (x.getResult() != null && x.getResult().equalsIgnoreCase("NA"))) {
 							t2.setTotalNoResult(t2.getTotalNoResult() + 1);
 						}
-						if (x.getWinner() != null
-								&& x.getWinner().equals(team2)) {
+						if (x.getWinner() != null && x.getWinner().equals(team2)) {
 							t2.setTotalWins(t2.getTotalWins() + 1);
 						}
 						if (x.getTossWinner().equals(team2)) {
 							t2.setTotalTossWins(t2.getTotalTossWins() + 1);
 							if (x.getTossDecision().equals("bat")) {
-								t2.setTotalTossWinBatFirst(
-										t2.getTotalTossWinBatFirst() + 1);
+								t2.setTotalTossWinBatFirst(t2.getTotalTossWinBatFirst() + 1);
 								t2.setTotalBatFirst(t2.getTotalBatFirst() + 1);
 								if (x.getWinner().equals(team2)) {
-									t2.setTotalWinsBatFirst(
-											t2.getTotalWinsBatFirst() + 1);
+									t2.setTotalWinsBatFirst(t2.getTotalWinsBatFirst() + 1);
 								}
 							}
 							if (x.getTossDecision().equals("field")) {
-								t2.setTotalTossWinFieldFirst(
-										t2.getTotalTossWinFieldFirst() + 1);
-								t2.setTotalFieldFirst(
-										t2.getTotalFieldFirst() + 1);
+								t2.setTotalTossWinFieldFirst(t2.getTotalTossWinFieldFirst() + 1);
+								t2.setTotalFieldFirst(t2.getTotalFieldFirst() + 1);
 								if (x.getWinner().equals(team2)) {
-									t2.setTotalWinsFieldFirst(
-											t2.getTotalWinsFieldFirst() + 1);
+									t2.setTotalWinsFieldFirst(t2.getTotalWinsFieldFirst() + 1);
 								}
 							}
 						} else {
 							if (x.getTossDecision().equals("field")) {
 								t2.setTotalBatFirst(t2.getTotalBatFirst() + 1);
 								if (x.getWinner().equals(team2)) {
-									t2.setTotalWinsBatFirst(
-											t2.getTotalWinsBatFirst() + 1);
+									t2.setTotalWinsBatFirst(t2.getTotalWinsBatFirst() + 1);
 								}
 							}
 							if (x.getTossDecision().equals("bat")) {
-								t2.setTotalFieldFirst(
-										t2.getTotalFieldFirst() + 1);
+								t2.setTotalFieldFirst(t2.getTotalFieldFirst() + 1);
 								if (x.getWinner().equals(team2)) {
-									t2.setTotalWinsFieldFirst(
-											t2.getTotalWinsFieldFirst() + 1);
+									t2.setTotalWinsFieldFirst(t2.getTotalWinsFieldFirst() + 1);
 								}
 							}
 						}
 						if (x.getWinner().equals(team2)) {
 							if (x.getResult().equalsIgnoreCase("runs")) {
-								t2.setTotalWinsByRuns(
-										t2.getTotalWinsByRuns() + 1);
+								t2.setTotalWinsByRuns(t2.getTotalWinsByRuns() + 1);
 							}
 							if (x.getResult().equalsIgnoreCase("wickets")) {
-								t2.setTotalWinsByWikets(
-										t2.getTotalWinsByWikets() + 1);
+								t2.setTotalWinsByWikets(t2.getTotalWinsByWikets() + 1);
 							}
 						}
 					}
@@ -591,48 +478,38 @@ public class TeamService {
 					venueObj.setCity(x.getCity());
 					venueObj.setMatches(null);
 					venueObj.setTotalMatches(venueObj.getTotalMatches() + 1);
-					if ((x.getResult() != null && x.getResult().isEmpty())
-							|| x.getResult() == null || (x.getResult() != null
-									&& x.getResult().equalsIgnoreCase("NA"))) {
-						venueObj.setTotalNoResult(
-								venueObj.getTotalNoResult() + 1);
+					if ((x.getResult() != null && x.getResult().isEmpty()) || x.getResult() == null
+							|| (x.getResult() != null && x.getResult().equalsIgnoreCase("NA"))) {
+						venueObj.setTotalNoResult(venueObj.getTotalNoResult() + 1);
 					}
 					if (x.getTossDecision().equals("field")) {
-						venueObj.setTotalTossWinFieldFirst(
-								venueObj.getTotalTossWinFieldFirst() + 1);
+						venueObj.setTotalTossWinFieldFirst(venueObj.getTotalTossWinFieldFirst() + 1);
 					}
 					if (x.getTossDecision().equals("bat")) {
-						venueObj.setTotalTossWinBatFirst(
-								venueObj.getTotalTossWinBatFirst() + 1);
+						venueObj.setTotalTossWinBatFirst(venueObj.getTotalTossWinBatFirst() + 1);
 					}
 					if (x.getWinner() != null) {
 						venueObj.setTotalWins(venueObj.getTotalWins() + 1);
 						if (x.getWinner().equals(x.getTossWinner())) {
 							if (x.getTossDecision().equals("bat")) {
-								venueObj.setTotalWinsBatFirst(
-										venueObj.getTotalWinsBatFirst() + 1);
+								venueObj.setTotalWinsBatFirst(venueObj.getTotalWinsBatFirst() + 1);
 							}
 							if (x.getTossDecision().equals("field")) {
-								venueObj.setTotalWinsFieldFirst(
-										venueObj.getTotalWinsFieldFirst() + 1);
+								venueObj.setTotalWinsFieldFirst(venueObj.getTotalWinsFieldFirst() + 1);
 							}
 						} else {
 							if (x.getTossDecision().equals("bat")) {
-								venueObj.setTotalWinsFieldFirst(
-										venueObj.getTotalWinsFieldFirst() + 1);
+								venueObj.setTotalWinsFieldFirst(venueObj.getTotalWinsFieldFirst() + 1);
 							}
 							if (x.getTossDecision().equals("field")) {
-								venueObj.setTotalWinsBatFirst(
-										venueObj.getTotalWinsBatFirst() + 1);
+								venueObj.setTotalWinsBatFirst(venueObj.getTotalWinsBatFirst() + 1);
 							}
 						}
 						if (x.getResult().equals("runs")) {
-							venueObj.setTotalWinsByRuns(
-									venueObj.getTotalWinsByRuns() + 1);
+							venueObj.setTotalWinsByRuns(venueObj.getTotalWinsByRuns() + 1);
 						}
 						if (x.getResult().equals("wickets")) {
-							venueObj.setTotalWinsByWikets(
-									venueObj.getTotalWinsByWikets() + 1);
+							venueObj.setTotalWinsByWikets(venueObj.getTotalWinsByWikets() + 1);
 						}
 					}
 					venues.put(x.getVenue(), venueObj);
@@ -656,16 +533,12 @@ public class TeamService {
 				if (cp > totalPages - 1) {
 					offset = (totalPages - 1) * pageSize;
 				}
-				List<Match> tempMatches1 = tempMatches.stream().skip(offset)
-						.limit(pageSize).collect(Collectors.toList());
+				List<Match> tempMatches1 = tempMatches.stream().skip(offset).limit(pageSize)
+						.collect(Collectors.toList());
 				if (tempMatches1 != null && !tempMatches1.isEmpty()) {
-					Page<Match> page = new PageBuilder<Match>()
-							.setContent(tempMatches1)
-							.setNumber(offset / pageSize)
-							.setNumberOfElements(tempMatches1.size())
-							.setTotalElements(totalMatches)
-							.setTotalPages(totalPages)
-							.setTotalElements(totalMatches).build();
+					Page<Match> page = new PageBuilder<Match>().setContent(tempMatches1).setNumber(offset / pageSize)
+							.setNumberOfElements(tempMatches1.size()).setTotalElements(totalMatches)
+							.setTotalPages(totalPages).setTotalElements(totalMatches).build();
 					t1.setMatches(page);
 				}
 			}
@@ -683,26 +556,23 @@ public class TeamService {
 			}
 			if (!otherTeams.isEmpty() && !teams2Matches.isEmpty()) {
 				for (Entry<String, Team> otherTeam : otherTeams.entrySet()) {
-					List<Match> otherTeamMatches = teams2Matches
-							.get(otherTeam.getKey());
-					if (otherTeamMatches != null
-							&& !otherTeamMatches.isEmpty()) {
+					List<Match> otherTeamMatches = teams2Matches.get(otherTeam.getKey());
+					if (otherTeamMatches != null && !otherTeamMatches.isEmpty()) {
 						int totalMatchesOtherTeams = otherTeamMatches.size();
 						Collections.sort(otherTeamMatches);
 						if (otherTeamMatches.size() > 3) {
 							otherTeamMatches = otherTeamMatches.subList(0, 3);
 						}
-						Page<Match> pageOtherTeamMatches = new PageBuilder<Match>()
-								.setContent(otherTeamMatches).setNumber(0)
-								.setNumberOfElements(otherTeamMatches.size())
-								.setTotalElements(totalMatchesOtherTeams)
-								.setTotalPages(1).build();
+						Page<Match> pageOtherTeamMatches = new PageBuilder<Match>().setContent(otherTeamMatches)
+								.setNumber(0).setNumberOfElements(otherTeamMatches.size())
+								.setTotalElements(totalMatchesOtherTeams).setTotalPages(1).build();
 						otherTeam.getValue().setMatches(pageOtherTeamMatches);
 					}
 					t1.getTeams().add(otherTeam.getValue());
 				}
 			}
 			System.out.println(cities);
+			t1.setCities(cities);
 			t1.setTeamNames(new TreeSet<>(otherTeams.keySet()));
 			System.out.println("-------------------------------");
 			System.out.println(t1.getTeams());

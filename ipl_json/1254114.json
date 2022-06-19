@@ -2,7 +2,7 @@
   "meta": {
     "data_version": "1.1.0",
     "created": "2021-10-11",
-    "revision": 1
+    "revision": 2
   },
   "info": {
     "balls_per_over": 6,
@@ -2575,6 +2575,14 @@
               "wickets": [
                 {
                   "player_out": "AT Rayudu",
+                  "fielders": [
+                    {
+                      "name": "SS Iyer"
+                    },
+                    {
+                      "name": "K Rabada"
+                    }
+                  ],
                   "kind": "run out"
                 }
               ]

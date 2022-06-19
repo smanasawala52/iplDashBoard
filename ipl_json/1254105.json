@@ -2,7 +2,7 @@
   "meta": {
     "data_version": "1.1.0",
     "created": "2021-09-22",
-    "revision": 1
+    "revision": 2
   },
   "info": {
     "balls_per_over": 6,
@@ -95,6 +95,7 @@
         "Rashid Khan": "5f547c8b",
         "S Dhawan": "0a476045",
         "SO Hetmyer": "48a1d7b7",
+        "SPD Smith": "30a45b23",
         "SS Iyer": "85ec8e33",
         "Sandeep Sharma": "ce820073",
         "WP Saha": "fe11caa6"
@@ -1572,6 +1573,15 @@
               "wickets": [
                 {
                   "player_out": "Rashid Khan",
+                  "fielders": [
+                    {
+                      "name": "SPD Smith",
+                      "substitute": true
+                    },
+                    {
+                      "name": "RR Pant"
+                    }
+                  ],
                   "kind": "run out"
                 }
               ]
@@ -1601,6 +1611,11 @@
               "wickets": [
                 {
                   "player_out": "Sandeep Sharma",
+                  "fielders": [
+                    {
+                      "name": "RR Pant"
+                    }
+                  ],
                   "kind": "run out"
                 }
               ]

@@ -33,7 +33,7 @@ public class HomePageController {
 
 	private int PAGE_SIZE = 5;
 
-	@GetMapping("/")
+	@GetMapping("/home")
 	public ModelAndView getHome(@RequestParam final Map<String, String> queryParams) {
 		ModelAndView modelAndView = new ModelAndView("home");
 		modelAndView.addObject("slug", dataService.getSlug());

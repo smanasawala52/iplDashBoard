@@ -2,7 +2,7 @@
   "meta": {
     "data_version": "1.1.0",
     "created": "2021-10-07",
-    "revision": 1
+    "revision": 2
   },
   "info": {
     "balls_per_over": 6,
@@ -2542,6 +2542,11 @@
               "wickets": [
                 {
                   "player_out": "GJ Maxwell",
+                  "fielders": [
+                    {
+                      "name": "KS Williamson"
+                    }
+                  ],
                   "kind": "run out"
                 }
               ]
