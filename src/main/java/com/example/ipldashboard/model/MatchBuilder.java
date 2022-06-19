@@ -16,8 +16,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param id
-	 *            the id to set
+	 * @param id the id to set
 	 */
 	public MatchBuilder setId(long id) {
 		this.match.setId(id);
@@ -25,8 +24,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param city
-	 *            the city to set
+	 * @param city the city to set
 	 */
 	public MatchBuilder setCity(String city) {
 		this.match.setCity(city);
@@ -34,8 +32,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param date
-	 *            the date to set
+	 * @param date the date to set
 	 */
 	public MatchBuilder setDate(LocalDate date) {
 		this.match.setDate(date);
@@ -43,8 +40,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param playerOfMatch
-	 *            the playerOfMatch to set
+	 * @param playerOfMatch the playerOfMatch to set
 	 */
 	public MatchBuilder setPlayerOfMatch(String playerOfMatch) {
 		this.match.setPlayerOfMatch(playerOfMatch);
@@ -52,8 +48,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param venue
-	 *            the venue to set
+	 * @param venue the venue to set
 	 */
 	public MatchBuilder setVenue(String venue) {
 		if (venue != null) {
@@ -73,8 +68,7 @@ public class MatchBuilder {
 				venue = "MA Chidambaram Stadium";
 				this.match.setCity("Chennai");
 			}
-			if (venue.equalsIgnoreCase(
-					"MA Chidambaram Stadium, Chepauk, Chennai")) {
+			if (venue.equalsIgnoreCase("MA Chidambaram Stadium, Chepauk, Chennai")) {
 				venue = "MA Chidambaram Stadium";
 				this.match.setCity("Chennai");
 			}
@@ -86,18 +80,15 @@ public class MatchBuilder {
 				venue = "Sharjah Cricket Stadium";
 				this.match.setCity("Sharjah");
 			}
-			if (venue.equalsIgnoreCase(
-					"Punjab Cricket Association IS Bindra Stadium")) {
+			if (venue.equalsIgnoreCase("Punjab Cricket Association IS Bindra Stadium")) {
 				venue = "Punjab Cricket Association IS Bindra Stadium";
 				this.match.setCity("Mohali");
 			}
-			if (venue.equalsIgnoreCase(
-					"Punjab Cricket Association IS Bindra Stadium, Mohali")) {
+			if (venue.equalsIgnoreCase("Punjab Cricket Association IS Bindra Stadium, Mohali")) {
 				venue = "Punjab Cricket Association IS Bindra Stadium";
 				this.match.setCity("Mohali");
 			}
-			if (venue.equalsIgnoreCase(
-					"Punjab Cricket Association Stadium, Mohali")) {
+			if (venue.equalsIgnoreCase("Punjab Cricket Association Stadium, Mohali")) {
 				venue = "Punjab Cricket Association IS Bindra Stadium";
 				this.match.setCity("Mohali");
 			}
@@ -158,22 +149,22 @@ public class MatchBuilder {
 				venue = "Brabourne Stadium";
 				this.match.setCity("Mumbai");
 			}
-			if (venue.equalsIgnoreCase(
-					"Vidarbha Cricket Association Stadium, Jamtha")) {
+			if (venue.equalsIgnoreCase("Vidarbha Cricket Association Stadium, Jamtha")) {
 				venue = "Vidarbha Cricket Association Stadium";
+				this.match.setCity("Nagpur");
+			}
+			if (venue.equalsIgnoreCase("Dr DY Patil Sports Academy, Mumbai")) {
+				venue = "Dr DY Patil Sports Academy";
 				this.match.setCity("Nagpur");
 			}
 
 		}
 		this.match.setVenue(venue);
-		if (this.match.getCity() == null || (this.match.getCity() != null
-				&& this.match.getCity().isEmpty())) {
-			if (this.match.getVenue()
-					.equalsIgnoreCase("Dubai International Cricket Stadium")) {
+		if (this.match.getCity() == null || (this.match.getCity() != null && this.match.getCity().isEmpty())) {
+			if (this.match.getVenue().equalsIgnoreCase("Dubai International Cricket Stadium")) {
 				this.match.setCity("Dubai");
 			}
-			if (this.match.getVenue()
-					.equalsIgnoreCase("Sharjah Cricket Stadium")) {
+			if (this.match.getVenue().equalsIgnoreCase("Sharjah Cricket Stadium")) {
 				this.match.setCity("Sharjah");
 			} else {
 				this.match.setCity(this.match.getVenue());
@@ -183,8 +174,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param team1
-	 *            the team1 to set
+	 * @param team1 the team1 to set
 	 */
 	public MatchBuilder setTeam1(String team1) {
 		this.match.setTeam1(team1);
@@ -192,8 +182,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param team2
-	 *            the team2 to set
+	 * @param team2 the team2 to set
 	 */
 	public MatchBuilder setTeam2(String team2) {
 		this.match.setTeam2(team2);
@@ -201,8 +190,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param winner
-	 *            the winner to set
+	 * @param winner the winner to set
 	 */
 	public MatchBuilder setWinner(String winner) {
 		this.match.setWinner(winner);
@@ -210,8 +198,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param result
-	 *            the result to set
+	 * @param result the result to set
 	 */
 	public MatchBuilder setResult(String result) {
 		this.match.setResult(result);
@@ -219,8 +206,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param resultMargin
-	 *            the resultMargin to set
+	 * @param resultMargin the resultMargin to set
 	 */
 	public MatchBuilder setResultMargin(String resultMargin) {
 		this.match.setResultMargin(Integer.parseInt(resultMargin));
@@ -228,8 +214,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param umpire1
-	 *            the umpire1 to set
+	 * @param umpire1 the umpire1 to set
 	 */
 	public MatchBuilder setUmpire1(String umpire1) {
 		this.match.setUmpire1(umpire1);
@@ -237,8 +222,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param umpire2
-	 *            the umpire2 to set
+	 * @param umpire2 the umpire2 to set
 	 */
 	public MatchBuilder setUmpire2(String umpire2) {
 		this.match.setUmpire2(umpire2);
@@ -246,8 +230,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param tossWinner
-	 *            the tossWinner to set
+	 * @param tossWinner the tossWinner to set
 	 */
 	public MatchBuilder setTossWinner(String tossWinner) {
 		this.match.setTossWinner(tossWinner);
@@ -255,8 +238,7 @@ public class MatchBuilder {
 	}
 
 	/**
-	 * @param tossDecision
-	 *            the tossDecision to set
+	 * @param tossDecision the tossDecision to set
 	 */
 	public MatchBuilder setTossDecision(String tossDecision) {
 		this.match.setTossDecision(tossDecision);
@@ -304,25 +286,22 @@ public class MatchBuilder {
 			StringBuilder sb = new StringBuilder();
 			String pre = "";
 			if (officials.getUmpires() != null) {
-				sb.append(pre).append("Umpires: " + officials.getUmpires()
-						.stream().collect(Collectors.joining(", ")));
+				sb.append(pre).append("Umpires: " + officials.getUmpires().stream().collect(Collectors.joining(", ")));
 				pre = " and ";
 			}
 			if (officials.getMatchReferees() != null) {
 				sb.append(pre).append(
-						" Match Referees: " + officials.getMatchReferees()
-								.stream().collect(Collectors.joining(", ")));
+						" Match Referees: " + officials.getMatchReferees().stream().collect(Collectors.joining(", ")));
 				pre = " and ";
 			}
 			if (officials.getReserveUmpires() != null) {
-				sb.append(pre).append(
-						" Reserve Umpires: " + officials.getReserveUmpires()
-								.stream().collect(Collectors.joining(", ")));
+				sb.append(pre).append(" Reserve Umpires: "
+						+ officials.getReserveUmpires().stream().collect(Collectors.joining(", ")));
 				pre = " and ";
 			}
 			if (officials.getTvUmpires() != null) {
-				sb.append(pre).append(" TV Umpires: " + officials.getTvUmpires()
-						.stream().collect(Collectors.joining(", ")));
+				sb.append(pre)
+						.append(" TV Umpires: " + officials.getTvUmpires().stream().collect(Collectors.joining(", ")));
 				pre = " and ";
 			}
 			this.match.setUmpire1(sb.toString());
@@ -332,8 +311,7 @@ public class MatchBuilder {
 
 	public MatchBuilder setPlayerOfMatch(List<String> playerOfMatch) {
 		if (playerOfMatch != null) {
-			this.match.setPlayerOfMatch(
-					playerOfMatch.stream().collect(Collectors.joining(", ")));
+			this.match.setPlayerOfMatch(playerOfMatch.stream().collect(Collectors.joining(", ")));
 		}
 		return this;
 	}
