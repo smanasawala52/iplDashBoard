@@ -63,7 +63,7 @@
 					</select>
 					</div>
 					<div th:if="${!#strings.isEmpty(team.name)}">
-					Team 2:	&nbsp;<span class="text-muted" th:if="${!#strings.isEmpty(team2)}" th:text="${team2}"/>  <span style="color:red;" th:if="${!#strings.isEmpty(team2)}" th:text="x" onclick="javascript:document.getElementById('team2').value='';document.getElementById('criteria').submit();"/>
+					Team 2:	&nbsp;<span class="text-muted" th:if="${!#strings.isEmpty(team2)}" th:text="${team2}"/>  <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(team2)}" th:text="x" onclick="javascript:document.getElementById('team2').value='';document.getElementById('criteria').submit();"/>
 					<input type="hidden" id="team2"  name="team2"  th:if="${!#strings.isEmpty(team2)}" th:value="${team2}"/>
 					<select id="team2" name="team2" th:if="${#strings.isEmpty(team2)}" onchange="javascript:document.getElementById('criteria').submit();">
 						<option value="">Please select team 2</option>
@@ -73,7 +73,7 @@
 					</select>
 					</div>
 					<div th:if="${!#strings.isEmpty(team1)}">
-					City: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-muted" th:if="${!#strings.isEmpty(city)}" th:text="${city}"/> <span style="color:red;" th:if="${!#strings.isEmpty(city)}" th:text="x" onclick="javascript:document.getElementById('city').value='';document.getElementById('criteria').submit();"/>
+					City: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-muted" th:if="${!#strings.isEmpty(city)}" th:text="${city}"/> <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(city)}" th:text="x" onclick="javascript:document.getElementById('city').value='';document.getElementById('criteria').submit();"/>
 					<input type="hidden" id="city" name="city"  th:if="${!#strings.isEmpty(city)}" th:value="${city}"/>
 					<select id="city" name="city" th:if="${#strings.isEmpty(city)}" th:value="${city}" onchange="javascript:document.getElementById('criteria').submit();">
 						<option value="">Please select city</option>
@@ -83,7 +83,7 @@
 					</select>
 					</div>
 					<div  th:if="${!#strings.isEmpty(team1)}">
-					Venue: &nbsp;<span class="text-muted" th:if="${!#strings.isEmpty(venue)}" th:text="${venue}"/> <span style="color:red;" th:if="${!#strings.isEmpty(venue)}" th:text="x" onclick="javascript:document.getElementById('venue').value='';document.getElementById('criteria').submit();"/>
+					Venue: &nbsp;<span class="text-muted" th:if="${!#strings.isEmpty(venue)}" th:text="${venue}"/> <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(venue)}" th:text="x" onclick="javascript:document.getElementById('venue').value='';document.getElementById('criteria').submit();"/>
 					<input type="hidden" id="venue" name="venue"  th:if="${!#strings.isEmpty(venue)}" th:value="${venue}"/>
 					<select id="venue" name="venue" th:if="${#strings.isEmpty(venue)}" th:value="${venue}" onchange="javascript:document.getElementById('criteria').submit();">
 						<option value="">Please select venue</option>
@@ -93,7 +93,7 @@
 					</select>
 					</div>
 					<div  th:if="${!#strings.isEmpty(team1)}">
-						Season: <span class="text-muted" th:if="${!#strings.isEmpty(season)}" th:text="${season}"/> <span style="color:red;" th:if="${!#strings.isEmpty(season)}" th:text="x" onclick="javascript:document.getElementById('season').value='';document.getElementById('criteria').submit();"/>
+						Season: <span class="text-muted" th:if="${!#strings.isEmpty(season)}" th:text="${season}"/> <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(season)}" th:text="x" onclick="javascript:document.getElementById('season').value='';document.getElementById('criteria').submit();"/>
 						<input type="hidden" id="season" name="season"  th:if="${!#strings.isEmpty(season)}" th:value="${season}"/>
 						<select id="season" name="season" th:if="${#strings.isEmpty(season)}" th:value="${season}" onchange="javascript:document.getElementById('criteria').submit();">
 							<option value="">Please select season</option>
@@ -103,7 +103,7 @@
 						</select>
 					</div>
 					<div  th:if="${!#strings.isEmpty(team1)}">
-						Stage: <span class="text-muted" th:if="${!#strings.isEmpty(stage)}" th:text="${stage}"/> <span style="color:red;" th:if="${!#strings.isEmpty(stage)}" th:text="x" onclick="javascript:document.getElementById('stage').value='';document.getElementById('criteria').submit();"/>
+						Stage: <span class="text-muted" th:if="${!#strings.isEmpty(stage)}" th:text="${stage}"/> <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(stage)}" th:text="x" onclick="javascript:document.getElementById('stage').value='';document.getElementById('criteria').submit();"/>
 						<input type="hidden"  id="stage" name="stage"  th:if="${!#strings.isEmpty(stage)}" th:value="${stage}"/>
 						<select  id="stage" name="stage" th:if="${#strings.isEmpty(stage)}" th:value="${stage}" onchange="javascript:document.getElementById('criteria').submit();">
 							<option value="">Please select stage</option>
