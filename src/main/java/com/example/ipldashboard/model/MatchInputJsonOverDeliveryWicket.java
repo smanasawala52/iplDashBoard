@@ -42,8 +42,19 @@ public class MatchInputJsonOverDeliveryWicket {
 
 	@Override
 	public String toString() {
-		return "MatchInputJsonOverDeliveryWicket [kind=" + kind + ", playerOut="
-				+ playerOut + ", fielders=" + fielders + "]";
+				StringBuilder sb = new StringBuilder();
+		sb.append(playerOut).append(" was ").append(kind);
+		if (fielders != null && !fielders.isEmpty()) {
+			String pre = " by ";
+			for (Map<String, String> fielder : fielders) {
+				sb.append(pre).append(fielder.get("name"));
+				pre = " and ";
+			}
+		}
+		// "MatchInputJsonOverDeliveryWicket [kind=" + kind + ", playerOut="
+		// + playerOut + ", fielders=" + fielders + "]";
+		return sb.toString();
+
 	}
 
 }
