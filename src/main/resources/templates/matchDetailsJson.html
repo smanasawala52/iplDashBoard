@@ -116,18 +116,16 @@
                </div>
             </div>
             <div class="card" style="flex: 0 0 100%; margin: 10px;">
-               <h5 class="card-title">Players</h5>
-               <div class="card-body" th:each="player,iterStatPlayer: ${match.info.players}">
-                  <span th:text="${player.key}"></span>
-                  <div class="card-text" th:if="${player.value}" th:each="team,iterStat: ${player.value}" >
-                     <span class="text-muted" th:text="${team}"></span>
-                  </div>
-               </div>
-            </div>
-            <div class="card" style="flex: 0 0 100%; margin: 10px;">
                <h5 class="card-title">Innings</h5>
                <div class="card-body" th:each="inning,iterStatInning: ${match.innings}">
-                  <span th:text="${inning.team}"></span>
+                  <h6 th:text="${inning.team}"></h6> <span th:if="${inning.target!=null && inning.target.runs > 0}" th:text="@{'(Target - needed '+${inning.target.runs} +' to win in ' +${inning.target.overs} +' overs)'}"></span>
+                  <br>
+                  <div>
+                  Score Card
+                     <div th:if="${!#lists.isEmpty(inning.batters)}" th:each="batter,iterStatBatter: ${inning.batters}" >
+                     <span th:text="${batter.key}"></span><span th:if="${!batter.value.out}">*</span> Runs: <span class="text-muted" th:text="@{${batter.value.runs} +' - ('+${batter.value.strikeRate}+' S/R, '+${batter.value.sixes}+' Sixes, '+${batter.value.fours}+' Fours, '+${batter.value.ballsPlayed}+' Balls)'}"></span> <span th:if="${batter.value.out}" th:text="${batter.value.wicketInfo}"></span>
+                     </div>
+                  </div>
                   <br>Overs (Click on each over for more info)
                   <div>
                      <span th:if="${!#lists.isEmpty(inning.overs)}" th:each="over,iterStat: ${inning.overs}" >
@@ -153,14 +151,28 @@
                      <td th:text="${delivery.batter}"></td>
                      <td th:text="${delivery.bowler}"></td>
                      <td th:text="${delivery.nonStriker}"></td>
-                     <td th:text="@{${delivery.runs.total} +' (extras: '+ ${delivery.runs.extras} +')'}"></td>
-                     <td  th:text="${delivery.wicketsStr}"></td>
+                     <td th:text="${delivery.runsStr}"></td>
+                     <td th:text="${delivery.wicketsStr}"></td>
+                     </tr>
+                     <tr>
+                     <th colspan="4" th:text="@{'Run rate: '+${over.runRate}}"></th>
+                     <th colspan="2" th:text="@{'Score: '+${over.cummulativeRuns} +'/'+ ${over.cummulativeWickets}}"></th>
                      </tr>
                      </tbody>
                      </table>
                      
                   </div>
-                  <a style="display:none;" onclick="javascript:closeOvers(this.id);return false;" th:id="@{'class_over_details_' + ${#strings.replace(inning.team,' ', '_')}}" class="btn btn-primary">Close</a>
+                  <br>
+                  <button style="display:none;" onclick="javascript:closeOvers(this.id);return false;" th:id="@{'class_over_details_' + ${#strings.replace(inning.team,' ', '_')}}" class="btn btn-primary">Close</button>
+               </div>
+            </div>
+            <div class="card" style="flex: 0 0 100%; margin: 10px;">
+               <h5 class="card-title">Players</h5>
+               <div class="card-body" th:each="player,iterStatPlayer: ${match.info.players}">
+                  <span th:text="${player.key}"></span>
+                  <div class="card-text" th:if="${player.value}" th:each="team,iterStat: ${player.value}" >
+                     <span class="text-muted" th:text="${team}"></span>
+                  </div>
                </div>
             </div>
          </section>

@@ -1,5 +1,6 @@
 package com.example.ipldashboard.model;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,12 @@ public class MatchInputJsonInning {
 	private Map<String, MatchInputJsonInningMiscountedOvers> miscountedOvers;
 	private MatchInputJsonTarget target;
 	private boolean superOver;
+
+	private Map<String, MatchInputJsonInningBatters> batters = new HashMap<>();
+	private Map<String, MatchInputJsonInningBowlers> bowlers = new HashMap<>();
+
+	private int totalFours;
+	private int totalSixes;
 
 	public String getTeam() {
 		return team;
@@ -80,8 +87,7 @@ public class MatchInputJsonInning {
 		return miscountedOvers;
 	}
 
-	public void setMiscountedOvers(
-			Map<String, MatchInputJsonInningMiscountedOvers> miscountedOvers) {
+	public void setMiscountedOvers(Map<String, MatchInputJsonInningMiscountedOvers> miscountedOvers) {
 		this.miscountedOvers = miscountedOvers;
 	}
 
@@ -101,14 +107,44 @@ public class MatchInputJsonInning {
 		this.superOver = superOver;
 	}
 
+	public Map<String, MatchInputJsonInningBatters> getBatters() {
+		return batters;
+	}
+
+	public void setBatters(Map<String, MatchInputJsonInningBatters> batters) {
+		this.batters = batters;
+	}
+
+	public Map<String, MatchInputJsonInningBowlers> getBowlers() {
+		return bowlers;
+	}
+
+	public void setBowlers(Map<String, MatchInputJsonInningBowlers> bowlers) {
+		this.bowlers = bowlers;
+	}
+
+	public int getTotalFours() {
+		return totalFours;
+	}
+
+	public void setTotalFours(int totalFours) {
+		this.totalFours = totalFours;
+	}
+
+	public int getTotalSixes() {
+		return totalSixes;
+	}
+
+	public void setTotalSixes(int totalSixes) {
+		this.totalSixes = totalSixes;
+	}
+
 	@Override
 	public String toString() {
-		return "MatchInputJsonInning [team=" + team + ", overs=" + overs
-				+ ", absentHurt=" + absentHurt + ", penaltyRuns=" + penaltyRuns
-				+ ", declared=" + declared + ", forfeited=" + forfeited
-				+ ", powerplays=" + powerplays + ", miscountedOvers="
-				+ miscountedOvers + ", target=" + target + ", superOver="
-				+ superOver + "]";
+		return "MatchInputJsonInning [team=" + team + ", overs=" + overs + ", absentHurt=" + absentHurt
+				+ ", penaltyRuns=" + penaltyRuns + ", declared=" + declared + ", forfeited=" + forfeited
+				+ ", powerplays=" + powerplays + ", miscountedOvers=" + miscountedOvers + ", target=" + target
+				+ ", superOver=" + superOver + "]";
 	}
 
 }

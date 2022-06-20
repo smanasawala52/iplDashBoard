@@ -9,6 +9,15 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 public class MatchInputJsonOver {
 	private int over;
 	private List<MatchInputJsonOverDelivery> deliveries;
+	private int cummulativeRuns;
+	private int cummulativeWickets;
+	private double runRate;
+
+	@Override
+	public String toString() {
+		return "MatchInputJsonOver [over=" + over + ", deliveries=" + deliveries + ", cummulativeRuns="
+				+ cummulativeRuns + ", cummulativeWickets=" + cummulativeWickets + ", runRate=" + runRate + "]";
+	}
 
 	public int getOver() {
 		return over;
@@ -26,9 +35,28 @@ public class MatchInputJsonOver {
 		this.deliveries = deliveries;
 	}
 
-	@Override
-	public String toString() {
-		return "MatchInputJsonOver [over=" + over + ", deliveries=" + deliveries
-				+ "]";
+	public int getCummulativeRuns() {
+		return cummulativeRuns;
 	}
+
+	public void setCummulativeRuns(int cummulativeRuns) {
+		this.cummulativeRuns = cummulativeRuns;
+	}
+
+	public int getCummulativeWickets() {
+		return cummulativeWickets;
+	}
+
+	public void setCummulativeWickets(int cummulativeWickets) {
+		this.cummulativeWickets = cummulativeWickets;
+	}
+
+	public double getRunRate() {
+		return runRate;
+	}
+
+	public void setRunRate(double runRate) {
+		this.runRate = runRate;
+	}
+
 }

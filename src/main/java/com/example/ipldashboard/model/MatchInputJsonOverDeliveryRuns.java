@@ -5,17 +5,17 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class MatchInputJsonOverDeliveryRuns {
-	private int batsman;
+	private int batter;
 	private int extras;
 	private boolean nonBoundary;
 	private int total;
 
-	public int getBatsman() {
-		return batsman;
+	public int getBatter() {
+		return batter;
 	}
 
-	public void setBatsman(int batsman) {
-		this.batsman = batsman;
+	public void setBatter(int batter) {
+		this.batter = batter;
 	}
 
 	public int getExtras() {
@@ -44,9 +44,12 @@ public class MatchInputJsonOverDeliveryRuns {
 
 	@Override
 	public String toString() {
-		return "MatchInputJsonOverDeliveryRuns [batsman=" + batsman
-				+ ", extras=" + extras + ", nonBoundary=" + nonBoundary
-				+ ", total=" + total + "]";
+		StringBuilder sb = new StringBuilder();
+		sb.append(total);
+		return sb.toString();
+//		return "MatchInputJsonOverDeliveryRuns [batsman=" + batsman
+//				+ ", extras=" + extras + ", nonBoundary=" + nonBoundary
+//				+ ", total=" + total + "]";
 	}
 
 }

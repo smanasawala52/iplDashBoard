@@ -171,6 +171,9 @@ public class DataService {
 		try {
 			MatchInputJson value = objectMapper.readValue(new File(dirLocation + "/" + key + ".json"),
 					MatchInputJson.class);
+			if (value != null) {
+				value.populateCummulativeData();
+			}
 			return value;
 		} catch (Exception e) {
 			e.printStackTrace();
