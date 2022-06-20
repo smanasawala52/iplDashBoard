@@ -77,6 +77,19 @@ public class MatchInputJsonOverDelivery {
 	public List<MatchInputJsonOverDeliveryWicket> getWickets() {
 		return wickets;
 	}
+	
+	public String getWicketsStr() {
+		StringBuilder sb = new StringBuilder();
+		if (wickets != null && !wickets.isEmpty()) {
+			String pre = "";
+			for (MatchInputJsonOverDeliveryWicket wicket : wickets) {
+				sb.append(pre).append(wicket.toString());
+				pre = ", ";
+			}
+		}
+		return sb.toString();
+	}
+
 
 	public void setWickets(List<MatchInputJsonOverDeliveryWicket> wickets) {
 		this.wickets = wickets;
