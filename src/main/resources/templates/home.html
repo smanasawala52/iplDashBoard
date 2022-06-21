@@ -72,7 +72,7 @@
 						</div>
 					</select>
 					</div>
-					<div th:if="${!#strings.isEmpty(team1)}">
+					<div th:if="${!#strings.isEmpty(team1) && #strings.isEmpty(venue)}">
 					City: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-muted" th:if="${!#strings.isEmpty(city)}" th:text="${city}"/> <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(city)}" th:text="x" onclick="javascript:document.getElementById('city').value='';document.getElementById('criteria').submit();"/>
 					<input type="hidden" id="city" name="city"  th:if="${!#strings.isEmpty(city)}" th:value="${city}"/>
 					<select id="city" name="city" th:if="${#strings.isEmpty(city)}" th:value="${city}" onchange="javascript:document.getElementById('criteria').submit();">
@@ -176,6 +176,7 @@
                </div>
             </div>
             <a href="/loadMatchData" target="_blank" class="btn btn-primary">Load Match Data</a>
+            <a href="/city" class="btn btn-primary">Cities</a>
          </section>
       </div>
    </body>

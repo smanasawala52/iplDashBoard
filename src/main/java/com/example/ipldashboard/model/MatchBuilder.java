@@ -155,7 +155,19 @@ public class MatchBuilder {
 			}
 			if (venue.equalsIgnoreCase("Dr DY Patil Sports Academy, Mumbai")) {
 				venue = "Dr DY Patil Sports Academy";
-				this.match.setCity("Nagpur");
+				this.match.setCity("Mumbai");
+			}
+			if (venue.equalsIgnoreCase("Maharashtra Cricket Association Stadium, Pune")) {
+				venue = "Maharashtra Cricket Association Stadium";
+				this.match.setCity("Pune");
+			}
+			if (venue.equalsIgnoreCase("Rajiv Gandhi International Stadium, Uppal")) {
+				venue = "Rajiv Gandhi International Stadium";
+				this.match.setCity("Hyderabad");
+			}
+			if (venue.equalsIgnoreCase("Eden Gardens, Kolkata")) {
+				venue = "Eden Gardens";
+				this.match.setCity("Kolkata");
 			}
 
 		}

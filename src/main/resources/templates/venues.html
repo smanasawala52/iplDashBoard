@@ -29,7 +29,7 @@
 	               		<p class="card-text">Total Matches Resulted Win or Loose: <span class="text-muted" th:text="${venue.totalWins}"></span></p>
 	               		<p class="card-text" th:if="${venue.totalNoResult>0}">Total Matches No Results: <span class="text-muted" th:text="${venue.totalNoResult}"></span></p>
                         
-                     <a href="#" target="_blank" th:href="@{'/venue/' + ${venue.name}}" >View venue details</a>
+                     <a th:href="@{'/venue/' + ${venue.name}}" >View venue details</a>
                   </div>
                </div>
          </section>
