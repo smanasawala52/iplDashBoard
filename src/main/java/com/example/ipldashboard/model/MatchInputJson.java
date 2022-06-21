@@ -77,11 +77,14 @@ public class MatchInputJson {
 							for (MatchInputJsonOverDeliveryWicket wicket : delivery.getWickets()) {
 								if (inning.getBatters().get(wicket.getPlayerOut()) != null) {
 									inning.getBatters().get(wicket.getPlayerOut()).setOut(true);
-									inning.getBatters().get(wicket.getPlayerOut()).setWicketInfo(wicket.toString());
+									inning.getBatters().get(wicket.getPlayerOut())
+											.setWicketInfo(wicket.toString() + " bolwer: " + delivery.getBowler()
+													+ " in the " + (over.getOver() + 1) + " over");
 								} else {
 									MatchInputJsonInningBatters value = new MatchInputJsonInningBatters();
 									value.setName(wicket.getPlayerOut());
-									value.setWicketInfo(wicket.toString());
+									value.setWicketInfo(wicket.toString() + " bolwer: " + delivery.getBowler()
+											+ " in the " + (over.getOver() + 1) + " over");
 									inning.getBatters().put(wicket.getPlayerOut(), value);
 								}
 								cummulativeWickets += 1;

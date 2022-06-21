@@ -115,9 +115,13 @@
                   </div>
                </div>
             </div>
+            <div id="curve_chart"></div>
             <div class="card" style="flex: 0 0 100%; margin: 10px;">
                <h5 class="card-title">Innings</h5>
+               <input type="hidden" class="chart_data_class" id="chart_data[0][0]" value="Overs" />
                <div class="card-body" th:each="inning,iterStatInning: ${match.innings}">
+               <input type="hidden" th:id="@{'chrt_team_'+ ${iterStatInning.index+1}}" th:value="${inning.team}" />
+               <input type="hidden" class="chart_data_class" th:id="@{'chart_data[0]['+ ${iterStatInning.index+1} + ']'}" th:value="${inning.team}" />
                   <h6 th:text="${inning.team}"></h6> <span th:if="${inning.target!=null && inning.target.runs > 0}" th:text="@{'(Target - needed '+${inning.target.runs} +' to win in ' +${inning.target.overs} +' overs)'}"></span>
                   <br>
                   <div>
@@ -129,6 +133,8 @@
                   <br>Overs (Click on each over for more info)
                   <div>
                      <span th:if="${!#lists.isEmpty(inning.overs)}" th:each="over,iterStat: ${inning.overs}" >
+                     <input type="hidden" class="chart_data_class" th:id="@{'chart_data['+ ${iterStat.index+1} +'][0]'}" th:value="${over.over+1}" />
+                     <input type="hidden" class="chart_data_class" th:id="@{'chart_data['+ ${iterStat.index+1} +']['+ ${iterStatInning.index+1} + ']'}" th:value="${over.cummulativeRuns}" />
                      <a  onclick="javascript:openOvers(this.id);return false;" th:id="@{'over_details_' + ${#strings.replace(inning.team,' ', '_')} + '_' + ${over.over+1}}" class="btn btn-primary" th:text="${over.over+1}"></a>
                      </span>
                   </div>
@@ -198,5 +204,48 @@
           return false;
          }
       </script>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <script type="text/javascript" th:inline="javascript">
+      function drawChart() {
+    	  var inputs = document.getElementsByClassName( 'chart_data_class' ),
+    	  res  = [], i;
+    	  for (i=0; i<inputs.length; i++){
+
+    	      m = inputs[i].id.match(/\[(\d+)\]\[(\d+)\]/);
+    	      console.log(m);
+    	     if(!res[m[1]]){
+    	        res[m[1]] = [undefined,undefined,undefined];
+    	     }
+    	     if(m[1]==0){
+     	     	res[m[1]][m[2]]= inputs[i].value;
+     	     }else if(m[2]==0){
+    	     	res[m[1]][m[2]]= inputs[i].value;
+    	     }else{
+    	    	 res[m[1]][m[2]]= parseInt(inputs[i].value, 10);
+    	     }
+
+    	    }
+
+    	   console.log(res);
+    	   
+    	  var chrt_team_1 = document.getElementById('chrt_team_1').value;
+    	  var chrt_team_2 = document.getElementById('chrt_team_2').value;
+        var data = google.visualization.arrayToDataTable(res);
+
+        var options = {
+          title: 'Run Progress',
+          //curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+      </script>
+      <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+    </script>
    </body>
 </html>
