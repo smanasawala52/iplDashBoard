@@ -13,6 +13,45 @@
          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
          crossorigin="anonymous"></script>
          <style>
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0d6efd;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0d6efd;
+  cursor: pointer;
+}
+</style>
+         <style>
 #deliveries {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -130,13 +169,17 @@
                      <span th:text="${batter.key}"></span><span th:if="${!batter.value.out}">*</span> Runs: <span class="text-muted" th:text="@{${batter.value.runs} +' - ('+${batter.value.strikeRate}+' S/R, '+${batter.value.sixes}+' Sixes, '+${batter.value.fours}+' Fours, '+${batter.value.ballsPlayed}+' Balls)'}"></span> <span th:if="${batter.value.out}" th:text="${batter.value.wicketInfo}"></span>
                      </div>
                   </div>
-                  <br>Overs (Click on each over for more info)
+                  <br>Overs (Slide on each over for more info)
                   <div>
                      <span th:if="${!#lists.isEmpty(inning.overs)}" th:each="over,iterStat: ${inning.overs}" >
                      <input type="hidden" class="chart_data_class" th:id="@{'chart_data['+ ${iterStat.index+1} +'][0]'}" th:value="${over.over+1}" />
                      <input type="hidden" class="chart_data_class" th:id="@{'chart_data['+ ${iterStat.index+1} +']['+ ${iterStatInning.index+1} + ']'}" th:value="${over.cummulativeRuns}" />
-                     <a  onclick="javascript:openOvers(this.id);return false;" th:id="@{'over_details_' + ${#strings.replace(inning.team,' ', '_')} + '_' + ${over.over+1}}" class="btn btn-primary" th:text="${over.over+1}"></a>
+                    <!--  <a  onclick="javascript:openOvers(this.id);return false;" th:id="@{'over_details_' + ${#strings.replace(inning.team,' ', '_')} + '_' + ${over.over+1}}" class="btn btn-primary" th:text="${over.over+1}"></a>-->
                      </span>
+                     <div th:if="${!#lists.isEmpty(inning.overs)}" class="slidecontainer">
+					  <input oninput="javascript:openOversSlider(this);" type="range" min="1" th:max="${#lists.size(inning.overs)}" value="1" class="slider" th:id="@{'over_details_' + ${#strings.replace(inning.team,' ', '_')}}" >
+					</div>
+					                     
                   </div>
                   <div th:class="@{'class_over_details_' + ${#strings.replace(inning.team,' ', '_')}}" style="display:none;" th:if="${!#lists.isEmpty(inning.overs)}" th:each="over,iterStat: ${inning.overs}" th:id="@{'det_over_details_' + ${#strings.replace(inning.team,' ', '_')} + '_' + ${over.over+1}}">
                   Deliveries Info for Over <span  th:text="${over.over+1}"></span><br>
@@ -185,6 +228,11 @@
       </div>
       
       <script>
+      function openOversSlider(obj){
+    	  var id = obj.id;
+    	  var over = obj.value;
+    	  openOvers(id+'_'+over);
+      }
          function openOvers(id){
           var temp = id.substring(0, id.lastIndexOf('_'));
           var divsToHide = document.getElementsByClassName("class_"+temp);
