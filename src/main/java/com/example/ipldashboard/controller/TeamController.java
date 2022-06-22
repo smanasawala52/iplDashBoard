@@ -165,6 +165,7 @@ public class TeamController {
 		queryMap.put("result", "");
 		queryMap.put("tossWinner", "");
 		queryMap.put("tossDecision", "");
+		queryMap.put("player", "");
 		modelAndView.addObject("pageSize", 10);
 
 		if (queryParams != null && !queryParams.isEmpty()) {

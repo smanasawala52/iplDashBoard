@@ -14,6 +14,7 @@ public class MatchInputJsonInningBatters {
 	private int fives;
 	private int sixes;
 	private boolean out = false;
+	private String kind;
 
 	public String getName() {
 		return name;
@@ -95,13 +96,6 @@ public class MatchInputJsonInningBatters {
 		this.sixes = sixes;
 	}
 
-	@Override
-	public String toString() {
-		return "MatchInputJsonInningBatters [name=" + name + ", runs=" + runs + ", strikeRate=" + strikeRate
-				+ ", zeros=" + zeros + ", ones=" + ones + ", twos=" + twos + ", threes=" + threes + ", fours=" + fours
-				+ ", fives=" + fives + ", sixes=" + sixes + "]";
-	}
-
 	public boolean isOut() {
 		return out;
 	}
@@ -124,6 +118,22 @@ public class MatchInputJsonInningBatters {
 
 	public void setWicketInfo(String wicketInfo) {
 		this.wicketInfo = wicketInfo;
+	}
+
+	public String getKind() {
+		return kind;
+	}
+
+	public void setKind(String kind) {
+		this.kind = kind;
+	}
+
+	@Override
+	public String toString() {
+		return "MatchInputJsonInningBatters [name=" + name + ", runs=" + runs + ", strikeRate=" + strikeRate
+				+ ", ballsPlayed=" + ballsPlayed + ", wicketInfo=" + wicketInfo + ", zeros=" + zeros + ", ones=" + ones
+				+ ", twos=" + twos + ", threes=" + threes + ", fours=" + fours + ", fives=" + fives + ", sixes=" + sixes
+				+ ", out=" + out + ", kind=" + kind + "]";
 	}
 
 }

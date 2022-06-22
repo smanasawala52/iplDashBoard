@@ -161,12 +161,18 @@
                <div class="card-body" th:each="inning,iterStatInning: ${match.innings}">
                <input type="hidden" th:id="@{'chrt_team_'+ ${iterStatInning.index+1}}" th:value="${inning.team}" />
                <input type="hidden" class="chart_data_class" th:id="@{'chart_data[0]['+ ${iterStatInning.index+1} + ']'}" th:value="${inning.team}" />
-                  <h6 th:text="${inning.team}"></h6> <span th:if="${inning.target!=null && inning.target.runs > 0}" th:text="@{'(Target - needed '+${inning.target.runs} +' to win in ' +${inning.target.overs} +' overs)'}"></span>
+                  <h5 th:text="${inning.team}"></h5> <span th:if="${inning.target!=null && inning.target.runs > 0}" th:text="@{'(Target - needed '+${inning.target.runs} +' to win in ' +${inning.target.overs} +' overs)'}"></span>
                   <br>
                   <div>
-                  Score Card
+                  
+                  	<h6>Score Card</h6>
+                  	<strong>Batsmen</strong>
                      <div th:if="${!#lists.isEmpty(inning.batters)}" th:each="batter,iterStatBatter: ${inning.batters}" >
                      <span th:text="${batter.key}"></span><span th:if="${!batter.value.out}">*</span> Runs: <span class="text-muted" th:text="@{${batter.value.runs} +' - ('+${batter.value.strikeRate}+' S/R, '+${batter.value.sixes}+' Sixes, '+${batter.value.fours}+' Fours, '+${batter.value.ballsPlayed}+' Balls)'}"></span> <span th:if="${batter.value.out}" th:text="${batter.value.wicketInfo}"></span>
+                     </div>
+                     <strong>Bowlers</strong>
+                     <div th:if="${!#lists.isEmpty(inning.bowlers)}" th:each="bowler,iterStatBlower: ${inning.bowlers}" >
+                     <span th:text="${bowler.key}"></span> <span class="text-muted" th:text="@{${bowler.value.wickets} +'-'+ ${bowler.value.totalRunsGiven} +' ('+${bowler.value.economyRate}+' Econ.)'}"></span>
                      </div>
                   </div>
                   <br>Overs (Slide on each over for more info)

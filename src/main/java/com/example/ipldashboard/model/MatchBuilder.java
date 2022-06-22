@@ -293,7 +293,7 @@ public class MatchBuilder {
 	}
 
 	public MatchBuilder setOfficials(MatchInputJsonInfoOfficials officials) {
-		System.out.println("officials: " + officials);
+//		System.out.println("officials: " + officials);
 		if (officials != null) {
 			StringBuilder sb = new StringBuilder();
 			String pre = "";
@@ -324,6 +324,13 @@ public class MatchBuilder {
 	public MatchBuilder setPlayerOfMatch(List<String> playerOfMatch) {
 		if (playerOfMatch != null) {
 			this.match.setPlayerOfMatch(playerOfMatch.stream().collect(Collectors.joining(", ")));
+		}
+		return this;
+	}
+
+	public MatchBuilder setPlayers(String players) {
+		if (players != null) {
+			this.match.setPlayers(players);
 		}
 		return this;
 	}

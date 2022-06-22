@@ -112,6 +112,16 @@
 							</div>
 						</select>
 					</div>
+					<div  th:if="${!#strings.isEmpty(team1)}">
+					Players: &nbsp;<span class="text-muted" th:if="${!#strings.isEmpty(player)}" th:text="${player}"/> <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(player)}" th:text="x" onclick="javascript:document.getElementById('player').value='';document.getElementById('criteria').submit();"/>
+					<input type="hidden" id="player" name="player"  th:if="${!#strings.isEmpty(player)}" th:value="${player}"/>
+					<select id="player" name="player" th:if="${#strings.isEmpty(player)}" th:value="${player}" onchange="javascript:document.getElementById('criteria').submit();">
+						<option value="">Please select player</option>
+						<div th:if="${!#lists.isEmpty(team.players)}" th:each="teamName: ${team.players}">
+							<option th:text="${teamName}" th:value="${teamName}" th:selected="${teamName == player}"></option>
+						</div>
+					</select>
+					</div>
 	         	</div>
 	         	</form>
 	          <a href="/" class="btn btn-primary" th:if="${!#strings.isEmpty(team1)}">Reset</a>

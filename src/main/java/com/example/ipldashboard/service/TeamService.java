@@ -216,6 +216,7 @@ public class TeamService {
 			String result = queryParams.get("result");
 			String tossWinner = queryParams.get("tossWinner");
 			String tossDecision = queryParams.get("tossDecision");
+			String player = queryParams.get("player");
 			int cp = 0;
 			try {
 				cp = Integer.parseInt(queryParams.get("cp"));
@@ -269,6 +270,9 @@ public class TeamService {
 			if (tossDecision != null && !tossDecision.isEmpty()) {
 				stream = stream.filter(x -> x.getTossDecision().equalsIgnoreCase(tossDecision));
 			}
+			if (player != null && !player.isEmpty()) {
+				stream = stream.filter(x -> x.getPlayers().contains(player));
+			}
 			final List<Match> tempMatches = new ArrayList<>();
 			final Map<String, Venue> venues = new HashMap<>();
 			final Map<String, Team> otherTeams = new TreeMap<>();
@@ -276,12 +280,38 @@ public class TeamService {
 			final SortedSet<String> seasons = new TreeSet<>();
 			final SortedSet<String> eventStages = new TreeSet<>();
 			final SortedSet<String> cities = new TreeSet<>();
+			final SortedSet<String> players = new TreeSet<>();
 			final Team t1 = new Team();
 			final Team t2 = new Team();
 
 			if (stream != null) {
 				stream.forEach(x -> {
 					tempMatches.add(x);
+					Map<String, List<String>> playersMap = new HashMap<>();
+					if (x.getPlayers() != null) {
+						String[] playerTeams = x.getPlayers().split("\\^");
+//						System.out.println("------------playerTeams raw------------------------: " + x.getPlayers());
+//						List<String> playerTeams = Arrays.asList(x.getPlayers().split("^"));
+						for (int i = 0; i < playerTeams.length; i++) {
+//							System.out.println(
+//									"----i: " + i + "--------playerTeams------------------------: " + playerTeams[i]);
+							String[] playerTeamsPlayer = playerTeams[i].split("\\|");
+							List<String> tmpPlayers = new ArrayList<>();
+							String[] playerslst = playerTeamsPlayer[1].split(",");
+							for (int j = 0; j < playerslst.length; j++) {
+								tmpPlayers.add(playerslst[j]);
+							}
+							playersMap.put(playerTeamsPlayer[0], tmpPlayers);
+						}
+//						for (String playerTeam : playerTeams) {
+//							List<String> playerTeamsPlayer = Arrays.asList(playerTeam.split("|"));
+//							System.out.println(
+//									"------------playerTeamsPlayer------------------------: " + playerTeamsPlayer);
+//							playersMap.put(playerTeamsPlayer.get(0),
+//									Arrays.asList(playerTeamsPlayer.get(1).split(",")));
+//						}
+//						System.out.println("------------------------------------: " + playersMap);
+					}
 					Team otherTeam = new Team();
 					if (otherTeams.get(x.getTeam2()) == null) {
 						otherTeam.setName(x.getTeam2());
@@ -290,6 +320,10 @@ public class TeamService {
 					}
 					if (team1 != null && !team1.isEmpty()) {
 						t1.setName(team1);
+						if (playersMap.get(team1) != null) {
+							System.out.println(team1 + "playersMap.get(team1)" + playersMap.get(team1));
+							players.addAll(playersMap.get(team1));
+						}
 						if (x.getTeam1().equals(team1)) {
 							// add team2 details to teams2Names and
 							// teams2Matches for comparsion
@@ -517,6 +551,7 @@ public class TeamService {
 					if (x.getEventStage() != null) {
 						eventStages.add(x.getEventStage());
 					}
+
 					if (x.getCity() != null) {
 						cities.add(x.getCity());
 					} else {
@@ -571,20 +606,21 @@ public class TeamService {
 					t1.getTeams().add(otherTeam.getValue());
 				}
 			}
-			System.out.println(cities);
+			// System.out.println(cities);
 			t1.setCities(cities);
+			t1.setPlayers(players);
 			t1.setTeamNames(new TreeSet<>(otherTeams.keySet()));
-			System.out.println("-------------------------------");
-			System.out.println(t1.getTeams());
-			System.out.println("-------------------------------");
+			// System.out.println("-------------------------------");
+			// System.out.println(t1.getTeams());
+			// System.out.println("-------------------------------");
 			List<Team> teams = new ArrayList<>();
 			teams.add(t1);
 			if (team2 != null && !team2.isEmpty()) {
 				teams.add(t2);
 			}
-			System.out.println("-----------TEAMS--------------------" + team2);
-			System.out.println(t2);
-			System.out.println("-------------------------------");
+			// System.out.println("-----------TEAMS--------------------" + team2);
+			// System.out.println(t2);
+			// System.out.println("-------------------------------");
 			return teams;
 		}
 

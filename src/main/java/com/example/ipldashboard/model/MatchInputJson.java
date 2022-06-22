@@ -42,14 +42,20 @@ public class MatchInputJson {
 						if (batter == null) {
 							batter = new MatchInputJsonInningBatters();
 						}
+						MatchInputJsonInningBowlers bowler = inning.getBowlers().get(delivery.getBowler());
+						if (bowler == null) {
+							bowler = new MatchInputJsonInningBowlers();
+						}
 						delivery.getRunsStr();
 						if (!delivery.isIllegalDelivery()) {
 							batter.setBallsPlayed(batter.getBallsPlayed() + 1);
+							bowler.setBalls(bowler.getBalls() + 1);
 						}
 						if (delivery.getRuns() != null) {
 							cummulativeRuns += delivery.getRuns().getTotal();
 							batter.setName(delivery.getBatter());
 							batter.setRuns(batter.getRuns() + delivery.getRuns().getBatter());
+							bowler.setTotalRunsGiven(bowler.getTotalRunsGiven() + delivery.getRuns().getTotal());
 							if (delivery.getRuns().getBatter() == 0) {
 								batter.setZeros(batter.getZeros() + 1);
 							} else if (delivery.getRuns().getBatter() == 1) {
@@ -72,11 +78,29 @@ public class MatchInputJson {
 						r *= 100.0;
 						double salary = Math.round(r * 100.0) / 100.0;
 						batter.setStrikeRate(salary);
+
 						inning.getBatters().put(delivery.getBatter(), batter);
+						r = (double) bowler.getTotalRunsGiven() / bowler.getOvers();
+						// r *= 100.0;
+						salary = Math.round(r * 100.0) / 100.0;
+						bowler.setEconomyRate(salary);
+
+						inning.getBowlers().put(delivery.getBowler(), bowler);
 						if (delivery.getWickets() != null) {
 							for (MatchInputJsonOverDeliveryWicket wicket : delivery.getWickets()) {
+								if (wicket.getKind().equalsIgnoreCase("bowled")
+										|| wicket.getKind().equalsIgnoreCase("caught")
+										|| wicket.getKind().equalsIgnoreCase("caught and bowled")
+										|| wicket.getKind().equalsIgnoreCase("lbw")
+										|| wicket.getKind().equalsIgnoreCase("stumped")
+										|| wicket.getKind().equalsIgnoreCase("hit the ball twice")
+										|| wicket.getKind().equalsIgnoreCase("handled the ball")) {
+									inning.getBowlers().get(delivery.getBowler())
+											.setWickets(inning.getBowlers().get(delivery.getBowler()).getWickets() + 1);
+								}
 								if (inning.getBatters().get(wicket.getPlayerOut()) != null) {
 									inning.getBatters().get(wicket.getPlayerOut()).setOut(true);
+									inning.getBatters().get(wicket.getPlayerOut()).setKind(wicket.getKind());
 									inning.getBatters().get(wicket.getPlayerOut())
 											.setWicketInfo(wicket.toString() + " bolwer: " + delivery.getBowler()
 													+ " in the " + (over.getOver() + 1) + " over");

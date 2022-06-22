@@ -66,6 +66,8 @@ public class Team implements Comparable<Team> {
 
 	@Transient
 	private SortedSet<String> teamNames = new TreeSet<>();
+	@Transient
+	private SortedSet<String> players = new TreeSet<>();
 
 	@Transient
 	private SortedSet<String> cities = new TreeSet<>();
@@ -566,6 +568,14 @@ public class Team implements Comparable<Team> {
 		this.cities = cities;
 	}
 
+	public SortedSet<String> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(SortedSet<String> players) {
+		this.players = players;
+	}
+
 	@Override
 	public String toString() {
 		return "Team [id=" + id + ", name=" + name + ", totalMatches=" + totalMatches + ", totalWins=" + totalWins
@@ -582,7 +592,7 @@ public class Team implements Comparable<Team> {
 				+ ", totalWinsByWiketsPercent=" + totalWinsByWiketsPercent + ", totalWinsByRuns=" + totalWinsByRuns
 				+ ", totalWinsByRunsPercent=" + totalWinsByRunsPercent + ", matches=" + matches + ", teams=" + teams
 				+ ", venues=" + venues + ", seasons=" + seasons + ", eventGroups=" + eventGroups + ", eventStage="
-				+ eventStage + ", teamNames=" + teamNames + "]";
+				+ eventStage + ", teamNames=" + teamNames + ", players=" + players + ", cities=" + cities + "]";
 	}
 
 }
