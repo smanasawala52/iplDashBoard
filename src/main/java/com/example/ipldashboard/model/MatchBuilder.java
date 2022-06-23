@@ -189,6 +189,9 @@ public class MatchBuilder {
 	 * @param team1 the team1 to set
 	 */
 	public MatchBuilder setTeam1(String team1) {
+		if (team1.equalsIgnoreCase("Rising Pune Supergiants")) {
+			team1 = "Rising Pune Supergiant";
+		}
 		this.match.setTeam1(team1);
 		return this;
 	}
@@ -197,6 +200,9 @@ public class MatchBuilder {
 	 * @param team2 the team2 to set
 	 */
 	public MatchBuilder setTeam2(String team2) {
+		if (team2.equalsIgnoreCase("Rising Pune Supergiants")) {
+			team2 = "Rising Pune Supergiant";
+		}
 		this.match.setTeam2(team2);
 		return this;
 	}

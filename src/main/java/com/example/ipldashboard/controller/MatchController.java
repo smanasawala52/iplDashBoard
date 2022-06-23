@@ -51,18 +51,23 @@ public class MatchController {
 	}
 
 	public String getOutcome(MatchInputJson matchInputJson) {
-		MatchInputJsonOutcome outcome = matchInputJson.getInfo().getOutcome();
 		StringBuilder sb = new StringBuilder();
-		if (outcome.getWinner() != null) {
-			sb.append(outcome.getWinner()).append(" won by ");
-			if (outcome.getBy() != null) {
-				if (outcome.getBy().getWickets() > 0) {
-					sb.append(outcome.getBy().getWickets()).append(" wickets.");
-				} else if (outcome.getBy().getRuns() > 0) {
-					sb.append(outcome.getBy().getRuns()).append(" runs.");
-				} else if (outcome.getBy().getInnings() > 0) {
-					sb.append(outcome.getBy().getInnings()).append(" innings.");
+		if (matchInputJson != null && matchInputJson.getInfo() != null
+				&& matchInputJson.getInfo().getOutcome() != null) {
+			MatchInputJsonOutcome outcome = matchInputJson.getInfo().getOutcome();
+			if (outcome.getWinner() != null) {
+				sb.append(outcome.getWinner()).append(" won by ");
+				if (outcome.getBy() != null) {
+					if (outcome.getBy().getWickets() > 0) {
+						sb.append(outcome.getBy().getWickets()).append(" wickets.");
+					} else if (outcome.getBy().getRuns() > 0) {
+						sb.append(outcome.getBy().getRuns()).append(" runs.");
+					} else if (outcome.getBy().getInnings() > 0) {
+						sb.append(outcome.getBy().getInnings()).append(" innings.");
+					}
 				}
+			} else {
+				sb.append("Match returned no Result.");
 			}
 		} else {
 			sb.append("Match returned no Result.");

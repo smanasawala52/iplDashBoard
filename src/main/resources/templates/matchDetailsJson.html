@@ -85,10 +85,10 @@
          </nav>
          <section class="content">
             <h1>Match Details</h1>
-            <div class="card" style="flex: 0 0 100%; margin: 10px;">
+            <div class="card" style="flex: 0 0 100%; margin: 10px;" th:if="${match!=null && match.info!=null && match.info.teams!=null}">
                <div class="card-body">
                   <h5 class="card-title">
-                     <span th:each="team,iterStat: ${match.info.teams}">
+                     <span th:if="${match!=null && match.info!=null && match.info.teams!=null}" th:each="team,iterStat: ${match.info.teams}">
                      <span th:text="!${iterStat.last} ? ${team} + ' vs ': ${team}" />
                      </span>
                   </h5>
@@ -155,7 +155,7 @@
                </div>
             </div>
             <div id="curve_chart"></div>
-            <div class="card" style="flex: 0 0 100%; margin: 10px;">
+            <div class="card" style="flex: 0 0 100%; margin: 10px;" th:if="${match!=null && match.info!=null && match.info.teams!=null}">
                <h5 class="card-title">Innings</h5>
                <input type="hidden" class="chart_data_class" id="chart_data[0][0]" value="Overs" />
                <div class="card-body" th:each="inning,iterStatInning: ${match.innings}">
@@ -221,7 +221,7 @@
                   <button style="display:none;" onclick="javascript:closeOvers(this.id);return false;" th:id="@{'class_over_details_' + ${#strings.replace(inning.team,' ', '_')}}" class="btn btn-primary">Close</button>
                </div>
             </div>
-            <div class="card" style="flex: 0 0 100%; margin: 10px;">
+            <div class="card" style="flex: 0 0 100%; margin: 10px;" th:if="${match!=null && match.info!=null && match.info.teams!=null}">
                <h5 class="card-title">Players</h5>
                <div class="card-body" th:each="player,iterStatPlayer: ${match.info.players}">
                   <span th:text="${player.key}"></span>

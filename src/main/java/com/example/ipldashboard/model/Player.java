@@ -1,7 +1,11 @@
 package com.example.ipldashboard.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +28,8 @@ public class Player {
 	private int zeros;
 	private long match;
 	private String team;
+	private String matchTeam1;
+	private String matchTeam2;
 	private int ones;
 	private int twos;
 	private int threes;
@@ -40,6 +46,7 @@ public class Player {
 	private Map<String, Integer> runsGiven;
 	@Transient
 	private Map<String, Integer> extras;
+
 	private int wickets;
 	private double economyRate;
 
@@ -57,6 +64,31 @@ public class Player {
 	private String eventMatchNumber;
 	private String eventGroup;
 	private String season;
+
+	@Transient
+	private List<Long> playerOfMatches = new ArrayList<>();
+
+	@Transient
+	private Page<Match> matches;
+
+	@Transient
+	private List<Match> matchesAll = new ArrayList<>();
+
+	@Transient
+	private SortedSet<String> venues = new TreeSet<>();
+
+	@Transient
+	private SortedSet<String> seasons = new TreeSet<>();
+	@Transient
+	private SortedSet<String> eventGroups = new TreeSet<>();
+	@Transient
+	private SortedSet<String> eventStages = new TreeSet<>();
+
+	@Transient
+	private SortedSet<String> teamNames = new TreeSet<>();
+
+	@Transient
+	private SortedSet<String> cities = new TreeSet<>();
 
 	public long getId() {
 		return id;
@@ -135,6 +167,9 @@ public class Player {
 	}
 
 	public void setTeam(String team) {
+		if (team.equalsIgnoreCase("Rising Pune Supergiants")) {
+			team = "Rising Pune Supergiant";
+		}
 		this.team = team;
 	}
 
@@ -362,18 +397,92 @@ public class Player {
 		this.season = season;
 	}
 
-	@Override
-	public String toString() {
-		return "Player [id=" + id + ", name=" + name + ", runs=" + runs + ", matchesPlayed=" + matchesPlayed
-				+ ", strikeRate=" + strikeRate + ", ballsPlayed=" + ballsPlayed + ", wicketInfo=" + wicketInfo
-				+ ", zeros=" + zeros + ", match=" + match + ", team=" + team + ", ones=" + ones + ", twos=" + twos
-				+ ", threes=" + threes + ", fours=" + fours + ", fives=" + fives + ", sixes=" + sixes + ", out=" + out
-				+ ", overs=" + overs + ", kind=" + kind + ", balls=" + balls + ", totalRunsGiven=" + totalRunsGiven
-				+ ", runsGiven=" + runsGiven + ", extras=" + extras + ", wickets=" + wickets + ", economyRate="
-				+ economyRate + ", city=" + city + ", date=" + date + ", playerOfMatch=" + playerOfMatch + ", venue="
-				+ venue + ", winner=" + winner + ", result=" + result + ", resultMargin=" + resultMargin
-				+ ", tossWinner=" + tossWinner + ", tossDecision=" + tossDecision + ", eventStage=" + eventStage
-				+ ", eventMatchNumber=" + eventMatchNumber + ", eventGroup=" + eventGroup + ", season=" + season + "]";
+	public Page<Match> getMatches() {
+		return matches;
+	}
+
+	public void setMatches(Page<Match> matches) {
+		this.matches = matches;
+	}
+
+	public SortedSet<String> getVenues() {
+		return venues;
+	}
+
+	public void setVenues(SortedSet<String> venues) {
+		this.venues = venues;
+	}
+
+	public SortedSet<String> getSeasons() {
+		return seasons;
+	}
+
+	public void setSeasons(SortedSet<String> seasons) {
+		this.seasons = seasons;
+	}
+
+	public SortedSet<String> getEventGroups() {
+		return eventGroups;
+	}
+
+	public void setEventGroups(SortedSet<String> eventGroups) {
+		this.eventGroups = eventGroups;
+	}
+
+	public SortedSet<String> getEventStages() {
+		return eventStages;
+	}
+
+	public void setEventStages(SortedSet<String> eventStages) {
+		this.eventStages = eventStages;
+	}
+
+	public SortedSet<String> getTeamNames() {
+		return teamNames;
+	}
+
+	public void setTeamNames(SortedSet<String> teamNames) {
+		this.teamNames = teamNames;
+	}
+
+	public SortedSet<String> getCities() {
+		return cities;
+	}
+
+	public void setCities(SortedSet<String> cities) {
+		this.cities = cities;
+	}
+
+	public String getMatchTeam1() {
+		return matchTeam1;
+	}
+
+	public void setMatchTeam1(String matchTeam1) {
+		this.matchTeam1 = matchTeam1;
+	}
+
+	public String getMatchTeam2() {
+		return matchTeam2;
+	}
+
+	public void setMatchTeam2(String matchTeam2) {
+		this.matchTeam2 = matchTeam2;
+	}
+
+	public List<Match> getMatchesAll() {
+		return matchesAll;
+	}
+
+	public void setMatchesAll(List<Match> matchesAll) {
+		this.matchesAll = matchesAll;
+	}
+
+	public List<Long> getPlayerOfMatches() {
+		return playerOfMatches;
+	}
+
+	public void setPlayerOfMatches(List<Long> playerOfMatches) {
+		this.playerOfMatches = playerOfMatches;
 	}
 
 }

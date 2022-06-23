@@ -321,7 +321,7 @@ public class TeamService {
 					if (team1 != null && !team1.isEmpty()) {
 						t1.setName(team1);
 						if (playersMap.get(team1) != null) {
-							System.out.println(team1 + "playersMap.get(team1)" + playersMap.get(team1));
+//							System.out.println(team1 + "playersMap.get(team1)" + playersMap.get(team1));
 							players.addAll(playersMap.get(team1));
 						}
 						if (x.getTeam1().equals(team1)) {

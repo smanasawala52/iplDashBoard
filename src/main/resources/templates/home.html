@@ -20,35 +20,6 @@
                <a class="navbar-brand" href="/"><span th:text="${slug}"><span> Dashboard</a>
             </div>
          </nav>
-            <!-- <h4  th:if="${!#strings.isEmpty(team1)}">
-               Team: 
-               <span th:text="${team1}"></span>
-            </h4>
-            <h4  th:if="${!#strings.isEmpty(team2)}">
-               Team Compare: 
-               <span th:text="${team2}"></span>
-            </h4>
-            <h4 th:if="${!#strings.isEmpty(venue)}">
-               Venue: 
-               <span th:text="${venue}"></span>
-            </h4>
-            <h4  th:if="${!#strings.isEmpty(city)}">
-               City: 
-               <span th:text="${city}"></span>
-            </h4>
-            <h4  th:if="${!#strings.isEmpty(season)}">
-               Season: 
-               <span th:text="${season}"></span>
-            </h4>
-            <h4  th:if="${!#strings.isEmpty(stage)}">
-               Stage: 
-               <span th:text="${stage}"></span>
-            </h4>
-            <h4  th:if="${!#strings.isEmpty(group)}">
-               Group: 
-               <span th:text="${group}"></span>
-            </h4> -->
-            
          <section class="content">
 	         <form id="criteria" method="GET"  action="/">
 	         	<div th:each="team, iter: ${teams}" th:if="${iter.index == 0}">
@@ -187,6 +158,7 @@
             </div>
             <a href="/loadMatchData" target="_blank" class="btn btn-primary">Load Match Data</a>
             <a href="/city" class="btn btn-primary">Cities</a>
+            <a href="/player" class="btn btn-primary">Players</a>
          </section>
       </div>
    </body>

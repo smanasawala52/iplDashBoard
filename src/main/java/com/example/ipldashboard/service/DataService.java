@@ -130,6 +130,8 @@ public class DataService {
 										player.setMatchesPlayed(player.getMatchesPlayed() + 1);
 										player.setMatch(match.getId());
 										player.setTeam(matchPlayer.getKey());
+										player.setMatchTeam1(match.getTeam1());
+										player.setMatchTeam2(match.getTeam2());
 										BeanUtils.copyProperties(match, player);
 										players1.put(pla + "_" + match.getId(), player);
 									}
