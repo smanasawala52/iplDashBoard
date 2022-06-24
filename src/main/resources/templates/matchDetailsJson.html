@@ -226,7 +226,7 @@
                <div class="card-body" th:each="player,iterStatPlayer: ${match.info.players}">
                   <span th:text="${player.key}"></span>
                   <div class="card-text" th:if="${player.value}" th:each="team,iterStat: ${player.value}" >
-                     <span class="text-muted" th:text="${team}"></span>
+                     <span class="text-muted" th:text="${team}" th:id="${team}" onclick="javascript:window.location.href='/player?player='+this.id;" style="cursor: pointer;"></span>
                   </div>
                </div>
             </div>
