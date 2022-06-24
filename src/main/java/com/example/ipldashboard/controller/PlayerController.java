@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +45,7 @@ public class PlayerController {
 		queryMap.put("tossWinner", "");
 		queryMap.put("tossDecision", "");
 		queryMap.put("player", "");
+		queryMap.put("sortBy", "");
 		modelAndView.addObject("pageSize", 10);
 
 		if (queryParams != null && !queryParams.isEmpty()) {
@@ -68,6 +71,15 @@ public class PlayerController {
 		}
 		List<Player> temp = playerService.getPlayers(queryParams);
 		modelAndView.addObject("pageBaseUrl", "/player?1=1" + sb.toString());
+		if (temp != null && !temp.isEmpty()) {
+			Set<String> teams = new TreeSet<>();
+			for (Player playerTemp : temp) {
+				if (playerTemp != null) {
+					teams.add(playerTemp.getTeam());
+				}
+			}
+			modelAndView.addObject("teams", teams);
+		}
 		modelAndView.addObject("players", temp);
 		return modelAndView;
 	}

@@ -21,7 +21,33 @@
             </div>
          </nav>
          <section class="content">
-            <a class="navbar-brand" href="/player"><h1>All Players</h1></a>
+            <span class="navbar-brand" onclick="javascript:window.location.href='/player';"><h1>All Players</h1></span>
+             <form id="criteria" method="GET"  action="/player">
+            <div th:if="${#strings.isEmpty(player)}">
+				Team: <span class="text-muted" th:if="${!#strings.isEmpty(team)}" th:text="${team}"></span>
+				<input type="hidden" name="team"  th:if="${!#strings.isEmpty(team)}" th:value="${team}"/>
+				<select id="team" name="team" th:if="${#strings.isEmpty(team)}" onchange="javascript:document.getElementById('criteria').submit();">
+					<option value="">Please select team</option>
+					<div th:if="${!#lists.isEmpty(teams)}" th:each="teamName: ${teams}">
+						<option th:text="${teamName}" th:value="${teamName}"></option>
+					</div>
+				</select>
+			</div>
+			<div th:if="${#strings.isEmpty(player)}">
+				Sort By: <span class="text-muted" th:if="${!#strings.isEmpty(sortBy)}" th:text="${sortBy}"></span>
+				<input type="hidden" name="sortBy" id="sortBy"  th:if="${!#strings.isEmpty(sortBy)}" th:value="${sortBy}"/> <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(sortBy)}" th:text="x" onclick="javascript:document.getElementById('sortBy').value='';document.getElementById('criteria').submit();"/>
+				<select id="sortBy" name="sortBy" th:if="${#strings.isEmpty(sortBy)}" onchange="javascript:document.getElementById('criteria').submit();">
+					<option value="name-a">Name [A-Z]</option>
+					<option value="name-d">Name [Z-A]</option>
+					<option value="runs-d">Runs [High-Low]</option>
+					<option value="wickets-d">Wickets [High-Low]</option>					
+					<option value="sixes-d">Sixes [High-Low]</option>	
+					<option value="sixes-d">Fours [High-Low]</option>	
+					<option value="strikerate-d">S/R [High-Low]</option>
+					<option value="economyrate-d">ECon [High-Low]</option>
+				</select>
+			</div>
+			</form>
             <div class="card" style="flex: 0 0 100%; margin: 5px;" th:each="playerTemp: ${players}">
                <div class="card-body">
                   <h6 class="card-title" th:text="${playerTemp.name}"></h6>

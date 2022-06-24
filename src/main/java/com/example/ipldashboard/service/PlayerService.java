@@ -42,6 +42,7 @@ public class PlayerService {
 			String result = queryParams.get("result");
 			String tossWinner = queryParams.get("tossWinner");
 			String tossDecision = queryParams.get("tossDecision");
+			String sortBy = queryParams.get("sortBy");
 			System.out.println(team);
 			int tempCp = 0;
 			try {
@@ -176,6 +177,86 @@ public class PlayerService {
 			List<Player> playersLst = new ArrayList<>();
 			for (Entry<String, Player> tempPlayer : players.entrySet()) {
 				playersLst.add(tempPlayer.getValue());
+			}
+			if (sortBy != null && !sortBy.isEmpty()) {
+				if (sortBy.equalsIgnoreCase("name-a")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null && o1.getName() != null && o2.getName() != null) {
+							return o1.getName().compareTo(o2.getName());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("name-d")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null && o1.getName() != null && o2.getName() != null) {
+							return o2.getName().compareTo(o1.getName());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("runs-a")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Integer(o1.getRuns()).compareTo(o2.getRuns());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("runs-d")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Integer(o2.getRuns()).compareTo(o1.getRuns());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("wickets-d")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Integer(o2.getWickets()).compareTo(o1.getWickets());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("sixes-a")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Integer(o1.getSixes()).compareTo(o2.getSixes());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("sixes-d")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Integer(o2.getSixes()).compareTo(o1.getSixes());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("fours-a")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Integer(o1.getFours()).compareTo(o2.getFours());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("fours-d")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Integer(o2.getFours()).compareTo(o1.getFours());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("strikerate-d")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Double(o2.getStrikeRate()).compareTo(o1.getStrikeRate());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("economyrate-d")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Double(o2.getEconomyRate()).compareTo(o1.getEconomyRate());
+						}
+						return 0;
+					});
+				}
 			}
 			return playersLst;
 		}
