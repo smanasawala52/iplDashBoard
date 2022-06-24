@@ -21,7 +21,7 @@
             </div>
          </nav>
          <section class="content">
-            <span class="navbar-brand" onclick="javascript:window.location.href='/player';"><h1>All Players</h1></span>
+            <span class="navbar-brand" onclick="javascript:window.location.href='/player';" style="cursor: pointer;" ><h1>All Players</h1></span>
              <form id="criteria" method="GET"  action="/player">
             <div th:if="${#strings.isEmpty(player)}">
 				Team: <span class="text-muted" th:if="${!#strings.isEmpty(team)}" th:text="${team}"></span>
@@ -34,17 +34,16 @@
 				</select>
 			</div>
 			<div th:if="${#strings.isEmpty(player)}">
-				Sort By: <span class="text-muted" th:if="${!#strings.isEmpty(sortBy)}" th:text="${sortBy}"></span>
-				<input type="hidden" name="sortBy" id="sortBy"  th:if="${!#strings.isEmpty(sortBy)}" th:value="${sortBy}"/> <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(sortBy)}" th:text="x" onclick="javascript:document.getElementById('sortBy').value='';document.getElementById('criteria').submit();"/>
-				<select id="sortBy" name="sortBy" th:if="${#strings.isEmpty(sortBy)}" onchange="javascript:document.getElementById('criteria').submit();">
-					<option value="name-a">Name [A-Z]</option>
-					<option value="name-d">Name [Z-A]</option>
-					<option value="runs-d">Runs [High-Low]</option>
-					<option value="wickets-d">Wickets [High-Low]</option>					
-					<option value="sixes-d">Sixes [High-Low]</option>	
-					<option value="sixes-d">Fours [High-Low]</option>	
-					<option value="strikerate-d">S/R [High-Low]</option>
-					<option value="economyrate-d">ECon [High-Low]</option>
+				Sort By:
+				<select id="sortBy" name="sortBy" onchange="javascript:document.getElementById('criteria').submit();">
+					<option value="name-a" th:selected="${sortBy=='name-a'}">Name [A-Z]</option>
+					<option value="name-d" th:selected="${sortBy=='name-d'}">Name [Z-A]</option>
+					<option value="runs-d" th:selected="${sortBy=='runs-d'}">Runs [High-Low]</option>
+					<option value="wickets-d" th:selected="${sortBy=='wickets-d'}">Wickets [High-Low]</option>					
+					<option value="sixes-d" th:selected="${sortBy=='sixes-d'}">Sixes [High-Low]</option>	
+					<option value="fours-d" th:selected="${sortBy=='fours-d'}">Fours [High-Low]</option>	
+					<option value="strikerate-d" th:selected="${sortBy=='strikerate-d'}">S/R [High-Low]</option>
+					<option value="economyrate-d" th:selected="${sortBy=='economyrate-d'}">ECon [High-Low]</option>
 				</select>
 			</div>
 			</form>
