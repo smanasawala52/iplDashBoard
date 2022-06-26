@@ -173,9 +173,11 @@ public class NFTController {
 				// nftRepository.deleteAllById(ids);
 				e.printStackTrace();
 			}
-			return "https://testnets.opensea.io/assets/rinkeby/" + ethNFTCricketStatAddress + "/" + tokenId;
+			return "https://testnets.opensea.io/assets/" + ethAccountConfig.getNetwork().toLowerCase() + "/"
+					+ ethNFTCricketStatAddress + "/" + tokenId;
 		}
-		return "https://testnets.opensea.io/assets/rinkeby/" + ethNFTCricketStatAddress + "/" + temp.getId();
+		return "https://testnets.opensea.io/assets/" + ethAccountConfig.getNetwork().toLowerCase() + "/"
+				+ ethNFTCricketStatAddress + "/" + temp.getId();
 	}
 
 	@GetMapping("/ethNFTCricketStatAddress")
