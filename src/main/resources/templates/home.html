@@ -95,7 +95,9 @@
 					</div>
 	         	</div>
 	         	</form>
+	         	<br>
 	          <a href="/" class="btn btn-primary" th:if="${!#strings.isEmpty(team1)}">Reset</a>
+              <button class="btn btn-primary" onclick="javascript:mintTeam()">Mint</button>
             <div>
                <h1 th:if="${!#strings.isEmpty(team1)}">Team Details</h1>
                <div class="card-group">

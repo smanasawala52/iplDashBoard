@@ -164,7 +164,7 @@ public class NFTController {
 			String recipient = ethAccountConfig.getEthAddressAccount2();
 			String metadataURI = tokenId.toString();
 			try {
-				BigInteger amount = Convert.toWei("0.1", Convert.Unit.ETHER).toBigInteger();
+				BigInteger amount = Convert.toWei("0.05", Convert.Unit.ETHER).toBigInteger();
 				TransactionReceipt tx = contract.payToMint(recipient, metadataURI, amount).send();
 				System.out.println(tx);
 			} catch (Exception e) {
@@ -173,9 +173,9 @@ public class NFTController {
 				// nftRepository.deleteAllById(ids);
 				e.printStackTrace();
 			}
-			return "success";
+			return "https://testnets.opensea.io/assets/rinkeby/" + ethNFTCricketStatAddress + "/" + tokenId;
 		}
-		return "failure";
+		return "https://testnets.opensea.io/assets/rinkeby/" + ethNFTCricketStatAddress + "/" + temp.getId();
 	}
 
 	@GetMapping("/ethNFTCricketStatAddress")
