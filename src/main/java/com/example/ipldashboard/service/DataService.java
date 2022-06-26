@@ -205,20 +205,20 @@ public class DataService {
 				.forEach(System.out::println);
 //		System.out.println(players1);
 		System.out.println("JOB FINISHED");
-		jdbcTemplate
-				.query("SELECT * FROM matches",
-						(rs, rn) -> new MatchBuilder().setId(rs.getLong("id")).setCity(rs.getString("city"))
-								.setUmpire1(rs.getString("umpire1")).setUmpire2(rs.getString("umpire2"))
-								.setDate(Instant.ofEpochMilli(rs.getDate("date").getTime())
-										.atZone(ZoneId.systemDefault()).toLocalDate())
-								// LocalDate.ofInstant(input.toInstant(),
-								// ZoneId.systemDefault())
-								.setTeam1(rs.getString("team1")).setTeam2(rs.getString("team2"))
-								.setWinner(rs.getString("winner")).setResult(rs.getString("result"))
-								.setResultMargin(rs.getString("result_margin"))
-								.setPlayerOfMatch(rs.getString("player_of_match")).setVenue(rs.getString("venue"))
-								.setPlayers(rs.getString("players")).build())
-				.forEach(match -> System.out.println("" + match));
+//		jdbcTemplate
+//				.query("SELECT * FROM matches",
+//						(rs, rn) -> new MatchBuilder().setId(rs.getLong("id")).setCity(rs.getString("city"))
+//								.setUmpire1(rs.getString("umpire1")).setUmpire2(rs.getString("umpire2"))
+//								.setDate(Instant.ofEpochMilli(rs.getDate("date").getTime())
+//										.atZone(ZoneId.systemDefault()).toLocalDate())
+//								// LocalDate.ofInstant(input.toInstant(),
+//								// ZoneId.systemDefault())
+//								.setTeam1(rs.getString("team1")).setTeam2(rs.getString("team2"))
+//								.setWinner(rs.getString("winner")).setResult(rs.getString("result"))
+//								.setResultMargin(rs.getString("result_margin"))
+//								.setPlayerOfMatch(rs.getString("player_of_match")).setVenue(rs.getString("venue"))
+//								.setPlayers(rs.getString("players")).build())
+//				.forEach(match -> System.out.println("" + match));
 
 		List<ITeamCount> objs = matchRepository.countTotalMatchesByTeam1();
 		List<ITeamCount> objs2 = matchRepository.countTotalMatchesByTeam2();

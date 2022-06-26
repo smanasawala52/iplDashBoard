@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.ipldashboard.model.Team;
 import com.example.ipldashboard.service.DataService;
+import com.example.ipldashboard.service.NFTService;
 import com.example.ipldashboard.service.TeamService;
 
 @RestController
@@ -25,6 +26,9 @@ public class TeamController {
 	private List<String> ignoreList = Arrays.asList("cp", "pageSize");
 	@Autowired
 	private DataService dataService;
+
+	@Autowired
+	private NFTService nftService;
 
 	@GetMapping("/teams")
 	public ModelAndView getTeams(@RequestParam final Map<String, String> queryParams) {
@@ -192,6 +196,9 @@ public class TeamController {
 		List<Team> temp = teamService.getTeams(queryParams);
 		modelAndView.addObject("pageBaseUrl", "?1=1" + sb.toString());
 		modelAndView.addObject("teams", temp);
+		if (temp != null && !temp.isEmpty()) {
+			modelAndView.addObject("teamNftMetadata", nftService.getTeamNftMetadata(queryParams, temp.get(0)));
+		}
 		return modelAndView;
 	}
 
