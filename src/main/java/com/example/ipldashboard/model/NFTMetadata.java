@@ -8,7 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 @Entity
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class NFTMetadata {
 	@Id
 	private long id;
@@ -17,11 +21,14 @@ public class NFTMetadata {
 	@Column(nullable = false, length = 1000, name = "description")
 	private String description;
 
+	@Column(nullable = false, length = 1000, name = "externalLink")
+	private String externalLink;
+
 	@Column(nullable = false, length = 100, name = "image")
 	private String image;
 	@Transient
 	private Map<String, String> attributes = new HashMap<>();
-	@Column(nullable = false, length = 1000, name = "attributes", unique = true)
+	@Column(nullable = false, length = 5000, name = "attributes", unique = true)
 	private String attributesStr;
 
 	public long getId() {
@@ -76,6 +83,14 @@ public class NFTMetadata {
 
 	public void setAttributesStr(String attributesStr) {
 		this.attributesStr = attributesStr;
+	}
+
+	public String getExternalLink() {
+		return externalLink;
+	}
+
+	public void setExternalLink(String externalLink) {
+		this.externalLink = externalLink;
 	}
 
 }

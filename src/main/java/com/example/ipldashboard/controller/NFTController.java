@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
@@ -71,10 +72,10 @@ public class NFTController {
 
 			// deploy ethNFTCricketStatAddress
 			String baseUriInput = ethAccountConfig.getNftBaseURI();
-			BigInteger _minimumWEI = Convert.toWei("0.05", Convert.Unit.ETHER).toBigInteger();
+			BigInteger _minimumWEI = Convert.toWei("0.005", Convert.Unit.ETHER).toBigInteger();
 			try {
 				CricketStats contract = CricketStats.deploy(web3j, credentialsAccount1, contractGasProvider,
-						"CricketStats", "CKST", baseUriInput, _minimumWEI).send();
+						"CricketStats", "CKST", "", _minimumWEI).send();
 				ethNFTCricketStatAddress = contract.getContractAddress();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -123,7 +124,7 @@ public class NFTController {
 				contractGasProvider);
 		String temp = "No value";
 		try {
-			temp = contract.tokenURI(new BigInteger(id)).send();
+			temp = ethAccountConfig.getNftBaseURI() + contract.tokenURI(new BigInteger(id)).send();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -132,7 +133,7 @@ public class NFTController {
 	}
 
 	@GetMapping("/team/nftMint")
-	public String getTeamMint(@RequestParam final Map<String, String> queryParams) {
+	public ModelAndView getTeamMint(@RequestParam final Map<String, String> queryParams) {
 		NFTMetadata nFTMetadata = nftService.getTeamNftMetadata(queryParams, null);
 		NFTMetadata temp = nftRepository.getByName(nFTMetadata.getName());
 		if (temp == null) {
@@ -162,10 +163,11 @@ public class NFTController {
 
 			// publish nFTMetadata
 			String recipient = ethAccountConfig.getEthAddressAccount2();
-			String metadataURI = tokenId.toString();
+			String metadataURI = ethAccountConfig.getNftBaseURI() + tokenId.toString();
 			try {
 				BigInteger amount = Convert.toWei("0.05", Convert.Unit.ETHER).toBigInteger();
-				TransactionReceipt tx = contract.payToMint(recipient, metadataURI, amount).send();
+				TransactionReceipt tx = contract
+						.payToMintOwner(recipient, metadataURI, nFTMetadata.getAttributesStr(), amount).send();
 				System.out.println(tx);
 			} catch (Exception e) {
 				List<Long> ids = new ArrayList<>();
@@ -173,11 +175,61 @@ public class NFTController {
 				// nftRepository.deleteAllById(ids);
 				e.printStackTrace();
 			}
-			return "https://testnets.opensea.io/assets/" + ethAccountConfig.getNetwork().toLowerCase() + "/"
-					+ ethNFTCricketStatAddress + "/" + tokenId;
+			return new ModelAndView("redirect:" + "https://testnets.opensea.io/assets/"
+					+ ethAccountConfig.getNetwork().toLowerCase() + "/" + ethNFTCricketStatAddress + "/" + tokenId);
 		}
-		return "https://testnets.opensea.io/assets/" + ethAccountConfig.getNetwork().toLowerCase() + "/"
-				+ ethNFTCricketStatAddress + "/" + temp.getId();
+		return new ModelAndView("redirect:" + "https://testnets.opensea.io/assets/"
+				+ ethAccountConfig.getNetwork().toLowerCase() + "/" + ethNFTCricketStatAddress + "/" + temp.getId());
+	}
+
+	@GetMapping("/team/nftMintOwner")
+	public ModelAndView getTeamMintOwner(@RequestParam final Map<String, String> queryParams) {
+		NFTMetadata nFTMetadata = nftService.getTeamNftMetadata(queryParams, null);
+		NFTMetadata temp = nftRepository.getByName(nFTMetadata.getName());
+		if (temp == null) {
+			String url = ethAccountConfig.getUrl();
+			String ethPrivateKeyAccount1 = ethAccountConfig.getEthPrivateKeyAccount1();
+			Web3j web3j = Web3j.build(new HttpService(url));
+			Credentials credentialsAccount1 = Credentials.create(ethPrivateKeyAccount1);
+			ContractGasProvider contractGasProvider = new StaticGasProvider(GAS_PRICE, GAS_LIMIT);
+			CricketStats contract = CricketStats.load(ethNFTCricketStatAddress, web3j, credentialsAccount1,
+					contractGasProvider);
+			// get Token id/counter
+			BigInteger tokenId = null;
+			try {
+				tokenId = contract.count().send();
+				System.out.println(tokenId.toString());
+				nFTMetadata.setId(tokenId.longValue());
+				NFTMetadata val = nftRepository.save(nFTMetadata);
+				System.out.println("---------DB STORED----" + val);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			NFTMetadata tempNew = nftRepository.findById((tokenId.longValue())).get();
+			// convert attributes String to attributes map
+			if (tempNew != null) {
+				System.out.println("-------========ashdvas---" + tempNew);
+			}
+
+			// publish nFTMetadata
+			String recipient = ethAccountConfig.getEthAddressAccount2();
+			String metadataURI = ethAccountConfig.getNftBaseURI() + tokenId.toString();
+			try {
+				BigInteger amount = Convert.toWei("0.05", Convert.Unit.ETHER).toBigInteger();
+				TransactionReceipt tx = contract
+						.payToMintOwner(recipient, metadataURI, nFTMetadata.getAttributesStr(), amount).send();
+				System.out.println(tx);
+			} catch (Exception e) {
+				List<Long> ids = new ArrayList<>();
+				ids.add(nFTMetadata.getId());
+				// nftRepository.deleteAllById(ids);
+				e.printStackTrace();
+			}
+			return new ModelAndView("redirect:" + "https://testnets.opensea.io/assets/"
+					+ ethAccountConfig.getNetwork().toLowerCase() + "/" + ethNFTCricketStatAddress + "/" + tokenId);
+		}
+		return new ModelAndView("redirect:" + "https://testnets.opensea.io/assets/"
+				+ ethAccountConfig.getNetwork().toLowerCase() + "/" + ethNFTCricketStatAddress + "/" + temp.getId());
 	}
 
 	@GetMapping("/ethNFTCricketStatAddress")

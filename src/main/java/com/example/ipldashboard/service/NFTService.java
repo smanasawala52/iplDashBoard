@@ -51,28 +51,35 @@ public class NFTService {
 		String preName = "";
 		StringBuilder sbName = new StringBuilder();
 		StringBuilder sbDescriptions = new StringBuilder();
+
+		String pre = "";
+		StringBuilder sb = new StringBuilder();
 		for (Entry<String, Object> queryParam : queryMap.entrySet()) {
-			if (queryParam.getValue() != null && !String.valueOf(queryParam.getValue()).isEmpty()
-					&& !ignoreList.contains((queryParam.getKey()))) {
-				sbName.append(preName).append(String.valueOf(queryParam.getValue()).replaceAll("[^a-zA-Z0-9]", "")
-						.replace(" ", "").toLowerCase());
-				preName = "-";
+			if (queryParam.getValue() != null && !ignoreList.contains((queryParam.getKey()))) {
+				sb.append(pre).append(queryParam.getKey()).append("=").append(String.valueOf(queryParam.getValue()));
+				pre = "&";
 			}
 		}
+
 		String team1 = queryParams.get("team1");
 		if (team1 != null && !team1.isEmpty()) {
 			sbDescriptions.append(team1);
+			sbName.append(team1);
 			if (queryMap.get("team2") != null && !String.valueOf(queryMap.get("team2")).isEmpty()) {
 				sbDescriptions.append(" played against ").append(queryMap.get("team2"));
+				sbName.append(" vs ").append(queryMap.get("team2"));
 			}
 			if (queryMap.get("venue") != null && !String.valueOf(queryMap.get("venue")).isEmpty()) {
 				sbDescriptions.append(" at ").append(queryMap.get("venue"));
+				sbName.append(" at ").append(queryMap.get("venue"));
 			}
 			if (queryMap.get("city") != null && !String.valueOf(queryMap.get("city")).isEmpty()) {
 				sbDescriptions.append(", ").append(queryMap.get("city"));
+				sbName.append(", ").append(queryMap.get("city"));
 			}
 			if (queryMap.get("season") != null && !String.valueOf(queryMap.get("season")).isEmpty()) {
 				sbDescriptions.append(" in the season of ").append(queryMap.get("season"));
+				sbName.append(" ").append(queryMap.get("city"));
 			}
 			if (queryMap.get("stage") != null && !String.valueOf(queryMap.get("stage")).isEmpty()) {
 				sbDescriptions.append(" at the stage of ").append(queryMap.get("stage"));
@@ -100,6 +107,7 @@ public class NFTService {
 			if (team != null && !team.getName().isEmpty()) {
 				// generate nft data for returned team
 				NFTMetadata nftMetadata = new NFTMetadata();
+				nftMetadata.setExternalLink("https://ipl-dashboard-shabbir.herokuapp.com/?" + sb.toString());
 				if (team.getCities() != null && !team.getCities().isEmpty()) {
 					nftMetadata.getAttributes().put("cities",
 							team.getCities().toString().replace("[", "").replace("]", ""));
@@ -127,15 +135,13 @@ public class NFTService {
 				if (team.getSeasons() != null && !team.getSeasons().isEmpty()) {
 					if (queryParams.get("season") == null
 							|| (queryParams.get("season") != null && queryParams.get("season").isEmpty())) {
-						sbName.append(preName).append(team.getSeasons().toString().replaceAll("[^a-zA-Z0-9]", "")
-								.replace(" ", "").toLowerCase());
+						sbName.append(" seasons").append(team.getSeasons());
 					}
 					nftMetadata.getAttributes().put("seasons",
 							team.getSeasons().toString().replace("[", "").replace("]", ""));
 				}
 				if (team.getName() != null && !team.getName().isEmpty()) {
-					nftMetadata.getAttributes().put("name",
-							team.getName().toString().replace("[", "").replace("]", ""));
+					nftMetadata.getAttributes().put("teamName", team.getName());
 				}
 
 				nftMetadata.setName(sbName.toString());
@@ -165,8 +171,8 @@ public class NFTService {
 					nftMetadata.getAttributes().put("number-of-matches-batted-first", team.getTotalBatFirst() + "");
 				}
 				// convert attributes String to attributes map
-				StringBuilder sb = new StringBuilder();
-				String pre = "";
+				sb = new StringBuilder();
+				pre = "";
 				for (Entry<String, String> attribute : nftMetadata.getAttributes().entrySet()) {
 					sb.append(pre).append(attribute.getKey()).append("|").append(attribute.getValue());
 					pre = "^";
@@ -175,7 +181,7 @@ public class NFTService {
 
 				nftMetadata.setImage(ethAccountConfig.getNftImageBaseURLTeams() + ""
 						+ team1.replaceAll("[^a-zA-Z0-9]", "").replace(" ", "").toLowerCase() + ".jpg");
-				System.out.println("nftMetadata: " + nftMetadata);
+				// System.out.println("nftMetadata: " + nftMetadata);
 				return nftMetadata;
 			}
 		}

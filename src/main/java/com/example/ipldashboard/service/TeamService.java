@@ -581,11 +581,20 @@ public class TeamService {
 				venues.remove(venue);
 			}
 			t1.setVenues(new TreeSet<>(venues.keySet()));
+			if (venues != null && !venues.isEmpty() && venues.size() == 1) {
+				queryParams.put("venue", venues.keySet().iterator().next());
+			}
 			if (season != null && !season.isEmpty()) {
 				seasons.remove(season);
 			}
+			if (seasons != null && !seasons.isEmpty() && seasons.size() == 1) {
+				queryParams.put("season", seasons.first());
+			}
 			t1.setSeasons(seasons);
 			t1.setEventStage(eventStages);
+			if (eventStages != null && !eventStages.isEmpty() && eventStages.size() == 1) {
+				queryParams.put("stage", eventStages.first());
+			}
 			if (team2 != null && !team2.isEmpty()) {
 				otherTeams.remove(team2);
 			}
@@ -608,8 +617,17 @@ public class TeamService {
 			}
 			// System.out.println(cities);
 			t1.setCities(cities);
+			if (cities != null && !cities.isEmpty() && cities.size() == 1) {
+				queryParams.put("city", cities.first());
+			}
 			t1.setPlayers(players);
+			if (players != null && !players.isEmpty() && players.size() == 1) {
+				queryParams.put("player", players.first());
+			}
 			t1.setTeamNames(new TreeSet<>(otherTeams.keySet()));
+			if (otherTeams != null && !otherTeams.isEmpty() && otherTeams.size() == 1) {
+				queryParams.put("team2", otherTeams.keySet().iterator().next());
+			}
 			// System.out.println("-------------------------------");
 			// System.out.println(t1.getTeams());
 			// System.out.println("-------------------------------");

@@ -43,7 +43,7 @@
 						</div>
 					</select>
 					</div>
-					<div th:if="${!#strings.isEmpty(team1) && #strings.isEmpty(venue)}">
+					<div th:if="${!#strings.isEmpty(team1)}">
 					City: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-muted" th:if="${!#strings.isEmpty(city)}" th:text="${city}"/> <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(city)}" th:text="x" onclick="javascript:document.getElementById('city').value='';document.getElementById('criteria').submit();"/>
 					<input type="hidden" id="city" name="city"  th:if="${!#strings.isEmpty(city)}" th:value="${city}"/>
 					<select id="city" name="city" th:if="${#strings.isEmpty(city)}" th:value="${city}" onchange="javascript:document.getElementById('criteria').submit();">
@@ -73,7 +73,7 @@
 							</div>
 						</select>
 					</div>
-					<div  th:if="${!#strings.isEmpty(team1)}">
+					<div  th:if="${!#strings.isEmpty(team1) && !#lists.isEmpty(team.eventStage)}">
 						Stage: <span class="text-muted" th:if="${!#strings.isEmpty(stage)}" th:text="${stage}"/> <span style="color:red;cursor: pointer;" th:if="${!#strings.isEmpty(stage)}" th:text="x" onclick="javascript:document.getElementById('stage').value='';document.getElementById('criteria').submit();"/>
 						<input type="hidden"  id="stage" name="stage"  th:if="${!#strings.isEmpty(stage)}" th:value="${stage}"/>
 						<select  id="stage" name="stage" th:if="${#strings.isEmpty(stage)}" th:value="${stage}" onchange="javascript:document.getElementById('criteria').submit();">
@@ -97,7 +97,8 @@
 	         	</form>
 	         	<br>
 	          <a href="/" class="btn btn-primary" th:if="${!#strings.isEmpty(team1)}">Reset</a>
-              <button th:if="${!#strings.isEmpty(team1)}"  class="btn btn-primary" onclick="javascript:document.getElementById('criteria').action='/team/nftMint';document.getElementById('criteria').submit();" >Mint</button>
+              <button th:if="${!#strings.isEmpty(team1)}"  class="btn btn-primary" onclick="javascript:document.getElementById('criteria').action='/team/nftMintOwner';document.getElementById('criteria').submit();" >Mint (bid on opensea)</button>
+              <button th:if="${!#strings.isEmpty(team1)}"  class="btn btn-primary" onclick="javascript:document.getElementById('criteria').action='/team/nftMetaDataJson';document.getElementById('criteria').submit();" >NFT Metadata</button>
             <div>
                <h1 th:if="${!#strings.isEmpty(team1)}">Team Details</h1>
                <div class="card-group">

@@ -172,6 +172,7 @@ public class TeamController {
 		queryMap.put("player", "");
 		modelAndView.addObject("pageSize", 10);
 
+		List<Team> temp = teamService.getTeams(queryParams);
 		if (queryParams != null && !queryParams.isEmpty()) {
 			for (Entry<String, String> queryParam : queryParams.entrySet()) {
 				if (queryParam.getValue() != null && !queryParam.getValue().isEmpty()
@@ -193,7 +194,6 @@ public class TeamController {
 				pre = "&";
 			}
 		}
-		List<Team> temp = teamService.getTeams(queryParams);
 		modelAndView.addObject("pageBaseUrl", "?1=1" + sb.toString());
 		modelAndView.addObject("teams", temp);
 		if (temp != null && !temp.isEmpty()) {
