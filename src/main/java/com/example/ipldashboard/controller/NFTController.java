@@ -75,7 +75,7 @@ public class NFTController {
 			BigInteger _minimumWEI = Convert.toWei("0.005", Convert.Unit.ETHER).toBigInteger();
 			try {
 				CricketStats contract = CricketStats.deploy(web3j, credentialsAccount1, contractGasProvider,
-						"CricketStats", "CKST", "", _minimumWEI).send();
+						"CricketStats", "CKST", baseUriInput, _minimumWEI).send();
 				ethNFTCricketStatAddress = contract.getContractAddress();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -163,7 +163,7 @@ public class NFTController {
 
 			// publish nFTMetadata
 			String recipient = ethAccountConfig.getEthAddressAccount2();
-			String metadataURI = ethAccountConfig.getNftBaseURI() + tokenId.toString();
+			String metadataURI = tokenId.toString();
 			try {
 				BigInteger amount = Convert.toWei("0.05", Convert.Unit.ETHER).toBigInteger();
 				TransactionReceipt tx = contract
@@ -213,7 +213,7 @@ public class NFTController {
 
 			// publish nFTMetadata
 			String recipient = ethAccountConfig.getEthAddressAccount2();
-			String metadataURI = ethAccountConfig.getNftBaseURI() + tokenId.toString();
+			String metadataURI = tokenId.toString();
 			try {
 				BigInteger amount = Convert.toWei("0.05", Convert.Unit.ETHER).toBigInteger();
 				TransactionReceipt tx = contract
