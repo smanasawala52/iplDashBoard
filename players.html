@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <title>Dashboard</title>
+      <meta name="description" content="" />
+      <meta name="viewport" content="width=device-width" />
+      <base href="/" />
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+         crossorigin="anonymous"></script>
+                  <style>
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0d6efd;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0d6efd;
+  cursor: pointer;
+}
+</style>
+         <style>
+#deliveries {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#deliveries td, #deliveries th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#deliveries tr:nth-child(even){background-color: #f2f2f2;}
+
+#deliveries tr:hover {background-color: #ddd;}
+
+#deliveries th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #0d6efd;
+  color: white;
+}
+</style>
+         
+   </head>
+   <body>
+      <div class="container">
+         <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding-bottom: 20px">
+            <div class="container-fluid">
+               <a class="navbar-brand" href="/"><span th:text="${slug}"><span> Dashboard</a>
+            </div>
+         </nav>
+         <section class="content">
+            <span class="navbar-brand" onclick="javascript:window.location.href='/player';" style="cursor: pointer;" ><h1>All Players</h1></span>
+             <form id="criteria" method="GET"  action="/player">
+            <div th:if="${#strings.isEmpty(player)}">
+				Team: <span class="text-muted" th:if="${!#strings.isEmpty(team)}" th:text="${team}"></span>
+				<input type="hidden" name="team"  th:if="${!#strings.isEmpty(team)}" th:value="${team}"/>
+				<select id="team" name="team" th:if="${#strings.isEmpty(team)}" onchange="javascript:document.getElementById('criteria').submit();">
+					<option value="">Please select team</option>
+					<div th:if="${!#lists.isEmpty(teams)}" th:each="teamName: ${teams}">
+						<option th:text="${teamName}" th:value="${teamName}"></option>
+					</div>
+				</select>
+			</div>
+			<div th:if="${#strings.isEmpty(player)}">
+				Sort By:
+				<select id="sortBy" name="sortBy" onchange="javascript:document.getElementById('criteria').submit();">
+					<option value="name-a" th:selected="${sortBy=='name-a'}">Name [A-Z]</option>
+					<option value="name-d" th:selected="${sortBy=='name-d'}">Name [Z-A]</option>
+					<option value="runs-d" th:selected="${sortBy=='runs-d'}">Runs [High-Low]</option>
+					<option value="wickets-d" th:selected="${sortBy=='wickets-d'}">Wickets [High-Low]</option>					
+					<option value="sixes-d" th:selected="${sortBy=='sixes-d'}">Sixes [High-Low]</option>	
+					<option value="fours-d" th:selected="${sortBy=='fours-d'}">Fours [High-Low]</option>	
+					<option value="strikerate-d" th:selected="${sortBy=='strikerate-d'}">S/R [High-Low]</option>
+					<option value="economyrate-d" th:selected="${sortBy=='economyrate-d'}">ECon [High-Low]</option>
+					<option value="fifty-d" th:selected="${sortBy=='fifty-d'}">Fifty [High-Low]</option>
+					<option value="hundred-d" th:selected="${sortBy=='hundred-d'}">Hundred [High-Low]</option>
+					<option value="playerOfMatch-d" th:selected="${sortBy=='playerOfMatch-d'}">Player of Match [High-Low]</option>
+				</select>
+			</div>
+			</form>
+            <div class="card" style="flex: 0 0 100%; margin: 5px;" th:each="playerTemp: ${players}">
+               <div class="card-body">
+                  <h6 class="card-title" th:text="${playerTemp.name}"></h6>
+                  <br>Matches Played: <span class="text-muted" th:text="${#lists.size(playerTemp.matchesAll)}"></span>
+                  <br>Runs: <span class="text-muted" th:text="@{${playerTemp.runs} +' - ('+${playerTemp.strikeRate}+' S/R, '+${playerTemp.doubleHundreds}+' Double centuries, '+${playerTemp.hundreds}+' Century, '+${playerTemp.fifties}+' Half Century, '+${playerTemp.sixes}+' Sixes, '+${playerTemp.fours}+' Fours, '+${playerTemp.ballsPlayed}+' Balls)'}"></span>
+                  <br>Wickets: <span class="text-muted" th:text="@{${playerTemp.wickets} +'-'+ ${playerTemp.totalRunsGiven} +' ('+${playerTemp.economyRate}+' Econ.)'}"></span>
+				  <br>No. of Player of the Match: <a th:if="${#lists.size(playerTemp.playerOfMatches) > 0}" th:href="@{${#strings.replace(#strings.replace(pageBaseUrl,'&playerOfMatch=&','&'),'&player=&','&')}+'&cp=0&playerOfMatch=true&player=' + ${playerTemp.name}+'#latestMatches' }" class="text-muted" th:text="${#lists.size(playerTemp.playerOfMatches)}"></a> <span th:if="${#lists.size(playerTemp.playerOfMatches) <= 0}" class="text-muted" th:text="${#lists.size(playerTemp.playerOfMatches)}"></span>                  
+                  <br>Venues: <a href="#" th:id="@{'_'+${#strings.replace(playerTemp.name,' ', '_')}}" onclick="javascript:document.getElementById('venue'+this.id).style.display='block';return false;">Show</a>
+                  <div style="display:none;" th:id="@{'venue_'+${#strings.replace(playerTemp.name,' ', '_')}}">
+                  <div th:each="venue: ${playerTemp.venues}">
+                  	<span class="card-title" th:text="${venue}"></span> &nbsp;
+                  </div>
+	                  <a href="#"  th:id="@{'nue_'+${#strings.replace(playerTemp.name,' ', '_')}}" onclick="javascript:document.getElementById('ve'+this.id).style.display='none';return false;">Hide</a>
+                  </div>
+                  <br>Teams:
+                  <div th:each="team: ${playerTemp.teamNames}">
+                  	<span class="card-title" th:text="${team}"></span> &nbsp;
+                  </div>
+                  <a th:if="${#strings.isEmpty(player)}" th:href="@{'/player?player=' + ${playerTemp.name}}" >View Player Details</a>
+               </div>
+               <div class="card-body" th:if="${!#lists.isEmpty(playerTemp.matchesBreakDownBySeason)}" >
+               	Breakdown by season
+                  <table id="seasonBreakdown">
+                  <thead>
+                  	<tr>
+                  	<th>Season</th>
+                  	</tr>
+                  </thead>
+                  <tbody>
+                     <tr th:each="seasonBreakdown,iterStatSeasonBreakdown: ${playerTemp.matchesBreakDownBySeason}">
+                     <td th:text="${seasonBreakdown.key}"></td>
+                     </tr>
+                     </tbody>
+                     </table>
+                  <br>
+               	
+               </div>
+            </div>
+            <div th:if="${!#strings.isEmpty(player)}" class="card-group" th:each="playerTemp: ${players}">
+               <p>
+                  Showing <span th:text="${(playerTemp.matches.number*pageSize)+1}"></span> - <span  th:text="${(playerTemp.matches.number*pageSize) + playerTemp.matches.numberOfElements}"></span> of <span  th:text="${playerTemp.matches.totalElements}"></span> matches.&nbsp;&nbsp;
+                  <a th:href="@{${pageBaseUrl}+'&cp=0#latestMatches' }" > << </a>&nbsp;&nbsp;
+                  <a href="#" th:href="@{${pageBaseUrl}+'&cp=' + ${playerTemp.matches.number-1} + '#latestMatches'}"> < </a>&nbsp;&nbsp;
+                  <span  th:text="${playerTemp.matches.number+1}"></span>&nbsp;&nbsp;
+                  <a href="#" th:href="@{${pageBaseUrl}+'&cp=' + ${playerTemp.matches.number+1} + '#latestMatches'}"> > </a>&nbsp;&nbsp;
+                  <a href="#" th:href="@{${pageBaseUrl}+'&cp=' + ${playerTemp.matches.totalPages-1} + '#latestMatches'}"> >> </a>&nbsp;&nbsp;
+               </p>
+               <div class="card-group">
+                     <div class="card-group" th:if="${playerTemp.matches}">
+                        <div class="card" style="flex: 0 0 45%; margin: 10px;" th:each="match: ${playerTemp.matches.content}">
+                           <div class="card-body">
+                              <h6 class="card-title"> <span th:text="${match.team1}">Name</span> VS <span class="card-title" th:text="${match.team2}">Name</span></h6>
+                              <p class="card-text">Date: <span class="text-muted" th:text="${match.date}"></span>, Venue: <span class="text-muted" th:text="${match.venue}"></span>, <span class="text-muted" th:text="${match.city}"></span></p>
+                              <p class="card-text">Season: <span class="text-muted" th:text="${match.season}"></span> <span th:if="${match.eventMatchNumber}"> Match Number: <span class="text-muted" th:text="${match.eventMatchNumber}"></span></span> <span th:if="${match.eventStage}"> Stage: <span class="text-muted" th:text="${match.eventStage}"></span></span> <span th:if="${match.eventGroup}"> Group: <span class="text-muted" th:text="${match.eventGroup}"></span></span></p>
+                              <p class="card-text"  th:if="${match.result != 'NA'}"><span class="text-muted" th:text="${match.winner}"></span> won match by  <span class="text-muted" th:text="${match.resultMargin}"></span> <span class="text-muted" th:text="${match.result}"></span>.</p>
+                              <a href="#" target="_blank" th:href="@{'/matches/' + ${match.id}}" >View match details</a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                   <p>
+                  Showing <span th:text="${(playerTemp.matches.number*pageSize)+1}"></span> - <span  th:text="${(playerTemp.matches.number*pageSize) + playerTemp.matches.numberOfElements}"></span> of <span  th:text="${playerTemp.matches.totalElements}"></span> matches.&nbsp;&nbsp;
+                  <a href="#" th:href="@{${pageBaseUrl}+'&cp=0#latestMatches' }" > << </a>&nbsp;&nbsp;
+                  <a href="#" th:href="@{${pageBaseUrl}+'&cp=' + ${playerTemp.matches.number-1} + '#latestMatches'}"> < </a>&nbsp;&nbsp;
+                  <span  th:text="${playerTemp.matches.number+1}"></span>&nbsp;&nbsp;
+                  <a href="#" th:href="@{${pageBaseUrl}+'&cp=' + ${playerTemp.matches.number+1} + '#latestMatches'}"> > </a>&nbsp;&nbsp;
+                  <a href="#" th:href="@{${pageBaseUrl}+'&cp=' + ${playerTemp.matches.totalPages-1} + '#latestMatches'}"> >> </a>&nbsp;&nbsp;
+               </p>
+            </div>
+         </section>
+      </div>
+   </body>
+</html>
