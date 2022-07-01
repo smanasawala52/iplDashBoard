@@ -12,6 +12,70 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
          crossorigin="anonymous"></script>
+                  <style>
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0d6efd;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0d6efd;
+  cursor: pointer;
+}
+</style>
+         <style>
+#seasonBreakdown {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#seasonBreakdown td, #seasonBreakdown th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#seasonBreakdown tr:nth-child(even){background-color: #f2f2f2;}
+
+#seasonBreakdown tr:hover {background-color: #ddd;}
+
+#seasonBreakdown th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #0d6efd;
+  color: white;
+}
+</style>
+         
    </head>
    <body>
       <div class="container">
@@ -44,6 +108,9 @@
 					<option value="fours-d" th:selected="${sortBy=='fours-d'}">Fours [High-Low]</option>	
 					<option value="strikerate-d" th:selected="${sortBy=='strikerate-d'}">S/R [High-Low]</option>
 					<option value="economyrate-d" th:selected="${sortBy=='economyrate-d'}">ECon [High-Low]</option>
+					<option value="fifty-d" th:selected="${sortBy=='fifty-d'}">Fifty [High-Low]</option>
+					<option value="hundred-d" th:selected="${sortBy=='hundred-d'}">Hundred [High-Low]</option>
+					<option value="playerOfMatch-d" th:selected="${sortBy=='playerOfMatch-d'}">Player of Match [High-Low]</option>
 				</select>
 			</div>
 			</form>
@@ -51,7 +118,7 @@
                <div class="card-body">
                   <h6 class="card-title" th:text="${playerTemp.name}"></h6>
                   <br>Matches Played: <span class="text-muted" th:text="${#lists.size(playerTemp.matchesAll)}"></span>
-                  <br>Runs: <span class="text-muted" th:text="@{${playerTemp.runs} +' - ('+${playerTemp.strikeRate}+' S/R, '+${playerTemp.sixes}+' Sixes, '+${playerTemp.fours}+' Fours, '+${playerTemp.ballsPlayed}+' Balls)'}"></span>
+                  <br>Runs: <span class="text-muted" th:text="@{${playerTemp.runs} +' - ('+${playerTemp.strikeRate}+' S/R, '+${playerTemp.doubleHundreds}+' Double centuries, '+${playerTemp.hundreds}+' Century, '+${playerTemp.fifties}+' Half Century, '+${playerTemp.sixes}+' Sixes, '+${playerTemp.fours}+' Fours, '+${playerTemp.ballsPlayed}+' Balls)'}"></span>
                   <br>Wickets: <span class="text-muted" th:text="@{${playerTemp.wickets} +'-'+ ${playerTemp.totalRunsGiven} +' ('+${playerTemp.economyRate}+' Econ.)'}"></span>
 				  <br>No. of Player of the Match: <a th:if="${#lists.size(playerTemp.playerOfMatches) > 0}" th:href="@{${#strings.replace(#strings.replace(pageBaseUrl,'&playerOfMatch=&','&'),'&player=&','&')}+'&cp=0&playerOfMatch=true&player=' + ${playerTemp.name}+'#latestMatches' }" class="text-muted" th:text="${#lists.size(playerTemp.playerOfMatches)}"></a> <span th:if="${#lists.size(playerTemp.playerOfMatches) <= 0}" class="text-muted" th:text="${#lists.size(playerTemp.playerOfMatches)}"></span>                  
                   <br>Venues: <a href="#" th:id="@{'_'+${#strings.replace(playerTemp.name,' ', '_')}}" onclick="javascript:document.getElementById('venue'+this.id).style.display='block';return false;">Show</a>
@@ -66,6 +133,41 @@
                   	<span class="card-title" th:text="${team}"></span> &nbsp;
                   </div>
                   <a th:if="${#strings.isEmpty(player)}" th:href="@{'/player?player=' + ${playerTemp.name}}" >View Player Details</a>
+               </div>
+               <div class="card-body" th:if="${!#lists.isEmpty(playerTemp.matchesBreakDownBySeason)}" >
+               	Breakdown by season
+                  <table id="seasonBreakdown">
+                  <thead>
+                  	<tr>
+                  	<th>Season</th>
+                  	<th>Matches</th>
+                  	<th>R</th>                  	
+                  	<th>50s</th>              	
+                  	<th>100s</th>              	
+                  	<th>S/R</th>
+                  	<th>6s</th>
+                  	<th>4s</th>                  	
+                  	<th>W</th>                   	                  	
+                  	<th>Econ.</th>                  	             	
+                  	</tr>
+                  </thead>
+                  <tbody>
+                     <tr th:each="seasonBreakdown,iterStatSeasonBreakdown: ${playerTemp.matchesBreakDownBySeason}">
+                     <td th:text="${seasonBreakdown.key}"></td>
+                     <td th:text="${#lists.size(seasonBreakdown.value.matchesAll)}"></td>
+                     <td th:text="${seasonBreakdown.value.runs}"></td>
+                     <td th:text="${seasonBreakdown.value.fifties}"></td>
+                     <td th:text="${seasonBreakdown.value.hundreds}"></td>
+                     <td th:text="${seasonBreakdown.value.strikeRate}"></td>
+                     <td th:text="${seasonBreakdown.value.sixes}"></td>
+                     <td th:text="${seasonBreakdown.value.fours}"></td>
+                     <td th:text="${seasonBreakdown.value.wickets}"></td>
+                     <td th:text="${seasonBreakdown.value.economyRate}"></td>
+                     </tr>
+                     </tbody>
+                     </table>
+                  <br>
+               	
                </div>
             </div>
             <div th:if="${!#strings.isEmpty(player)}" class="card-group" th:each="playerTemp: ${players}">

@@ -43,7 +43,7 @@ public class PlayerService {
 			String tossWinner = queryParams.get("tossWinner");
 			String tossDecision = queryParams.get("tossDecision");
 			String sortBy = queryParams.get("sortBy");
-			System.out.println(team);
+			// System.out.println(team);
 			int tempCp = 0;
 			try {
 				tempCp = Integer.parseInt(queryParams.get("cp"));
@@ -110,67 +110,25 @@ public class PlayerService {
 						BeanUtils.copyProperties(playerInput, playerTemp);
 						players.put(playerTemp.getName(), playerTemp);
 					}
+					Player playerInfoBySeasonTemp = playerTemp.getMatchesBreakDownBySeason()
+							.get(playerInput.getSeason());
+					if (playerInfoBySeasonTemp == null) {
+						playerInfoBySeasonTemp = new Player();
+						BeanUtils.copyProperties(playerInput, playerInfoBySeasonTemp);
+					}
+
 					Match match = new Match();
 					BeanUtils.copyProperties(playerInput, match);
 					match.setId(playerInput.getMatch());
 					match.setTeam1(playerInput.getMatchTeam1());
 					match.setTeam2(playerInput.getMatchTeam2());
-					playerTemp.getTeamNames().add(playerInput.getTeam());
-					// Batting avg
-					playerTemp.setBallsPlayed(playerTemp.getBallsPlayed() + playerInput.getBallsPlayed());
-					playerTemp.setZeros(playerTemp.getZeros() + playerInput.getZeros());
-					playerTemp.setOnes(playerTemp.getOnes() + playerInput.getOnes());
-					playerTemp.setTwos(playerTemp.getTwos() + playerInput.getTwos());
-					playerTemp.setThrees(playerTemp.getThrees() + playerInput.getThrees());
-					playerTemp.setFours(playerTemp.getFours() + playerInput.getFours());
-					playerTemp.setFives(playerTemp.getFives() + playerInput.getFives());
-					playerTemp.setSixes(playerTemp.getSixes() + playerInput.getSixes());
-					playerTemp.setRuns(playerTemp.getRuns() + playerInput.getRuns());
+					populatePlayersInfo(playerTemp, playerInput, match, cp, pageSize);
 
-					if (playerInput.getPlayerOfMatch().equals(playerInput.getName())) {
-						playerTemp.getPlayerOfMatches().add(playerInput.getMatch());
-					}
-
-					playerTemp.setKind(playerInput.getKind());
-					double r = (double) playerTemp.getRuns() / playerTemp.getBallsPlayed();
-					r *= 100.0;
-					double salary = Math.round(r * 100.0) / 100.0;
-					playerTemp.setStrikeRate(salary);
-
-					//
-
-					playerTemp.getMatchesAll().add(match);
-					if (!playerTemp.getMatchesAll().isEmpty()) {
-						Collections.sort(playerTemp.getMatchesAll());
-						int totalMatches = playerTemp.getMatchesAll().size();
-						int totalPages = (playerTemp.getMatchesAll().size() / pageSize) + 1;
-						int offset = cp * pageSize;
-						if (cp > totalPages - 1) {
-							offset = (totalPages - 1) * pageSize;
-						}
-						List<Match> tempMatches1 = playerTemp.getMatchesAll().stream().skip(offset).limit(pageSize)
-								.collect(Collectors.toList());
-						// System.out.println("tempMatches1: " + tempMatches1);
-						if (tempMatches1 != null && !tempMatches1.isEmpty()) {
-							Page<Match> page = new PageBuilder<Match>().setContent(tempMatches1)
-									.setNumber(offset / pageSize).setNumberOfElements(tempMatches1.size())
-									.setTotalElements(totalMatches).setTotalPages(totalPages)
-									.setTotalElements(totalMatches).build();
-							playerTemp.setMatches(page);
-						}
-					}
-					playerTemp.getVenues().add(playerInput.getVenue());
-					playerTemp.getSeasons().add(playerInput.getSeason());
-					if (playerInput.getEventStage() != null) {
-						playerTemp.getEventStages().add(playerInput.getEventStage());
-					}
-					if (playerInput.getCity() != null) {
-						playerTemp.getCities().add(playerInput.getCity());
-					} else {
-						// System.out.println("No City set as venue: " + x);
-						playerTemp.getCities().add(playerInput.getVenue());
-					}
 					// System.out.println(x.getMatches().getContent());
+					if (player != null && !player.isEmpty()) {
+						populatePlayersInfo(playerInfoBySeasonTemp, playerInput, match, cp, pageSize);
+						playerTemp.getMatchesBreakDownBySeason().put(playerInput.getSeason(), playerInfoBySeasonTemp);
+					}
 					players.put(playerTemp.getName(), playerTemp);
 				});
 			}
@@ -190,6 +148,14 @@ public class PlayerService {
 					Collections.sort(playersLst, (o1, o2) -> {
 						if (o1 != null && o2 != null && o1.getName() != null && o2.getName() != null) {
 							return o2.getName().compareTo(o1.getName());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("playerOfMatch-d")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null && o1.getPlayerOfMatch() != null
+								&& o2.getPlayerOfMatch() != null) {
+							return o2.getPlayerOfMatch().compareTo(o1.getPlayerOfMatch());
 						}
 						return 0;
 					});
@@ -256,12 +222,91 @@ public class PlayerService {
 						}
 						return 0;
 					});
+				} else if (sortBy.equalsIgnoreCase("fifty-d")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Integer(o2.getFifties()).compareTo(o1.getFifties());
+						}
+						return 0;
+					});
+				} else if (sortBy.equalsIgnoreCase("hundred-d")) {
+					Collections.sort(playersLst, (o1, o2) -> {
+						if (o1 != null && o2 != null) {
+							return new Integer(o2.getHundreds()).compareTo(o1.getHundreds());
+						}
+						return 0;
+					});
 				}
 			}
 			return playersLst;
 		}
 
 		return null;
+	}
+
+	private void populatePlayersInfo(Player playerTemp, Player playerInput, Match match, int cp, int pageSize) {
+		playerTemp.getTeamNames().add(playerInput.getTeam());
+		// Batting avg
+		playerTemp.setBallsPlayed(playerTemp.getBallsPlayed() + playerInput.getBallsPlayed());
+		playerTemp.setZeros(playerTemp.getZeros() + playerInput.getZeros());
+		playerTemp.setOnes(playerTemp.getOnes() + playerInput.getOnes());
+		playerTemp.setTwos(playerTemp.getTwos() + playerInput.getTwos());
+		playerTemp.setThrees(playerTemp.getThrees() + playerInput.getThrees());
+		playerTemp.setFours(playerTemp.getFours() + playerInput.getFours());
+		playerTemp.setFives(playerTemp.getFives() + playerInput.getFives());
+		playerTemp.setSixes(playerTemp.getSixes() + playerInput.getSixes());
+		playerTemp.setRuns(playerTemp.getRuns() + playerInput.getRuns());
+		playerTemp.setFifties(playerTemp.getFifties() + playerInput.getFifties());
+		playerTemp.setHundreds(playerTemp.getHundreds() + playerInput.getHundreds());
+		playerTemp.setDoubleHundreds(playerTemp.getDoubleHundreds() + playerInput.getDoubleHundreds());
+
+		if (playerInput.getPlayerOfMatch().equals(playerInput.getName())) {
+			playerTemp.getPlayerOfMatches().add(playerInput.getMatch());
+		}
+
+		playerTemp.setKind(playerInput.getKind());
+		double r = (double) playerTemp.getRuns() / playerTemp.getBallsPlayed();
+		r *= 100.0;
+		double salary = Math.round(r * 100.0) / 100.0;
+		playerTemp.setStrikeRate(salary);
+
+		//
+		r = (double) playerTemp.getTotalRunsGiven() / playerTemp.getBalls();
+		r *= 10.0;
+		salary = Math.round(r * 100.0) / 100.0;
+		playerTemp.setEconomyRate(salary);
+		//
+
+		playerTemp.getMatchesAll().add(match);
+		if (!playerTemp.getMatchesAll().isEmpty()) {
+			Collections.sort(playerTemp.getMatchesAll());
+			int totalMatches = playerTemp.getMatchesAll().size();
+			int totalPages = (playerTemp.getMatchesAll().size() / pageSize) + 1;
+			int offset = cp * pageSize;
+			if (cp > totalPages - 1) {
+				offset = (totalPages - 1) * pageSize;
+			}
+			List<Match> tempMatches1 = playerTemp.getMatchesAll().stream().skip(offset).limit(pageSize)
+					.collect(Collectors.toList());
+			// System.out.println("tempMatches1: " + tempMatches1);
+			if (tempMatches1 != null && !tempMatches1.isEmpty()) {
+				Page<Match> page = new PageBuilder<Match>().setContent(tempMatches1).setNumber(offset / pageSize)
+						.setNumberOfElements(tempMatches1.size()).setTotalElements(totalMatches)
+						.setTotalPages(totalPages).setTotalElements(totalMatches).build();
+				playerTemp.setMatches(page);
+			}
+		}
+		playerTemp.getVenues().add(playerInput.getVenue());
+		playerTemp.getSeasons().add(playerInput.getSeason());
+		if (playerInput.getEventStage() != null) {
+			playerTemp.getEventStages().add(playerInput.getEventStage());
+		}
+		if (playerInput.getCity() != null) {
+			playerTemp.getCities().add(playerInput.getCity());
+		} else {
+			// System.out.println("No City set as venue: " + x);
+			playerTemp.getCities().add(playerInput.getVenue());
+		}
 	}
 
 }

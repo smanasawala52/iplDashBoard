@@ -175,6 +175,16 @@ public class DataService {
 										player.setFives(player.getFives() + batter.getValue().getFives());
 										player.setSixes(player.getSixes() + batter.getValue().getSixes());
 										player.setRuns(player.getRuns() + batter.getValue().getRuns());
+										if(batter.getValue().getRuns()>=50 && batter.getValue().getRuns()<100) {
+											player.setFifties(player.getFifties()+1);
+										}
+										if(batter.getValue().getRuns()>=100&& batter.getValue().getRuns()<200) {
+											player.setHundreds(player.getHundreds()+1);
+										}
+										if(batter.getValue().getRuns()>=200) {
+											player.setHundreds(player.getHundreds()+2);
+											player.setDoubleHundreds(player.getDoubleHundreds()+1);
+										}
 										player.setKind(batter.getValue().getKind());
 										double r = (double) player.getRuns() / player.getBallsPlayed();
 										r *= 100.0;

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.persistence.Entity;
@@ -36,6 +37,9 @@ public class Player {
 	private int fours;
 	private int fives;
 	private int sixes;
+	private int fifties;
+	private int hundreds;
+	private int doubleHundreds;
 	private boolean out = false;
 
 	private int overs;
@@ -67,6 +71,9 @@ public class Player {
 
 	@Transient
 	private List<Long> playerOfMatches = new ArrayList<>();
+
+	@Transient
+	private Map<String, Player> matchesBreakDownBySeason = new TreeMap<>();
 
 	@Transient
 	private Page<Match> matches;
@@ -483,6 +490,62 @@ public class Player {
 
 	public void setPlayerOfMatches(List<Long> playerOfMatches) {
 		this.playerOfMatches = playerOfMatches;
+	}
+
+	/**
+	 * @return the fifties
+	 */
+	public int getFifties() {
+		return fifties;
+	}
+
+	/**
+	 * @param fifties the fifties to set
+	 */
+	public void setFifties(int fifties) {
+		this.fifties = fifties;
+	}
+
+	/**
+	 * @return the hundreds
+	 */
+	public int getHundreds() {
+		return hundreds;
+	}
+
+	/**
+	 * @param hundreds the hundreds to set
+	 */
+	public void setHundreds(int hundreds) {
+		this.hundreds = hundreds;
+	}
+
+	/**
+	 * @return the doubleHundreds
+	 */
+	public int getDoubleHundreds() {
+		return doubleHundreds;
+	}
+
+	/**
+	 * @param doubleHundreds the doubleHundreds to set
+	 */
+	public void setDoubleHundreds(int doubleHundreds) {
+		this.doubleHundreds = doubleHundreds;
+	}
+
+	/**
+	 * @return the matchesBreakDownBySeason
+	 */
+	public Map<String, Player> getMatchesBreakDownBySeason() {
+		return matchesBreakDownBySeason;
+	}
+
+	/**
+	 * @param matchesBreakDownBySeason the matchesBreakDownBySeason to set
+	 */
+	public void setMatchesBreakDownBySeason(Map<String, Player> matchesBreakDownBySeason) {
+		this.matchesBreakDownBySeason = matchesBreakDownBySeason;
 	}
 
 }
