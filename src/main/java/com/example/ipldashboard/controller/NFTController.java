@@ -110,6 +110,7 @@ public class NFTController {
 				temp.getAttributes().put(String.valueOf(attr.get(0)), String.valueOf(attr.get(1)));
 			}
 		}
+		System.out.println(temp);
 		return temp;
 	}
 
@@ -134,7 +135,7 @@ public class NFTController {
 
 	@GetMapping("/team/nftMint")
 	public ModelAndView getTeamMint(@RequestParam final Map<String, String> queryParams) {
-		NFTMetadata nFTMetadata = nftService.getTeamNftMetadata(queryParams, null);
+		NFTMetadata nFTMetadata = new NFTMetadata();// nftService.getTeamNftMetadata(queryParams, null);
 		NFTMetadata temp = nftRepository.getByName(nFTMetadata.getName());
 		if (temp == null) {
 			String url = ethAccountConfig.getUrl();
@@ -184,7 +185,7 @@ public class NFTController {
 
 	@GetMapping("/team/nftMintOwner")
 	public ModelAndView getTeamMintOwner(@RequestParam final Map<String, String> queryParams) {
-		NFTMetadata nFTMetadata = nftService.getTeamNftMetadata(queryParams, null);
+		NFTMetadata nFTMetadata = new NFTMetadata();// nftService.getTeamNftMetadata(queryParams, null);
 		NFTMetadata temp = nftRepository.getByName(nFTMetadata.getName());
 		if (temp == null) {
 			String url = ethAccountConfig.getUrl();

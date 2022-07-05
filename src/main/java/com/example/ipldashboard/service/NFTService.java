@@ -1,5 +1,6 @@
 package com.example.ipldashboard.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,6 @@ public class NFTService {
 	private List<String> ignoreList = Arrays.asList("cp", "pageSize");
 
 	public NFTMetadata getTeamNftMetadata(Map<String, String> queryParams, Team team) {
-
 		Map<String, Object> queryMap = new HashMap<>();
 		queryMap.put("team1", "");
 		queryMap.put("team2", "");
@@ -65,27 +65,90 @@ public class NFTService {
 		if (team1 != null && !team1.isEmpty()) {
 			sbDescriptions.append(team1);
 			sbName.append(team1);
+			Map<String, Object> jsonObject = new HashMap<>();
+			List<Map<String, Object>> jsonTraits = new ArrayList<>();
+			try {
+				jsonObject.put("name", "Shabbir");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			if (queryMap.get("team2") != null && !String.valueOf(queryMap.get("team2")).isEmpty()) {
 				sbDescriptions.append(" played against ").append(queryMap.get("team2"));
 				sbName.append(" vs ").append(queryMap.get("team2"));
+				Map<String, Object> attr = new HashMap<>();
+				try {
+					attr.put("trait_type", "Played Against");
+					attr.put("value", String.valueOf(queryMap.get("team2")));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				jsonTraits.add(attr);
 			}
 			if (queryMap.get("venue") != null && !String.valueOf(queryMap.get("venue")).isEmpty()) {
 				sbDescriptions.append(" at ").append(queryMap.get("venue"));
 				sbName.append(" at ").append(queryMap.get("venue"));
+				Map<String, Object> attr = new HashMap<>();
+				try {
+					attr.put("trait_type", "Venue");
+					attr.put("value", String.valueOf(queryMap.get("venue")));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				jsonTraits.add(attr);
 			}
 			if (queryMap.get("city") != null && !String.valueOf(queryMap.get("city")).isEmpty()) {
 				sbDescriptions.append(", ").append(queryMap.get("city"));
 				sbName.append(", ").append(queryMap.get("city"));
+				Map<String, Object> attr = new HashMap<>();
+				try {
+					attr.put("trait_type", "City");
+					attr.put("value", queryMap.get("city"));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				jsonTraits.add(attr);
 			}
 			if (queryMap.get("season") != null && !String.valueOf(queryMap.get("season")).isEmpty()) {
 				sbDescriptions.append(" in the season of ").append(queryMap.get("season"));
-				sbName.append(" ").append(queryMap.get("city"));
+				sbName.append(" ").append(queryMap.get("season"));
+				Map<String, Object> attr = new HashMap<>();
+				try {
+					attr.put("trait_type", "Season");
+					attr.put("value", queryMap.get("season"));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				jsonTraits.add(attr);
 			}
 			if (queryMap.get("stage") != null && !String.valueOf(queryMap.get("stage")).isEmpty()) {
 				sbDescriptions.append(" at the stage of ").append(queryMap.get("stage"));
+				Map<String, Object> attr = new HashMap<>();
+				try {
+					attr.put("trait_type", "Stage");
+					attr.put("value", queryMap.get("stage"));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				jsonTraits.add(attr);
 			}
 			if (queryMap.get("player") != null && !String.valueOf(queryMap.get("player")).isEmpty()) {
 				sbDescriptions.append(" with ").append(queryMap.get("player"));
+				Map<String, Object> attr = new HashMap<>();
+				try {
+					attr.put("trait_type", "Players");
+					attr.put("value", queryMap.get("player"));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				jsonTraits.add(attr);
 			}
 			if (queryMap.get("playerOfMatch") != null && !String.valueOf(queryMap.get("playerOfMatch")).isEmpty()) {
 				sbDescriptions.append(" where ").append(queryMap.get("playerOfMatch"))
@@ -105,8 +168,8 @@ public class NFTService {
 				}
 			}
 			if (team != null && !team.getName().isEmpty()) {
-				// generate nft data for returned team
 				NFTMetadata nftMetadata = new NFTMetadata();
+				// generate nft data for returned team
 				nftMetadata.setExternalLink("https://ipl-dashboard-shabbir.herokuapp.com/?" + sb.toString());
 				if (team.getCities() != null && !team.getCities().isEmpty()) {
 					nftMetadata.getAttributes().put("cities",
@@ -121,10 +184,11 @@ public class NFTService {
 							team.getEventGroups().toString().replace("[", "").replace("]", ""));
 				}
 				if (team.getEventStage() != null && !team.getEventStage().isEmpty()) {
-					nftMetadata.getAttributes().put("stages",
-							team.getEventStage().toString().replace("[", "").replace("]", ""));
+					nftMetadata.getAttributes().put("stages", team.getEventStage());
 				}
-				if (team.getPlayers() != null && !team.getPlayers().isEmpty()) {
+				if (queryMap.get("player") != null && !String.valueOf(queryMap.get("player")).isEmpty()) {
+					nftMetadata.getAttributes().put("players", String.valueOf(queryMap.get("player")));
+				} else if (team.getPlayers() != null && !team.getPlayers().isEmpty()) {
 					nftMetadata.getAttributes().put("players",
 							team.getPlayers().toString().replace("[", "").replace("]", ""));
 				}
@@ -173,7 +237,7 @@ public class NFTService {
 				// convert attributes String to attributes map
 				sb = new StringBuilder();
 				pre = "";
-				for (Entry<String, String> attribute : nftMetadata.getAttributes().entrySet()) {
+				for (Entry<String, Object> attribute : nftMetadata.getAttributes().entrySet()) {
 					sb.append(pre).append(attribute.getKey()).append("|").append(attribute.getValue());
 					pre = "^";
 				}
@@ -181,7 +245,13 @@ public class NFTService {
 
 				nftMetadata.setImage(ethAccountConfig.getNftImageBaseURLTeams() + ""
 						+ team1.replaceAll("[^a-zA-Z0-9]", "").replace(" ", "").toLowerCase() + ".jpg");
-				// System.out.println("nftMetadata: " + nftMetadata);
+				try {
+					jsonObject.put("attributes", jsonTraits);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("nftMetadata: " + nftMetadata);
 				return nftMetadata;
 			}
 		}

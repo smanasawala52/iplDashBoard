@@ -8,9 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
-
 @Entity
 //@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class NFTMetadata {
@@ -27,7 +24,7 @@ public class NFTMetadata {
 	@Column(nullable = false, length = 100, name = "image")
 	private String image;
 	@Transient
-	private Map<String, String> attributes = new HashMap<>();
+	private Map<String, Object> attributes = new HashMap<>();
 	@Column(nullable = false, length = 5000, name = "attributes", unique = true)
 	private String attributesStr;
 
@@ -63,11 +60,11 @@ public class NFTMetadata {
 		this.image = image;
 	}
 
-	public Map<String, String> getAttributes() {
+	public Map<String, Object> getAttributes() {
 		return attributes;
 	}
 
-	public void setAttributes(Map<String, String> attributes) {
+	public void setAttributes(Map<String, Object> attributes) {
 		this.attributes = attributes;
 	}
 
