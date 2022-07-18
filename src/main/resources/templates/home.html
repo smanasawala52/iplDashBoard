@@ -122,6 +122,9 @@
                      </div>
                   </div>
                </div>
+               <div>
+               	<a href="https://api.instagram.com/oauth/authorize?client_id=3459013894384110&redirect_uri=https://ipl-dashboard-shabbir.herokuapp.com/auth&response_type=code&scope=user_profile"><img src="/image/connect_with_facebook.png" width="250px"></a>
+               </div>
                <div  th:each="team: ${teams}">
                   <h1  th:if="${team.matches}" id="latestMatches">Latest Matches</h1>
                   <div class="card-group" th:if="${team.matches}">
