@@ -11,6 +11,7 @@ import java.util.Map;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -57,54 +58,8 @@ public class InstagramController {
 				JSONObject json = new JSONObject(line);
 				String accessToken = (String) json.get("access_token");
 				System.out.println("access_token: " + accessToken);
-				modelAndView.addObject("access_token", accessToken);
 
-				data = "fields=username,media,media_count&access_token=" + accessToken;
-				URL obj = new URL("https://graph.instagram.com/v14.0/me?" + data);
-				HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-				// optional default is GET
-				con.setRequestMethod("GET");
-				// add request header
-				con.setRequestProperty("User-Agent", "Mozilla/5.0");
-				int responseCode = con.getResponseCode();
-				System.out.println("\nSending 'GET' request to URL : " + url);
-				System.out.println("Response Code : " + responseCode);
-				BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-				String inputLine;
-				StringBuffer response = new StringBuffer();
-				while ((inputLine = in.readLine()) != null) {
-					response.append(inputLine);
-				}
-				in.close();
-				line = response.toString();
-				// print in String
-				System.out.println(line);
-
-				json = new JSONObject(line);
-				System.out.println(json.get("media_count"));
-				modelAndView.addObject("media", json.get("media"));
-				modelAndView.addObject("username", json.get("username"));
-				modelAndView.addObject("media_count", json.get("media_count"));
-
-				obj = new URL("https://www.instagram.com/" + json.get("username") + "/");
-				con = (HttpURLConnection) obj.openConnection();
-				// optional default is GET
-				con.setRequestMethod("GET");
-				// add request header
-				con.setRequestProperty("User-Agent", "Mozilla/5.0");
-				responseCode = con.getResponseCode();
-				System.out.println("\nSending 'GET' request to URL : " + url);
-				System.out.println("Response Code : " + responseCode);
-				in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-				inputLine = "";
-				response = new StringBuffer();
-				while ((inputLine = in.readLine()) != null) {
-					response.append(inputLine);
-				}
-				in.close();
-				line = response.toString();
-				// print in String
-				System.out.println(line);
+				modelAndView.addAllObjects(populateInstaDataAccessToken(accessToken).getModelMap());
 
 				// JSONObject jsonInstagram = new JSONObject(line);
 
@@ -113,6 +68,64 @@ public class InstagramController {
 				e.printStackTrace();
 			}
 
+		}
+		return modelAndView;
+	}
+
+	@GetMapping("/instadetails/{accessToken}")
+	public ModelAndView populateInstaDataAccessToken(@PathVariable("accessToken") String accessToken) {
+		ModelAndView modelAndView = new ModelAndView("instadetails");
+		modelAndView.addObject("slug", dataService.getSlug());
+		try {
+			modelAndView.addObject("access_token", accessToken);
+			String data = "fields=username,media,media_count&access_token=" + accessToken;
+			URL obj = new URL("https://graph.instagram.com/v14.0/me?" + data);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			// optional default is GET
+			con.setRequestMethod("GET");
+			// add request header
+			con.setRequestProperty("User-Agent", "Mozilla/5.0");
+			int responseCode = con.getResponseCode();
+			System.out.println("\nSending 'GET' request to URL : " + obj);
+			System.out.println("Response Code : " + responseCode);
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			StringBuffer response = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+			String line = response.toString();
+			// print in String
+			System.out.println(line);
+
+			JSONObject json = new JSONObject(line);
+			System.out.println(json.get("media_count"));
+			modelAndView.addObject("media", json.get("media"));
+			modelAndView.addObject("username", json.get("username"));
+			modelAndView.addObject("media_count", json.get("media_count"));
+
+			obj = new URL("https://www.instagram.com/" + json.get("username") + "/");
+			con = (HttpURLConnection) obj.openConnection();
+			// optional default is GET
+			con.setRequestMethod("GET");
+			// add request header
+			con.setRequestProperty("User-Agent", "Mozilla/5.0");
+			responseCode = con.getResponseCode();
+			System.out.println("\nSending 'GET' request to URL : " + obj);
+			System.out.println("Response Code : " + responseCode);
+			in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			inputLine = "";
+			response = new StringBuffer();
+			while ((inputLine = in.readLine()) != null) {
+				response.append(inputLine);
+			}
+			in.close();
+			line = response.toString();
+			// print in String
+			System.out.println(line);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return modelAndView;
 	}
