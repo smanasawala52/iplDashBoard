@@ -185,7 +185,7 @@ public class NFTController {
 
 	@GetMapping("/team/nftMintOwner")
 	public ModelAndView getTeamMintOwner(@RequestParam final Map<String, String> queryParams) {
-		NFTMetadata nFTMetadata = new NFTMetadata();// nftService.getTeamNftMetadata(queryParams, null);
+		NFTMetadata nFTMetadata = nftService.getTeamNftMetadata(queryParams, null);
 		NFTMetadata temp = nftRepository.getByName(nFTMetadata.getName());
 		if (temp == null) {
 			String url = ethAccountConfig.getUrl();

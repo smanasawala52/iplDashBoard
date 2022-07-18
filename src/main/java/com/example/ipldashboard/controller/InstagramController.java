@@ -85,6 +85,29 @@ public class InstagramController {
 				modelAndView.addObject("media", json.get("media"));
 				modelAndView.addObject("username", json.get("username"));
 				modelAndView.addObject("media_count", json.get("media_count"));
+
+				obj = new URL("https://www.instagram.com/" + json.get("username") + "/");
+				con = (HttpURLConnection) obj.openConnection();
+				// optional default is GET
+				con.setRequestMethod("GET");
+				// add request header
+				con.setRequestProperty("User-Agent", "Mozilla/5.0");
+				responseCode = con.getResponseCode();
+				System.out.println("\nSending 'GET' request to URL : " + url);
+				System.out.println("Response Code : " + responseCode);
+				in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+				inputLine = "";
+				response = new StringBuffer();
+				while ((inputLine = in.readLine()) != null) {
+					response.append(inputLine);
+				}
+				in.close();
+				line = response.toString();
+				// print in String
+				System.out.println(line);
+
+				// JSONObject jsonInstagram = new JSONObject(line);
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
