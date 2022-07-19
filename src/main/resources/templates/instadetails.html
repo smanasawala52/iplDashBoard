@@ -12,6 +12,69 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
          crossorigin="anonymous"></script>
+          <style>
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0d6efd;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #0d6efd;
+  cursor: pointer;
+}
+</style>
+         <style>
+#deliveries {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#deliveries td, #deliveries th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#deliveries tr:nth-child(even){background-color: #f2f2f2;}
+
+#deliveries tr:hover {background-color: #ddd;}
+
+#deliveries th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #0d6efd;
+  color: white;
+}
+</style>
    </head>
    <body>
       <div class="container">
@@ -21,18 +84,36 @@
             </div>
          </nav>
          <section class="content">
-	        <div>
+	        <div style="display:none;">
 	        	access_token: <span th:text="${access_token}"></span>
 	        </div>
 	        <div>
-	        	username: <span th:text="${username}"></span>
+	        	Username: <span th:text="${username}"></span>
 	        </div>
-	        <div>
-	        	media Count: <span th:text="${media_count}"></span>
-	        </div>
-	        <div>
-	        	media: <span th:text="${media}"></span>
-	        </div>
+	        <div onclick="javascript:document.getElementById('mediaList').style.display='block';document.getElementById('followerList').style.display='none';">
+	        	Media: <span th:text="${media_count}"></span>
+	        </div>	        
+	        <div onclick="javascript:document.getElementById('mediaList').style.display='none';document.getElementById('followerList').style.display='block';">
+	        	Followers:
+	        </div>	        
+	        
+	        <br>
+	        <div id="mediaList" style="display:none;">
+	        Media
+	           <table id="deliveries" th:if="${!#lists.isEmpty(mediaList)}">
+	            <tbody>
+	               <tr th:each="i : ${#numbers.sequence(0, 2)}">
+	               <span th:unless="${(index.index-i) % 3}" th:each="mediaTemp,iterStat: ${mediaList}" >
+	               <img  th:src="${mediaTemp}" width="250px" height="250px">
+	               </span>
+	               </tr>
+	               </tbody>
+               </table>
+            </div>
+            <div id="followerList" style="display:none;">
+            Followers
+            </div>
+            <br>
          </section>
       </div>
    </body>
