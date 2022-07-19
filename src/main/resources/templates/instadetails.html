@@ -102,10 +102,8 @@
 	        Media
 	           <table id="deliveries" th:if="${!#lists.isEmpty(mediaList)}">
 	            <tbody>
-	               <tr th:each="i : ${#numbers.sequence(0, 2)}">
-	               <span th:unless="${(index.index-i) % 3}" th:each="mediaTemp,iterStat: ${mediaList}" >
+	               <tr th:each="mediaTemp,iterStat: ${mediaList}" >
 	               <td><img  th:src="${mediaTemp}" width="250px" height="250px"></td>
-	               </span>
 	               </tr>
 	               </tbody>
                </table>
