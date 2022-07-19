@@ -104,7 +104,7 @@
 	            <tbody>
 	               <tr th:each="i : ${#numbers.sequence(0, 2)}">
 	               <span th:unless="${(index.index-i) % 3}" th:each="mediaTemp,iterStat: ${mediaList}" >
-	               <img  th:src="${mediaTemp}" width="250px" height="250px">
+	               <td><img  th:src="${mediaTemp}" width="250px" height="250px"></td>
 	               </span>
 	               </tr>
 	               </tbody>
