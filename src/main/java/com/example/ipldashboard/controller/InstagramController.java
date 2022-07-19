@@ -104,7 +104,12 @@ public class InstagramController {
 			modelAndView.addObject("media", json.get("media"));
 			modelAndView.addObject("username", json.get("username"));
 			modelAndView.addObject("media_count", json.get("media_count"));
+			JSONObject media = (JSONObject) json.get("media");
+			if (media.getJSONArray("data") != null) {
+				// List<JSONObject> mediaList
+				System.out.println(media.getJSONArray("data"));
 
+			}
 			obj = new URL("https://www.instagram.com/" + json.get("username") + "/");
 			con = (HttpURLConnection) obj.openConnection();
 			// optional default is GET
@@ -123,7 +128,7 @@ public class InstagramController {
 			in.close();
 			line = response.toString();
 			// print in String
-			System.out.println(line);
+			// System.out.println(line);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
