@@ -266,7 +266,7 @@ public class InstagramController {
 			JSONObject jsonUserInfo = new JSONObject(line);
 			Map<String, List<String>> followers = new LinkedHashMap<>();
 			JSONArray followerJson = jsonUserInfo.getJSONArray("users");
-			modelAndView.addObject(owner, owner);
+			modelAndView.addObject("owner", owner);
 			for (int i = 0; i < followerJson.length(); i++) {
 				JSONObject object = (JSONObject) followerJson.get(i);
 				try {
