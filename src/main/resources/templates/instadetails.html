@@ -87,16 +87,25 @@
 	        <div style="display:none;">
 	        	access_token: <span th:text="${access_token}"></span>
 	        </div>
+	        <table>
+	        <tr>
+	        <td>
+	       	 <img th:src="${profilePicUrl}"  width="150px" height="150px" />
+	        </td><td>
+	        	<span th:text="${username}"></span>
+	        	<br><span class="text-muted" th:text="${biography}"></span>
+	        	</td>
+	        	</tr>
+	        </table>
 	        <div>
-	        	Username: <span th:text="${username}"></span>
-	        </div>
-	        <div onclick="javascript:document.getElementById('mediaList').style.display='block';document.getElementById('followerList').style.display='none';">
-	        	Media: <span th:text="${media_count}"></span>
+	        <br>
+	        	<button onclick="javascript:document.getElementById('mediaList').style.display='block';document.getElementById('followerList').style.display='none';">
+	        		Media: <span th:text="${media_count}"></span>
+	        	</button>&nbsp;&nbsp;
+		        <button onclick="javascript:document.getElementById('mediaList').style.display='none';document.getElementById('followerList').style.display='block';">
+		        	Followers: <span th:text="${followers_count}"></span>
+	        	</button>
 	        </div>	        
-	        <div onclick="javascript:document.getElementById('mediaList').style.display='none';document.getElementById('followerList').style.display='block';">
-	        	Followers:
-	        </div>	        
-	        
 	        <br>
 	        <div id="mediaList" style="display:none;">
 	        Media
@@ -110,8 +119,36 @@
             </div>
             <div id="followerList" style="display:none;">
             Followers
+             <table id="deliveries" th:if="${!#lists.isEmpty(followers)}">
+	            <tbody>
+	               <tr th:each="followerTemp,iterStat: ${followers}" >
+	               <td><img  th:src="${followerTemp.value[3]}" width="100px" height="100px"></td>
+	               <td>
+	               		<div th:text="${followerTemp.value[1]}"></div>
+	               		<div class="text-muted" th:text="${followerTemp.value[2]}"></div>
+	               	</td>
+	               </tr>
+	               </tbody>
+               </table>
+               <div th:if="${!#strings.isEmpty(maxId)}">
+               <form>
+               <input type="hidden" name="maxId" id="maxId" th:value="${maxId}" />
+               <input type="hidden" name="owner" id="owner" th:value="${owner}" />
+	        	</form>
+               <button onclick="javascript:loadmoreFollowers()">
+		        	Load More
+	        	</button>
+               </div> 
             </div>
             <br>
+            <script>
+            	function loadmoreFollowers(){
+            		var owner = document.getElementById("owner").value;
+            		var maxId = document.getElementById("maxId").value;
+            		var url = "/instaFollowers/"+owner+"/"+maxId;
+            		window.href.location=url;
+            	}
+            </script>
          </section>
       </div>
    </body>
