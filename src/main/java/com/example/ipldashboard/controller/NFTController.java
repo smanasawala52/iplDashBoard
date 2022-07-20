@@ -113,7 +113,7 @@ public class NFTController {
 		// Dr DY Patil Sports Academy, Eden Gardens, Maharashtra Cricket Association
 		// Stadium, Narendra Modi Stadium, Wankhede
 		// Stadium\",\"percent-of-matches-won\":\"75.0\",\"number-of-matches-batted-first\":\"7\",\"number-of-matches-played\":\"16\"}}";
-		return "{\"id\":0,\"name\":\"Gujarat Titans 2022\",\"description\":\"Gujarat Titans in the season of 2022\",\"externalLink\":\"https://ipl-dashboard-shabbir.herokuapp.com/?venue=&tossDecision=&tossWinner=&playerOfMatch=&city=&team1=Gujarat Titans&team2=&result=&winner=&stage=&season=2022&group=&player=\",\"image\":\"https://ipl-dashboard-shabbir.herokuapp.com/image/teams/gujarattitans.jpg\",\"properties\":{\"array_property\":{\"name\":\"Cities1\",\"value\":[\"Ahmedabad\", \"Kolkata\", \"Mumbai\", \"Pune\"], \"class\": \"emphasis\"}}}";
+		return "{\"id\":0,\"name\":\"Gujarat Titans 2022\",\"description\":\"Gujarat Titans in the season of 2022\",\"externalLink\":\"https://ipl-dashboard-shabbir.herokuapp.com/?venue=&tossDecision=&tossWinner=&playerOfMatch=&city=&team1=Gujarat Titans&team2=&result=&winner=&stage=&season=2022&group=&player=\",\"image\":\"https://ipl-dashboard-shabbir.herokuapp.com/image/teams/gujarattitans.jpg\",\"attributes\":{\"array_property\":{\"name\":\"Cities1\",\"value\":[\"Ahmedabad\", \"Kolkata\", \"Mumbai\", \"Pune\"], \"class\": \"emphasis\"}}}";
 	}
 
 	@GetMapping("/team/nftMetaDataJson")
