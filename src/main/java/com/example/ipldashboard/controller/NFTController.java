@@ -85,7 +85,7 @@ public class NFTController {
 	}
 
 	@GetMapping("/team/nftMetaData/{id}")
-	public NFTMetadata getTeamNftMetaData(@PathVariable("id") final String id) {
+	public String getTeamNftMetaData(@PathVariable("id") final String id) {
 		NFTMetadata temp = nftRepository.findById(Long.parseLong(id)).get();
 		// convert attributes String to attributes map
 		if (temp.getAttributesStr() != null) {
@@ -96,11 +96,12 @@ public class NFTController {
 				temp.getAttributes().put(playerTeamsPlayer[0], playerTeamsPlayer[1]);
 			}
 		}
-		return temp;
+		// return temp;
+		return "{\"id\":0,\"name\":\"Gujarat Titans 2022\",\"description\":\"Gujarat Titans in the season of 2022\",\"externalLink\":\"https://ipl-dashboard-shabbir.herokuapp.com/?venue=&tossDecision=&tossWinner=&playerOfMatch=&city=&team1=Gujarat Titans&team2=&result=&winner=&stage=&season=2022&group=&player=\",\"image\":\"https://ipl-dashboard-shabbir.herokuapp.com/image/teams/gujarattitans.jpg\",\"attributes\":{\"teamName\":\"Gujarat Titans\",\"number-of-matches-batted-first-percent\":\"43.75\",\"cities\":[\"Ahmedabad\", \"Kolkata\", \"Mumbai\", \"Pune\"],\"played-with-teams\":\"Chennai Super Kings, Delhi Capitals, Kolkata Knight Riders, Lucknow Super Giants, Mumbai Indians, Punjab Kings, Rajasthan Royals, Royal Challengers Bangalore, Sunrisers Hyderabad\",\"number-of-matches-won\":\"12\",\"players\":\"A Manohar, AS Joseph, B Sai Sudharsan, DA Miller, DG Nalkande, HH Pandya, LH Ferguson, MS Wade, Mohammed Shami, PJ Sangwan, R Sai Kishore, R Tewatia, Rashid Khan, Shubman Gill, V Shankar, VR Aaron, WP Saha, Yash Dayal\",\"stages\":\"[Final, Qualifier 1]\",\"venues\":\"Brabourne Stadium, Dr DY Patil Sports Academy, Eden Gardens, Maharashtra Cricket Association Stadium, Narendra Modi Stadium, Wankhede Stadium\",\"percent-of-matches-won\":\"75.0\",\"number-of-matches-batted-first\":\"7\",\"number-of-matches-played\":\"16\"}}";
 	}
 
 	@GetMapping("/team/nftMetaDataJson")
-	public NFTMetadata nftMetaDataJson(@RequestParam final Map<String, String> queryParams) {
+	public String nftMetaDataJson(@RequestParam final Map<String, String> queryParams) {
 		NFTMetadata temp = nftService.getTeamNftMetadata(queryParams, null);
 		if (temp != null) {
 			// convert attributes String to attributes map
@@ -111,7 +112,8 @@ public class NFTController {
 			}
 		}
 		System.out.println(temp);
-		return temp;
+		// return temp;
+		return "{\"id\":0,\"name\":\"Gujarat Titans 2022\",\"description\":\"Gujarat Titans in the season of 2022\",\"externalLink\":\"https://ipl-dashboard-shabbir.herokuapp.com/?venue=&tossDecision=&tossWinner=&playerOfMatch=&city=&team1=Gujarat Titans&team2=&result=&winner=&stage=&season=2022&group=&player=\",\"image\":\"https://ipl-dashboard-shabbir.herokuapp.com/image/teams/gujarattitans.jpg\",\"attributes\":{\"teamName\":\"Gujarat Titans\",\"number-of-matches-batted-first-percent\":\"43.75\",\"cities\":[\"Ahmedabad\", \"Kolkata\", \"Mumbai\", \"Pune\"],\"played-with-teams\":\"Chennai Super Kings, Delhi Capitals, Kolkata Knight Riders, Lucknow Super Giants, Mumbai Indians, Punjab Kings, Rajasthan Royals, Royal Challengers Bangalore, Sunrisers Hyderabad\",\"number-of-matches-won\":\"12\",\"players\":\"A Manohar, AS Joseph, B Sai Sudharsan, DA Miller, DG Nalkande, HH Pandya, LH Ferguson, MS Wade, Mohammed Shami, PJ Sangwan, R Sai Kishore, R Tewatia, Rashid Khan, Shubman Gill, V Shankar, VR Aaron, WP Saha, Yash Dayal\",\"stages\":\"[Final, Qualifier 1]\",\"venues\":\"Brabourne Stadium, Dr DY Patil Sports Academy, Eden Gardens, Maharashtra Cricket Association Stadium, Narendra Modi Stadium, Wankhede Stadium\",\"percent-of-matches-won\":\"75.0\",\"number-of-matches-batted-first\":\"7\",\"number-of-matches-played\":\"16\"}}";
 	}
 
 	@GetMapping("/team/nftTokenUri/{id}")
