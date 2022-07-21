@@ -167,7 +167,7 @@ public class NFTService {
 					team = temp.get(0);
 				}
 			}
-			if (team != null && !team.getName().isEmpty()) {
+			if (team != null && team.getName() != null && !team.getName().isEmpty()) {
 				NFTMetadata nftMetadata = new NFTMetadata();
 				// generate nft data for returned team
 				nftMetadata.setExternalLink("https://ipl-dashboard-shabbir.herokuapp.com/?" + sb.toString());
