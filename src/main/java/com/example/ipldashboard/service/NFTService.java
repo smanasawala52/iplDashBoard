@@ -171,38 +171,45 @@ public class NFTService {
 				NFTMetadata nftMetadata = new NFTMetadata();
 				// generate nft data for returned team
 				nftMetadata.setExternalLink("https://ipl-dashboard-shabbir.herokuapp.com/?" + sb.toString());
-				if (team.getCities() != null && !team.getCities().isEmpty()) {
-					nftMetadata.getAttributes().put("cities",
+				if (team.getCities() != null && !team.getCities().isEmpty() && team.getCities().size() == 1) {
+					nftMetadata.getAttributes().put("city",
 							team.getCities().toString().replace("[", "").replace("]", ""));
 				}
-				if (team.getVenues() != null && !team.getVenues().isEmpty()) {
-					nftMetadata.getAttributes().put("venues",
+				if (team.getVenues() != null && !team.getVenues().isEmpty() && team.getVenues().size() == 1) {
+					nftMetadata.getAttributes().put("venue",
 							team.getVenues().toString().replace("[", "").replace("]", ""));
 				}
-				if (team.getEventGroups() != null && !team.getEventGroups().isEmpty()) {
-					nftMetadata.getAttributes().put("event-groups",
+				if (team.getEventGroups() != null && !team.getEventGroups().isEmpty()
+						&& team.getEventGroups().size() == 1) {
+					nftMetadata.getAttributes().put("event-group",
 							team.getEventGroups().toString().replace("[", "").replace("]", ""));
 				}
-				if (team.getEventStage() != null && !team.getEventStage().isEmpty()) {
-					nftMetadata.getAttributes().put("stages", team.getEventStage());
+				if (team.getEventStage() != null && !team.getEventStage().isEmpty()
+						&& team.getEventStage().size() == 1) {
+					nftMetadata.getAttributes().put("stage",
+							team.getEventStage().toString().replace("[", "").replace("]", ""));
 				}
 				if (queryMap.get("player") != null && !String.valueOf(queryMap.get("player")).isEmpty()) {
-					nftMetadata.getAttributes().put("players", String.valueOf(queryMap.get("player")));
-				} else if (team.getPlayers() != null && !team.getPlayers().isEmpty()) {
-					nftMetadata.getAttributes().put("players",
+					nftMetadata.getAttributes().put("player", String.valueOf(queryMap.get("player")));
+				} else if (team.getPlayers() != null && !team.getPlayers().isEmpty() && team.getPlayers().size() == 1) {
+					nftMetadata.getAttributes().put("player",
 							team.getPlayers().toString().replace("[", "").replace("]", ""));
 				}
-				if (team.getTeamNames() != null && !team.getTeamNames().isEmpty()) {
-					nftMetadata.getAttributes().put("played-with-teams",
+				if (team.getTeamNames() != null && !team.getTeamNames().isEmpty() && team.getTeamNames().size() == 1) {
+					nftMetadata.getAttributes().put("played-with-team",
 							team.getTeamNames().toString().replace("[", "").replace("]", ""));
 				}
 				if (team.getSeasons() != null && !team.getSeasons().isEmpty()) {
 					if (queryParams.get("season") == null
 							|| (queryParams.get("season") != null && queryParams.get("season").isEmpty())) {
-						sbName.append(" seasons").append(team.getSeasons());
+						sbName.append(" seasons ").append(team.getSeasons());
 					}
-					nftMetadata.getAttributes().put("seasons",
-							team.getSeasons().toString().replace("[", "").replace("]", ""));
+					if (team.getSeasons().size() == 1) {
+						nftMetadata.getAttributes().put("season",
+								team.getSeasons().toString().replace("[", "").replace("]", ""));
+					} else {
+						nftMetadata.getAttributes().put("seasons", team.getSeasons());
+					}
 				}
 				if (team.getName() != null && !team.getName().isEmpty()) {
 					nftMetadata.getAttributes().put("teamName", team.getName());
@@ -212,33 +219,35 @@ public class NFTService {
 				nftMetadata.setDescription(sbDescriptions.toString());
 				// Match attributes
 				if (team.getTotalMatches() > 0) {
-					nftMetadata.getAttributes().put("number-of-matches-played", team.getTotalMatches() + "");
+					nftMetadata.getAttributes().put("number-of-matches-played", team.getTotalMatches());
 				}
 				if (team.getTotalWins() > 0) {
-					nftMetadata.getAttributes().put("number-of-matches-won", team.getTotalWins() + "");
+					nftMetadata.getAttributes().put("number-of-matches-won", team.getTotalWins());
 				}
 				if (team.getTotalWinsPercent() > 0) {
-					nftMetadata.getAttributes().put("percent-of-matches-won", team.getTotalWinsPercent() + "");
+					nftMetadata.getAttributes().put("percent-of-matches-won", team.getTotalWinsPercent());
 				}
 				if (team.getTotalNoResult() > 0) {
-					nftMetadata.getAttributes().put("number-of-matches-no-result", team.getTotalNoResult() + "");
+					nftMetadata.getAttributes().put("number-of-matches-no-result", team.getTotalNoResult());
 				}
 
 				if (team.getTotalBatFirst() > 0) {
-					nftMetadata.getAttributes().put("number-of-matches-batted-first", team.getTotalBatFirst() + "");
+					nftMetadata.getAttributes().put("number-of-matches-batted-first", team.getTotalBatFirst());
 				}
 				if (team.getTotalBatFirstPercent() > 0) {
 					nftMetadata.getAttributes().put("number-of-matches-batted-first-percent",
-							team.getTotalBatFirstPercent() + "");
+							team.getTotalBatFirstPercent());
 				}
 				if (team.getTotalBatFirst() > 0) {
-					nftMetadata.getAttributes().put("number-of-matches-batted-first", team.getTotalBatFirst() + "");
+					nftMetadata.getAttributes().put("number-of-matches-batted-first", team.getTotalBatFirst());
 				}
 				// convert attributes String to attributes map
 				sb = new StringBuilder();
 				pre = "";
 				for (Entry<String, Object> attribute : nftMetadata.getAttributes().entrySet()) {
-					sb.append(pre).append(attribute.getKey()).append("|").append(attribute.getValue());
+					String instanceofstr = attribute.getValue().getClass().getName();
+					sb.append(pre).append(attribute.getKey()).append("|").append(attribute.getValue()).append("|")
+							.append(instanceofstr);
 					pre = "^";
 				}
 				nftMetadata.setAttributesStr(sb.toString());

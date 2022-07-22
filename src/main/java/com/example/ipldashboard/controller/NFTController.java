@@ -2,7 +2,6 @@ package com.example.ipldashboard.controller;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +83,7 @@ public class NFTController {
 		}
 	}
 
-	@GetMapping("/team/nftMetaData/{id}")
+	@GetMapping(path = "/team/nftMetaData/{id}", produces = "application/json")
 	public NFTMetadata getTeamNftMetaData(@PathVariable("id") final String id) {
 		NFTMetadata temp = nftRepository.findById(Long.parseLong(id)).get();
 		// convert attributes String to attributes map
@@ -93,62 +92,33 @@ public class NFTController {
 			String[] playerTeams = temp.getAttributesStr().split("\\^");
 			for (int i = 0; i < playerTeams.length; i++) {
 				String[] playerTeamsPlayer = playerTeams[i].split("\\|");
-				temp.getAttributes().put(playerTeamsPlayer[0], playerTeamsPlayer[1]);
+				String str = playerTeamsPlayer[2];
+				switch (str) {
+				case "java.lang.String":
+					temp.getAttributes().put(playerTeamsPlayer[0], (String) playerTeamsPlayer[1]);
+					break;
+				case "java.util.TreeSet":
+					temp.getAttributes().put(playerTeamsPlayer[0], (String) playerTeamsPlayer[1]);
+					break;
+				case "java.lang.Double":
+					temp.getAttributes().put(playerTeamsPlayer[0], Double.parseDouble(playerTeamsPlayer[1]));
+					break;
+				case "java.lang.Long":
+					temp.getAttributes().put(playerTeamsPlayer[0], Long.parseLong(playerTeamsPlayer[1]));
+					break;
+				case "java.lang.Integer":
+					temp.getAttributes().put(playerTeamsPlayer[0], Integer.parseInt(playerTeamsPlayer[1]));
+					break;
+				}
 			}
 		}
 		return temp;
-		// return "{\"id\":0,\"name\":\"Gujarat Titans 2022\",\"description\":\"Gujarat
-		// Titans in the season of
-		// 2022\",\"externalLink\":\"https://ipl-dashboard-shabbir.herokuapp.com/?venue=&tossDecision=&tossWinner=&playerOfMatch=&city=&team1=Gujarat
-		// Titans&team2=&result=&winner=&stage=&season=2022&group=&player=\",\"image\":\"https://ipl-dashboard-shabbir.herokuapp.com/image/teams/gujarattitans.jpg\",\"attributes\":{\"teamName\":\"Gujarat
-		// Titans\",\"number-of-matches-batted-first-percent\":\"43.75\",{\"trait_type\":\"cities\",\"value\":[\"Ahmedabad\",
-		// \"Kolkata\", \"Mumbai\", \"Pune\"]},\"played-with-teams\":\"Chennai Super
-		// Kings, Delhi Capitals, Kolkata Knight Riders, Lucknow Super Giants, Mumbai
-		// Indians, Punjab Kings, Rajasthan Royals, Royal Challengers Bangalore,
-		// Sunrisers Hyderabad\",\"number-of-matches-won\":\"12\",\"players\":\"A
-		// Manohar, AS Joseph, B Sai Sudharsan, DA Miller, DG Nalkande, HH Pandya, LH
-		// Ferguson, MS Wade, Mohammed Shami, PJ Sangwan, R Sai Kishore, R Tewatia,
-		// Rashid Khan, Shubman Gill, V Shankar, VR Aaron, WP Saha, Yash
-		// Dayal\",\"stages\":\"[Final, Qualifier 1]\",\"venues\":\"Brabourne Stadium,
-		// Dr DY Patil Sports Academy, Eden Gardens, Maharashtra Cricket Association
-		// Stadium, Narendra Modi Stadium, Wankhede
-		// Stadium\",\"percent-of-matches-won\":\"75.0\",\"number-of-matches-batted-first\":\"7\",\"number-of-matches-played\":\"16\"}}";
-		// return "{\"id\":0,\"name\":\"Gujarat Titans 2022\",\"description\":\"Gujarat
-		// Titans in the season of
-		// 2022\",\"externalLink\":\"https://ipl-dashboard-shabbir.herokuapp.com/?venue=&tossDecision=&tossWinner=&playerOfMatch=&city=&team1=Gujarat
-		// Titans&team2=&result=&winner=&stage=&season=2022&group=&player=\",\"image\":\"https://ipl-dashboard-shabbir.herokuapp.com/image/teams/gujarattitans.jpg\",\"attributes\":{\"array_property\":{\"name\":\"Cities1\",\"value\":[\"Ahmedabad\",
-		// \"Kolkata\", \"Mumbai\", \"Pune\"], \"class\": \"emphasis\"}}}";
 	}
 
-	@GetMapping("/team/nftMetaDataJson")
+	@GetMapping(path = "/team/nftMetaDataJson", produces = "application/json")
 	public NFTMetadata nftMetaDataJson(@RequestParam final Map<String, String> queryParams) {
 		NFTMetadata temp = nftService.getTeamNftMetadata(queryParams, null);
-		if (temp != null) {
-			// convert attributes String to attributes map
-			List<String> lst = Arrays.asList(temp.getAttributesStr().split("\\^"));
-			for (String l : lst) {
-				List<String> attr = Arrays.asList(String.valueOf(l).split("\\|"));
-				temp.getAttributes().put(String.valueOf(attr.get(0)), String.valueOf(attr.get(1)));
-			}
-		}
-		System.out.println(temp);
 		return temp;
-		// return "{\"id\":0,\"name\":\"Gujarat Titans 2022\",\"description\":\"Gujarat
-		// Titans in the season of
-		// 2022\",\"externalLink\":\"https://ipl-dashboard-shabbir.herokuapp.com/?venue=&tossDecision=&tossWinner=&playerOfMatch=&city=&team1=Gujarat
-		// Titans&team2=&result=&winner=&stage=&season=2022&group=&player=\",\"image\":\"https://ipl-dashboard-shabbir.herokuapp.com/image/teams/gujarattitans.jpg\",\"attributes\":{\"teamName\":\"Gujarat
-		// Titans\",\"number-of-matches-batted-first-percent\":\"43.75\",\"cities\":[\"Ahmedabad\",
-		// \"Kolkata\", \"Mumbai\", \"Pune\"],\"played-with-teams\":\"Chennai Super
-		// Kings, Delhi Capitals, Kolkata Knight Riders, Lucknow Super Giants, Mumbai
-		// Indians, Punjab Kings, Rajasthan Royals, Royal Challengers Bangalore,
-		// Sunrisers Hyderabad\",\"number-of-matches-won\":\"12\",\"players\":\"A
-		// Manohar, AS Joseph, B Sai Sudharsan, DA Miller, DG Nalkande, HH Pandya, LH
-		// Ferguson, MS Wade, Mohammed Shami, PJ Sangwan, R Sai Kishore, R Tewatia,
-		// Rashid Khan, Shubman Gill, V Shankar, VR Aaron, WP Saha, Yash
-		// Dayal\",\"stages\":\"[Final, Qualifier 1]\",\"venues\":\"Brabourne Stadium,
-		// Dr DY Patil Sports Academy, Eden Gardens, Maharashtra Cricket Association
-		// Stadium, Narendra Modi Stadium, Wankhede
-		// Stadium\",\"percent-of-matches-won\":\"75.0\",\"number-of-matches-batted-first\":\"7\",\"number-of-matches-played\":\"16\"}}";
 	}
 
 	@GetMapping("/team/nftTokenUri/{id}")
